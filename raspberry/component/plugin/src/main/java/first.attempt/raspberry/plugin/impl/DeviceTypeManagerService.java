@@ -25,6 +25,7 @@ import org.wso2.carbon.device.mgt.common.DeviceStatusTaskPluginConfig;
 import org.wso2.carbon.device.mgt.common.InitialOperationConfig;
 import org.wso2.carbon.device.mgt.common.OperationMonitoringTaskConfig;
 import org.wso2.carbon.device.mgt.common.ProvisioningConfig;
+import org.wso2.carbon.device.mgt.common.general.GeneralConfig;
 import org.wso2.carbon.device.mgt.common.app.mgt.ApplicationManager;
 import org.wso2.carbon.device.mgt.common.policy.mgt.PolicyMonitoringManager;
 import org.wso2.carbon.device.mgt.common.pull.notification.PullNotificationSubscriber;
@@ -104,5 +105,9 @@ public class DeviceTypeManagerService implements DeviceManagementService {
         return null;
     }
 
+    @Override
+    public GeneralConfig getGeneralConfig() {
+        return null;
+    }
 
 }
