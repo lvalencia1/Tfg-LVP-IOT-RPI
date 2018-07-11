@@ -1,0 +1,10 @@
+{
+  "deviceType": {
+    "label": "tempsensor",
+    "category": "iot",
+    "downloadAgentUri": "tempsensor/device/download",
+    "scopes": [
+      "perm:tempsensor:enroll"
+    ]
+  }
+}
