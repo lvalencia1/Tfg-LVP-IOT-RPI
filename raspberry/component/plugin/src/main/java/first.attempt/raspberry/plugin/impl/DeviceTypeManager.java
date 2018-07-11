@@ -253,4 +253,10 @@ public class DeviceTypeManager implements DeviceManager {
         }
         return devices;
     }
+
+    @Override
+    public boolean updateDeviceProperties(DeviceIdentifier deviceIdentifier, List<Device.Property> list)
+            throws DeviceManagementException {
+        return false;
+    }
 }
