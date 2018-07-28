@@ -77,6 +77,11 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Properties;
 
+import java.io.FileOutputStream;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonWriter;
+
 /**
  * This is the API which is used to control and manage device type functionality
  */
@@ -91,7 +96,6 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         long l = ByteBuffer.wrap(uuid.toString().getBytes(StandardCharsets.UTF_8)).getLong();
         return Long.toString(l, Character.MAX_RADIX);
     }
-
     /**
      * @param agentInfo device owner,id
      * @return true if device instance is added to map
@@ -107,6 +111,21 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
+    public static void jsontofile( ) throws Exception {
+	JsonArray value = Json.createArrayBuilder()
+		.add(Json.createObjectBuilder()
+                .add("id", "1001")
+                .add("Technology", "JavaFX"))
+                .add(Json.createObjectBuilder()
+                .add("id", "1002")
+		.add("Technology", "OpenCV"))
+		.build();
+	System.out.println(value);
+	JsonWriter writer = Json.createWriter(new FileOutputStream("sampleData"));
+	writer.writeArray(value);
+	writer.close();
+    }
+
     /**
      * @param deviceId unique identifier for given device type instance
      * @param state    change status of sensor: on/off
@@ -115,7 +134,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     @POST
     public Response changeStatus(@PathParam("deviceId") String deviceId,
                                  @QueryParam("state") String state,
-                                 @Context HttpServletResponse response) {
+                                 @Context HttpServletResponse response) throws Exception {
         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
                     DeviceTypeConstants.DEVICE_TYPE))) {
@@ -136,7 +155,11 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
             commandOp.setPayLoad(state);
-
+	try {
+		jsontofile();
+	}catch(Exception e) {
+		    System.out.println("ERROR" + e.toString());
+	}
             Properties props = new Properties();
             props.setProperty("mqtt.adapter.topic", publishTopic);
             commandOp.setProperties(props);
