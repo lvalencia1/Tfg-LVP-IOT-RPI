@@ -23,12 +23,14 @@ function onRequest(context) {
 	var autoCompleteParams = [
 		{"name" : "deviceId", "value" : deviceId}
 	];
+	var data = "John Doe";
+	
 
 	if (deviceType != null && deviceType != undefined && deviceId != null && deviceId != undefined) {
 		var deviceModule = require("/app/modules/business-controllers/device.js")["deviceModule"];
 		var device = deviceModule.viewDevice(deviceType, deviceId);
 		if (device && device.status != "error") {
-			return {"device": device.content, "autoCompleteParams" : autoCompleteParams, "encodedFeaturePayloads": ""};
+			return {"device": device.content, "autoCompleteParams" : autoCompleteParams, "encodedFeaturePayloads": "", "data": data};
 		} else {
 			response.sendError(404, "Device Id " + deviceId + " of type " + deviceType + " cannot be found!");
 			exit();
