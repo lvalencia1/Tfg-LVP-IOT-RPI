@@ -45,8 +45,9 @@
     </li>
     <li><a class="list-group-item" href="#event_log" role="tab" data-toggle="tab"
            aria-controls="event_log">Operations Log</a></li>
+{{! LVP: This is how to introduce a new tab at the device view
     <li><a class="list-group-item" href="#geo_dashboard" role="tab" data-toggle="tab"
-           aria-controls="geo_dashboard">Map</a></li>
+		aria-controls="geo_dashboard">Map</a></li>}}
 {{/zone}}
 
 {{#zone "device-view-tab-contents"}}
@@ -68,6 +69,8 @@
 
                 Loading Operations Log . . .
                 <br>
+		LVPLVP
+		{{data}}
                 <br>
             </div>
             <div id="operations-log-container">
@@ -78,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default tab-pane"
+    {{!    <div class="panel panel-default tab-pane"
          id="geo_dashboard" role="tabpanel" aria-labelledby="geo_dashboard">
         <div class="panel-heading">Map</div>
 
@@ -86,7 +89,7 @@
         </div>
 
         <a class="padding-left"
-           href="{{portalUrl}}/portal/dashboards/geo-dashboard/?GLOBAL-STATE={{anchor}}">
+		href="{{portalUrl}}{{!/portal/dashboards/geo-dashboard/?GLOBAL-STATE={{anchor}}{{!">
 
             <span class="fw-stack">
                 <i class="fw fw-circle-outline fw-stack-2x"></i>
@@ -94,4 +97,5 @@
             </span> View Device Location
         </a>
     </div>
+    }}
 {{/zone}}
