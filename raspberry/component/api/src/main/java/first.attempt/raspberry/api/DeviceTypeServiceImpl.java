@@ -23,6 +23,8 @@ import first.attempt.raspberry.api.dto.SensorRecord;
 import first.attempt.raspberry.api.util.APIUtil;
 import first.attempt.raspberry.api.util.ZipUtil;
 import first.attempt.raspberry.api.util.ZipArchive;
+import first.attempt.raspberry.api.util.deviceOperationJson;
+import first.attempt.raspberry.api.util.JsonUtils;
 import first.attempt.raspberry.plugin.constants.DeviceTypeConstants;
 
 import org.apache.commons.io.FileUtils;
@@ -77,11 +79,15 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Properties;
 
-import java.io.FileOutputStream;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonWriter;
-
+/*import java.io.FileOutputStream;
+*import javax.json.Json;
+*import javax.json.JsonArray;
+*import javax.json.JsonWriter;
+*/
+/*
+ * For Json parsing 
+ */
+import com.google.gson.*;
 /**
  * This is the API which is used to control and manage device type functionality
  */
@@ -111,20 +117,43 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
-    public static void jsontofile( ) throws Exception {
-	JsonArray value = Json.createArrayBuilder()
-		.add(Json.createObjectBuilder()
-                .add("id", "1001")
-                .add("Technology", "JavaFX"))
-                .add(Json.createObjectBuilder()
-                .add("id", "1002")
-		.add("Technology", "OpenCV"))
-		.build();
-	System.out.println(value);
-	JsonWriter writer = Json.createWriter(new FileOutputStream("sampleData"));
-	writer.writeArray(value);
-	writer.close();
-    }
+//    public static void jsontofile( ) throws Exception {
+//	File output = new File ("sampleData.json")
+//	if (output.exists())
+//	{
+//		InputStream fis = new FileInputStream("sampleData.json");
+//		JsonReader reader = Json.createReader(fis);
+//		JsonObject personObject = reader.readObject();
+//		reader.close();
+//		System.out.println("Name   : " + personObject.getString("name"));
+//		System.out.println("Age    : " + personObject.getInt("age"));
+//		System.out.println("Married: " + personObject.getBoolean("isMarried"));
+//		JsonObject addressObject = personObject.getJsonObject("address");
+//		System.out.println("Address: ");
+//		System.out.println(addressObject.getString("street"));
+//		System.out.println(addressObject.getString("zipCode"));
+//		System.out.println("Phone  : ");
+//		JsonArray phoneNumbersArray = personObject.getJsonArray("phoneNumbers");
+//		for (JsonValue jsonValue : phoneNumbersArray) {
+//			System.out.println(jsonValue.toString());
+//		}
+//	}
+//	else
+//	{
+//		JsonArray value = Json.createArrayBuilder()
+//			.add(Json.createObjectBuilder()
+  //             		.add("id", "1001")
+    //            	.add("Technology", "JavaFX"))
+      //          	.add(Json.createObjectBuilder()
+        //        	.add("id", "1002")
+	//		.add("Technology", "OpenCV"))
+	//		.build();
+	//	System.out.println(value);
+	//	JsonWriter writer = Json.createWriter(new FileOutputStream("sampleData.json"));
+	///	writer.writeArray(value);
+	//	writer.close();
+//	}//
+//}
 
     /**
      * @param deviceId unique identifier for given device type instance
@@ -134,7 +163,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     @POST
     public Response changeStatus(@PathParam("deviceId") String deviceId,
                                  @QueryParam("state") String state,
-                                 @Context HttpServletResponse response) throws Exception {
+                                 @Context HttpServletResponse response) {//throws Exception {
         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
                     DeviceTypeConstants.DEVICE_TYPE))) {
@@ -156,7 +185,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setEnabled(true);
             commandOp.setPayLoad(state);
 	try {
-		jsontofile();
+		JsonUtils.writeOperation("change-status",deviceId);
 	}catch(Exception e) {
 		    System.out.println("ERROR" + e.toString());
 	}
