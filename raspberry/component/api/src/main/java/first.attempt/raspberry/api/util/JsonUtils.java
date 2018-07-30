@@ -1,7 +1,7 @@
 /*
  * This file implements methods to work with json files
  *
- *
+ * TODO: Unify the writeOperation method and clear it
  *
  *
  */
@@ -17,25 +17,48 @@ import java.util.List;
 import com.google.gson.Gson;
 import first.attempt.raspberry.api.util.deviceOperationJson;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 
 public class JsonUtils {
+	private static File fileJson = new File("sampleData.json");
 	public static void writeOperation ( String operationId, String deviceId ){
-		File output = new File ("sampleData.json");
 		deviceOperationJson deviceOperations = new deviceOperationJson();
 		Gson gson = new Gson();
-		if (output.exists())	 
-		{
-
+		deviceOperations.setName(operationId);
+		deviceOperations.setDate();
+		String json = gson.toJson(deviceOperations);
+		if (fileJson.exists())	 
+		{        
+			try {
+				Path path = new File("sampleData.json").toPath();						          
+				Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+				deviceOperationJson[] operationArray = gson.fromJson(reader, deviceOperationJson[].class);
+				ArrayList<deviceOperationJson> operationsArrayList	= new ArrayList<deviceOperationJson>(Arrays.asList( operationArray ));
+				operationsArrayList.add(deviceOperations);
+				operationsArrayList.add(deviceOperations);
+				String jsonArray = gson.toJson(operationsArrayList);
+				FileWriter writer = new FileWriter("sampleData.json");
+				writer.write(jsonArray);
+	      			writer.close();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 		else 
 		{
-			deviceOperations.setName(operationId);
-			deviceOperations.setDate();
-			String json = gson.toJson(deviceOperations);
 			try 
 			{
+				createJsonStructure();
 				FileWriter writer = new FileWriter("sampleData.json");
-		      		writer.write(json);
+				ArrayList<deviceOperationJson> operationsArrayList	= new ArrayList<deviceOperationJson>( );
+				operationsArrayList.add(deviceOperations);
+				String jsonArray = gson.toJson(operationsArrayList);
+		      		writer.write(jsonArray);
 	      			writer.close();
 			}
 			catch (Exception e) {
@@ -43,4 +66,15 @@ public class JsonUtils {
 			} 
 		}
 	}
+	public static void createJsonStructure(){
+    		if(!fileJson.exists()){         
+			try {
+				fileJson.createNewFile();
+			} catch (IOException e) {								
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 }
