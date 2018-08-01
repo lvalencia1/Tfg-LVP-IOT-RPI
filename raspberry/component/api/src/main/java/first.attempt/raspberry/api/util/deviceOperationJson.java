@@ -63,7 +63,7 @@ public class deviceOperationJson {
 	   public void setDate() {
 		   //create new java.util.Date object
 		   Date fecha = new Date();
-		   DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+		   DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
 		   this.date = dateFormat.format(fecha);
 	   }
 
