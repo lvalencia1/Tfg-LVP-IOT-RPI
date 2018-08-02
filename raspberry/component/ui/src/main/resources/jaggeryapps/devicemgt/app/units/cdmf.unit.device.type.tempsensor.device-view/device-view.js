@@ -23,9 +23,9 @@ function onRequest(context) {
 	var autoCompleteParams = [
 		{"name" : "deviceId", "value" : deviceId}
 	];
-	var data = "John Doe";
-	
-
+//	var data = "John Doe";
+	var data = require("../sampleData.json");
+	data = data.intento1;
 	if (deviceType != null && deviceType != undefined && deviceId != null && deviceId != undefined) {
 		var deviceModule = require("/app/modules/business-controllers/device.js")["deviceModule"];
 		var device = deviceModule.viewDevice(deviceType, deviceId);

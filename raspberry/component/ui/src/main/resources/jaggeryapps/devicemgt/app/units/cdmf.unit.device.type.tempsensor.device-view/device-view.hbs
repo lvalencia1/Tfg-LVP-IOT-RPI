@@ -51,6 +51,7 @@
 {{/zone}}
 
 {{#zone "device-view-tab-contents"}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <div class="panel panel-default tab-pane active"
          id="device_statistics" role="tabpanel" aria-labelledby="device_statistics">
         <div class="panel-heading">Device Statistics</div>
@@ -58,27 +59,38 @@
     </div>
     <div class="panel panel-default tab-pane" id="event_log" role="tabpanel"
          aria-labelledby="event_log">
-        <div class="panel-heading">Operations Log <span><a href="#"
+        <div class="panel-heading">Reload Operations Log <span><a href="javascript:history.go(0)"
+							   {{!<div class="panel-heading">Operations Log <span><a href="#"}}
                                                            id="refresh-operations"><i
                 class="fw fw-refresh"></i></a></span></div>
+
         <div class="panel-body">
             <div id="operations-spinner" class="wr-advance-operations-init hidden">
                 <br>
 
                 <i class="fw fw-settings fw-spin fw-2x"></i>
-
-                Loading Operations Log . . .
-                <br>
-		LVPLVP
-		{{data}}
+                Reloading operations log . . .
                 <br>
             </div>
             <div id="operations-log-container">
                 <div class="panel-body">
-                    Not available yet
+		{{#each data}} 
+		<tr>
+			---------------------------------------------------------------------------------
+			<br>
+			<td><b><big>Operation:</big></b><i> {{name}}</i>
+			</td>
+			<br>
+			<td><b><big>date:</big></b><i> {{date}}</i></td>
+			<br>
+			{{!			<td><b><big>Aditional info:</big></b><i> {{payload}}{{!</i></td>}}
+			<br>
+		</tr>
+		{{/each}}
                 </div>
                 <br class="c-both"/>
-            </div>
+	    </div>
+
         </div>
     </div>
     {{!    <div class="panel panel-default tab-pane"
