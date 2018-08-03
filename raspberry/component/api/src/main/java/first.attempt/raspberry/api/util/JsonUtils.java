@@ -29,7 +29,7 @@ import java.nio.file.Path;
 
 
 public class JsonUtils {
-	private static File fileJson = new File("sampleData.json");
+	private static File fileJson = new File("repository/deployment/server/jaggeryapps/devicemgt/sampleData.json");
 	public static void writeOperation ( String operationId, String deviceId ){
 		deviceOperationJson deviceOperations = new deviceOperationJson();
 		Gson gson = new Gson();
@@ -39,24 +39,39 @@ public class JsonUtils {
 		if (fileJson.exists())	 
 		{        
 			try {
-				Path path = new File("sampleData.json").toPath();						          
+				Path path = new File("repository/deployment/server/jaggeryapps/devicemgt/sampleData.json").toPath();						          
 				Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
 				//deviceOperationJson[] operationArray = gson.fromJson(reader, deviceOperationJson[].class);
 				//ArrayList<deviceOperationJson> operationsArrayList	= new ArrayList<deviceOperationJson>(Arrays.asList( operationArray ));
 				JsonParser parser = new JsonParser();
-				JsonElement jsonElement = parser.parse(new FileReader("sampleData.json"));
+				JsonElement jsonElement = parser.parse(new FileReader("repository/deployment/server/jaggeryapps/devicemgt/sampleData.json"));
 				JsonObject jsonObject = new JsonObject();	
 				jsonObject = jsonElement.getAsJsonObject(); //
 				JsonObject object = new JsonObject();
-				deviceOperationJson[] operationArray = gson.fromJson(jsonObject.get("intento1"),deviceOperationJson[].class );
+				if ( !jsonObject.has(deviceId) )
+				{
+				FileWriter writer = new FileWriter("repository/deployment/server/jaggeryapps/devicemgt/sampleData.json");
+					ArrayList<deviceOperationJson> operationsArrayList	= new ArrayList<deviceOperationJson>( );
+				operationsArrayList.add(deviceOperations);
+				jsonObject.add(deviceId, gson.toJsonTree(operationsArrayList));
+				String jsonArray = gson.toJson(jsonObject);
+		      		writer.write(jsonArray);
+	      			writer.close();
+
+
+				}
+				else
+				{
+				deviceOperationJson[] operationArray = gson.fromJson(jsonObject.get(deviceId),deviceOperationJson[].class );
 				ArrayList<deviceOperationJson> operationsArrayList	= new ArrayList<deviceOperationJson>(Arrays.asList( operationArray ));
 				//
 				operationsArrayList.add(deviceOperations);
-				object.add("intento1", gson.toJsonTree(operationsArrayList));
-				String jsonArray = gson.toJson(object);
-				FileWriter writer = new FileWriter("sampleData.json");
+				jsonObject.add(deviceId, gson.toJsonTree(operationsArrayList));
+				String jsonArray = gson.toJson(jsonObject);
+				FileWriter writer = new FileWriter("repository/deployment/server/jaggeryapps/devicemgt/sampleData.json");
 				writer.write(jsonArray);
 	      			writer.close();
+				}
 				//
 				//
 				//
@@ -71,10 +86,10 @@ public class JsonUtils {
 			{
 				createJsonStructure();
 				JsonObject object = new JsonObject();
-				FileWriter writer = new FileWriter("sampleData.json");
+				FileWriter writer = new FileWriter("repository/deployment/server/jaggeryapps/devicemgt/sampleData.json");
 				ArrayList<deviceOperationJson> operationsArrayList	= new ArrayList<deviceOperationJson>( );
 				operationsArrayList.add(deviceOperations);
-				object.add("intento1", gson.toJsonTree(operationsArrayList));
+				object.add(deviceId, gson.toJsonTree(operationsArrayList));
 //				String jsonArray = gson.toJson(operationsArrayList);
 				String jsonArray = gson.toJson(object);
 		      		writer.write(jsonArray);

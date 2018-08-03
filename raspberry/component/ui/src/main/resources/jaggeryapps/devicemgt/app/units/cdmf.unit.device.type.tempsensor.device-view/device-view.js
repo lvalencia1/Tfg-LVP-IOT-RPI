@@ -24,8 +24,12 @@ function onRequest(context) {
 		{"name" : "deviceId", "value" : deviceId}
 	];
 //	var data = "John Doe";
-	var data = require("../sampleData.json");
-	data = data.intento1;
+	var fileaux = new File("../sampleData.json");
+	if ( fileaux.isExists())
+	{
+		var data = require("../sampleData.json");
+		data = data[deviceId];
+	}
 	if (deviceType != null && deviceType != undefined && deviceId != null && deviceId != undefined) {
 		var deviceModule = require("/app/modules/business-controllers/device.js")["deviceModule"];
 		var device = deviceModule.viewDevice(deviceType, deviceId);
