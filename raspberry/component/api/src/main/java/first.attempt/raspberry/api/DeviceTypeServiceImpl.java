@@ -185,7 +185,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setEnabled(true);
             commandOp.setPayLoad(state);
 	try {
-		JsonUtils.writeOperation("change-status",deviceId);
+		JsonUtils.saveOperation("change-status",deviceId,"");
 	}catch(Exception e) {
 		    System.out.println("ERROR" + e.toString());
 	}

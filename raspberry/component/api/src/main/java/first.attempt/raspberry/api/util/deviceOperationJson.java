@@ -52,6 +52,14 @@ import java.util.Date;
 public class deviceOperationJson {
 	String name;
 	String date;
+	String payload;
+	   public String getPayload() {		          
+		   return name;		
+	   }
+	    
+	   public void setPayload(String payload) {
+		   this.payload = payload;
+	   }
 	   public String getName() {		          
 		   return name;		
 	   }
