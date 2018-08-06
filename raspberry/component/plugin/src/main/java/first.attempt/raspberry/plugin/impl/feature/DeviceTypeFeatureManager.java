@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 import org.wso2.carbon.device.mgt.common.DeviceManagementException;
 import org.wso2.carbon.device.mgt.common.Feature;
 import org.wso2.carbon.device.mgt.common.FeatureManager;
@@ -38,34 +40,58 @@ public class DeviceTypeFeatureManager implements FeatureManager {
     private static final String QUERY_PARAMS = "queryParams";
     private static final String FORM_PARAMS = "formParams";
     private static Feature feature = new Feature();
+    private static int featureCount = 0;
+    //Lista de las features que va a tener
+    private static List<Feature> features = new ArrayList<Feature>();
 
     public DeviceTypeFeatureManager() {
-        feature.setCode("change-status");
-        feature.setName("Sensor: on/off");
-        feature.setDescription("Change status of sensor: on/off");
+	Feature deviceFeature =	createFeature("change-status","state","Matriz statis: on/off","Enciende/Apaga la matriz de leds segun on/off");
+	try {
+		addFeature(deviceFeature);
+	}catch (DeviceManagementException e) {
+		e.printStackTrace();
+	}
+	deviceFeature =	createFeature("change-leds","value","Matriz leds: on/off","Enciende/Apaga la matriz de leds segun on/off");
+	try {
+		addFeature(deviceFeature);
+	}catch (DeviceManagementException e) {
+		e.printStackTrace();
+	}
 
-        Map<String, Object> apiParams = new HashMap<>();
-        apiParams.put(METHOD, "POST");
-        apiParams.put(URI, "/tempsensor/device/{deviceId}/change-status");
+    }
+    //TODO: Hay que hacer que en vez de string, acepte una lista de strings
+    private Feature createFeature(String feature, String params, String name, String description)
+    {
+	Feature newOperation = new Feature();
+	Map<String, Object> apiParams = new HashMap<>();
         List<String> pathParams = new ArrayList<>();
         List<String> queryParams = new ArrayList<>();
         List<String> formParams = new ArrayList<>();
-        pathParams.add("deviceId");
-        apiParams.put(PATH_PARAMS, pathParams);
-        queryParams.add("state");
-        apiParams.put(QUERY_PARAMS, queryParams);
-        apiParams.put(FORM_PARAMS, formParams);
         List<Feature.MetadataEntry> metadataEntries = new ArrayList<>();
         Feature.MetadataEntry metadataEntry = new Feature.MetadataEntry();
-        metadataEntry.setId(-1);
+
+	newOperation.setCode(feature);
+        newOperation.setName(name);
+        newOperation.setDescription(description);
+        apiParams.put(METHOD, "POST");
+        apiParams.put(URI, "/tempsensor/device/{deviceId}/" + feature);
+        pathParams.add("deviceId");
+        apiParams.put(PATH_PARAMS, pathParams);
+        queryParams.add(params);
+        apiParams.put(QUERY_PARAMS, queryParams);
+        apiParams.put(FORM_PARAMS, formParams);
+        apiParams.put("icon","fw-dial-up");
+        metadataEntry.setId(featureCount);
         metadataEntry.setValue(apiParams);
         metadataEntries.add(metadataEntry);
-        feature.setMetadataEntries(metadataEntries);
+	featureCount++;
+        newOperation.setMetadataEntries(metadataEntries);
+	return newOperation;
     }
-
     @Override
     public boolean addFeature(Feature feature) throws DeviceManagementException {
-        return false;
+	features.add(feature);
+        return true;
     }
 
     @Override
@@ -80,8 +106,8 @@ public class DeviceTypeFeatureManager implements FeatureManager {
 
     @Override
     public List<Feature> getFeatures() throws DeviceManagementException {
-        List<Feature> features = new ArrayList<>();
-        features.add(feature);
+//        List<Feature> features = new ArrayList<>();
+//        features.add(feature);
         return features;
     }
 

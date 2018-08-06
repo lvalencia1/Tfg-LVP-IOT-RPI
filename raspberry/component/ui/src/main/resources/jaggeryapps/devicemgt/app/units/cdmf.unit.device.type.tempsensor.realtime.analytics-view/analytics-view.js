@@ -28,21 +28,47 @@ function onRequest(context) {
 	var jwtClient = jwtService.getJWTClient();
 	var encodedClientKeys = session.get(constants["ENCODED_TENANT_BASED_WEB_SOCKET_CLIENT_CREDENTIALS"]);
 	var token = "";
-	if (encodedClientKeys) {
-		var tokenUtil = require("/app/modules/oauth/token-handler-utils.js")["utils"];
-		var resp = tokenUtil.decode(encodedClientKeys).split(":");
-		var tokenPair = jwtClient.getAccessToken(resp[0], resp[1], context.user.username,"default", {});
-		if (tokenPair) {
-			token = tokenPair.accessToken;
-		}
-		var websocketToken= {'name':'websocket-token','value': token, 'path':'/', "maxAge":18000};
-		response.addCookie(websocketToken);
+//	if (encodedClientKeys) {
+//		var tokenUtil = require("/app/modules/oauth/token-handler-utils.js")["utils"];
+//		var resp = tokenUtil.decode(encodedClientKeys).split(":");
+//		var tokenPair = jwtClient.getAccessToken(resp[0], resp[1], context.user.username,"default", {});
+//		if (tokenPair) {
+//			token = tokenPair.accessToken;
+//		}
+//		var websocketToken= {'name':'websocket-token','value': token, 'path':'/', "maxAge":18000};
+//		response.addCookie(websocketToken);
+//	}
+//    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.temperature/1.0.0?deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+//	var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.humidity/1.0.0?deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+//		return {
+//		"device": device,
+//		"websocketEndpointForStream1": websocketEndpointForStream1,
+//		"websocketEndpointForStream2": websocketEndpointForStream2
+//	};
+
+	var user = session.get(constants.USER_SESSION_KEY);	
+	if (!user) {
+		log.error("User object was not found in the session");
+		throw constants.ERRORS.USER_NOT_FOUND;
 	}
-    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.temperature/1.0.0?deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
-	var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.humidity/1.0.0?deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
-		return {
-		"device": device,
-		"websocketEndpointForStream1": websocketEndpointForStream1,
-		"websocketEndpointForStream2": websocketEndpointForStream2
-	};
+    if (encodedClientKeys) {
+	    var tokenUtil = require("/app/modules/oauth/token-handler-utils.js")["utils"];
+	    var resp = tokenUtil.decode(encodedClientKeys).split(":");
+	    if (user.domain == "carbon.super") {
+		    var tokenPair = jwtClient.getAccessToken(resp[0], resp[1], context.user.username , "default", {});
+		    if (tokenPair) {
+		    token = tokenPair.accessToken;
+	   }
+		    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.temperature/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+		    var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.humidity/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+	    } else {
+		    var tokenPair = jwtClient.getAccessToken(resp[0], resp[1], context.user.username + "@" + user.domain, "default", {});
+		    if (tokenPair) {
+			    token = tokenPair.accessToken;		
+		    }
+		    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/t/" + user.domain + "/org.wso2.iot.devices.temperature/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+		    var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/t/" + user.domain + "/org.wso2.iot.devices.humidity/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+	    }
+	}
+	return {"device": device, "websocketEndpointForStream1": websocketEndpointForStream1, "websocketEndpointForStream2" : websocketEndpointForStream2 };
 }

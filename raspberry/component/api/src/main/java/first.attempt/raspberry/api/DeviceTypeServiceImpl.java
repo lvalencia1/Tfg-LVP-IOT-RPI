@@ -117,44 +117,6 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
-//    public static void jsontofile( ) throws Exception {
-//	File output = new File ("sampleData.json")
-//	if (output.exists())
-//	{
-//		InputStream fis = new FileInputStream("sampleData.json");
-//		JsonReader reader = Json.createReader(fis);
-//		JsonObject personObject = reader.readObject();
-//		reader.close();
-//		System.out.println("Name   : " + personObject.getString("name"));
-//		System.out.println("Age    : " + personObject.getInt("age"));
-//		System.out.println("Married: " + personObject.getBoolean("isMarried"));
-//		JsonObject addressObject = personObject.getJsonObject("address");
-//		System.out.println("Address: ");
-//		System.out.println(addressObject.getString("street"));
-//		System.out.println(addressObject.getString("zipCode"));
-//		System.out.println("Phone  : ");
-//		JsonArray phoneNumbersArray = personObject.getJsonArray("phoneNumbers");
-//		for (JsonValue jsonValue : phoneNumbersArray) {
-//			System.out.println(jsonValue.toString());
-//		}
-//	}
-//	else
-//	{
-//		JsonArray value = Json.createArrayBuilder()
-//			.add(Json.createObjectBuilder()
-  //             		.add("id", "1001")
-    //            	.add("Technology", "JavaFX"))
-      //          	.add(Json.createObjectBuilder()
-        //        	.add("id", "1002")
-	//		.add("Technology", "OpenCV"))
-	//		.build();
-	//	System.out.println(value);
-	//	JsonWriter writer = Json.createWriter(new FileOutputStream("sampleData.json"));
-	///	writer.writeArray(value);
-	//	writer.close();
-//	}//
-//}
-
     /**
      * @param deviceId unique identifier for given device type instance
      * @param state    change status of sensor: on/off
@@ -163,6 +125,70 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     @POST
     public Response changeStatus(@PathParam("deviceId") String deviceId,
                                  @QueryParam("state") String state,
+                                 @Context HttpServletResponse response) {//throws Exception {
+        try {
+		//Vemos si está autorizado el dispositivo
+            if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
+                    DeviceTypeConstants.DEVICE_TYPE))) {
+                return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
+            }
+	    //Pasamos a mayusculas lo introducido en la casilla
+            String sensorState = state.toUpperCase();
+	    //Vemos el contenido de la respuesta
+            if (!sensorState.equals(DeviceTypeConstants.STATE_ON) && !sensorState.equals(
+                    DeviceTypeConstants.STATE_OFF)) {
+                log.error("The requested state change should be either - 'ON' or 'OFF'");
+                return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
+            }
+            Map<String, String> dynamicProperties = new HashMap<>();
+            String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
+                    + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+            dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
+	    //Almacenamos la operación para mandarla a 
+            Operation commandOp = new CommandOperation();
+            commandOp.setCode("change-status");
+            commandOp.setType(Operation.Type.COMMAND);
+            commandOp.setEnabled(true);
+            commandOp.setPayLoad(state);
+	    //Método propio que almacena los comandos
+	try {
+		JsonUtils.saveOperation("change-status",deviceId,state);
+	}catch(Exception e) {
+		    System.out.println("ERROR" + e.toString());
+	}
+            Properties props = new Properties();
+            props.setProperty("mqtt.adapter.topic", publishTopic);
+            commandOp.setProperties(props);
+
+            List<DeviceIdentifier> deviceIdentifiers = new ArrayList<>();
+            deviceIdentifiers.add(new DeviceIdentifier(deviceId, DeviceTypeConstants.DEVICE_TYPE));
+	    //Aqui metemos la operación a la lista de operaciones para ser usadas, a través de git hub podemos
+	    //ver las distintas clases involucradas en https://github.com/wso2/carbon-device-mgt/
+            APIUtil.getDeviceManagementService().addOperation(DeviceTypeConstants.DEVICE_TYPE, commandOp,
+                    deviceIdentifiers);
+            return Response.ok().build();
+        } catch (DeviceAccessAuthorizationException e) {
+            log.error(e.getErrorMessage(), e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (OperationManagementException e) {
+            String msg = "Error occurred while executing command operation upon ringing the buzzer";
+            log.error(msg, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (InvalidDeviceException e) {
+            String msg = "Error occurred while executing command operation to send keywords";
+            log.error(msg, e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    /**
+     * @param deviceId unique identifier for given device type instance
+     * @param state    change status of sensor: on/off
+     */
+    @Path("device/{deviceId}/change-leds")
+    @POST
+    public Response changeLeds(@PathParam("deviceId") String deviceId,
+                                 @QueryParam("value") String state,
                                  @Context HttpServletResponse response) {//throws Exception {
         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
@@ -180,12 +206,12 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
                     + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
             dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
             Operation commandOp = new CommandOperation();
-            commandOp.setCode("change-status");
+            commandOp.setCode("change-leds");
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
             commandOp.setPayLoad(state);
 	try {
-		JsonUtils.saveOperation("change-status",deviceId,"");
+		JsonUtils.saveOperation("change-leds",deviceId,"");
 	}catch(Exception e) {
 		    System.out.println("ERROR" + e.toString());
 	}
@@ -224,6 +250,8 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     @GET
     @Consumes("application/json")
     @Produces("application/json")
+	
+    //Sospecho que es invocado cuando lo envía el agente
     public Response getSensorStats(@PathParam("deviceId") String deviceId, @QueryParam("from") long from,
                                    @QueryParam("to") long to, @QueryParam("sensorType") String sensorType) {
         String fromDate = String.valueOf(from);

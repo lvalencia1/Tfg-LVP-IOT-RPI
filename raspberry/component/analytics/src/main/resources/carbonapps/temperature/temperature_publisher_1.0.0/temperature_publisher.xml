@@ -17,7 +17,8 @@
   ~ under the License.
   -->
 
-<eventPublisher name="EventPublisher_temperature" statistics="disable" trace="disable"
+<!--eventPublisher name="EventPublisher_temperature" statistics="disable" trace="disable"-->
+<eventPublisher name="EventPublisher_temperature" statistics="enable" trace="enable"
                 xmlns="http://wso2.org/carbon/eventpublisher">
     <from streamName="org.wso2.iot.devices.temperature" version="1.0.0"/>
     <mapping customMapping="disable" type="wso2event"/>

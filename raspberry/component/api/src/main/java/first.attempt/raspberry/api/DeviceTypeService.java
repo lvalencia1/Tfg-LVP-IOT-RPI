@@ -95,7 +95,25 @@ public interface DeviceTypeService {
             }
     )
     Response changeStatus(@PathParam("deviceId") String deviceId,
-                          @QueryParam("state") String state,
+                          @QueryParam("status") String state,
+                          @Context HttpServletResponse response);
+    @Path("device/{deviceId}/change-leds")
+    @POST
+    @ApiOperation(
+            consumes = MediaType.APPLICATION_JSON,
+            httpMethod = "POST",
+            value = "Switch leds",
+            notes = "",
+            response = Response.class,
+            tags = DeviceTypeConstants.DEVICE_TYPE ,
+            extensions = {
+                    @Extension(properties = {
+                            @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+                    })
+            }
+    )
+    Response changeLeds(@PathParam("deviceId") String deviceId,
+                          @QueryParam("value") String state,
                           @Context HttpServletResponse response);
 
     /**
