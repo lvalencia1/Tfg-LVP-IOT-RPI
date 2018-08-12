@@ -5,6 +5,40 @@
     "downloadAgentUri": "tempsensor/device/download",
     "scopes": [
       "perm:tempsensor:enroll"
-    ]
+    ],
+       "features":{
+	       "change-time": {
+          "icon": "fw-settings"
+	       },
+	       "change-leds": {
+          "icon": "fw-settings"
+	       },
+	       "send-command": {
+           "icon": "fw-message",
+		       "formParams": [
+			       {
+				       "type": "radio",
+				       "id": "cmd_reboot",
+				       "label": "Reiniciar la Raspberry [Tiempo en Segundos]",
+				       "name": "orden",
+				       "value":"reboot"
+			       },
+             {
+               "type": "radio",
+               "id": "cmd_custom",
+               "label": "Permite mandarle comandos bash [Comando][Parametros]",
+               "name": "orden",
+               "value":"bash"
+             },
+             {
+               "type": "radio",
+               "id": "cmd_shutdown",
+               "label": "Apagar la Raspberry [Tiempo en Segundos]",
+               "name": "orden",
+               "value":"shutdown"
+             }
+		       ]
+     	       }
+       }
   }
 }

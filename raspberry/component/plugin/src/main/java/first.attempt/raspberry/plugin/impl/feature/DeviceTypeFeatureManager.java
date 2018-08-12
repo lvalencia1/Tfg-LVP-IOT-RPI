@@ -39,20 +39,36 @@ public class DeviceTypeFeatureManager implements FeatureManager {
     private static final String PATH_PARAMS = "pathParams";
     private static final String QUERY_PARAMS = "queryParams";
     private static final String FORM_PARAMS = "formParams";
-    private static Feature feature = new Feature();
-    private static int featureCount = 0;
+    private static int featureCount = 1;
     //Lista de las features que va a tener
     private static List<Feature> features = new ArrayList<Feature>();
 
     public DeviceTypeFeatureManager() {
-	Feature deviceFeature =	createFeature("change-status","state","Matriz statis: on/off","Enciende/Apaga la matriz de leds segun on/off");
+        /*
+        * Hemos modificado el constructor método para que solamente cree las
+        * operaciones al llamar a la función que hemos creado para que lo
+        * gestione, llamada createFeature, tenemos que tener en cuenta que las
+        * operaciones deben estar definidas y configuradas (como los iconos) en
+        * type-view/private/config.json
+        */
+	Feature deviceFeature =	createFeature("change-time","tiempo",
+  "Cambiar Tiempo del Sensor","Cambia el tiempo de muestreo del sensor de temperatura");
 	try {
 		addFeature(deviceFeature);
 	}catch (DeviceManagementException e) {
 		e.printStackTrace();
 	}
-	deviceFeature =	createFeature("change-leds","value","Matriz leds: on/off","Enciende/Apaga la matriz de leds segun on/off");
+	deviceFeature =	createFeature("change-leds","estado","Matriz leds: on/off",
+  "Enciende/Apaga la matriz de leds, acepta solo las opciones on y off");
 	try {
+		addFeature(deviceFeature);
+	}catch (DeviceManagementException e) {
+		e.printStackTrace();
+	}
+	deviceFeature =	createFeature("send-command","parametros","Mandar Orden",
+  "Manda una orden de las listadas a la raspberry");
+	try {
+	//deviceFeature = getFeature("buzz");
 		addFeature(deviceFeature);
 	}catch (DeviceManagementException e) {
 		e.printStackTrace();
@@ -60,7 +76,8 @@ public class DeviceTypeFeatureManager implements FeatureManager {
 
     }
     //TODO: Hay que hacer que en vez de string, acepte una lista de strings
-    private Feature createFeature(String feature, String params, String name, String description)
+    private Feature createFeature(String feature, String queryParam,
+    String name, String description)
     {
 	Feature newOperation = new Feature();
 	Map<String, Object> apiParams = new HashMap<>();
@@ -77,20 +94,21 @@ public class DeviceTypeFeatureManager implements FeatureManager {
         apiParams.put(URI, "/tempsensor/device/{deviceId}/" + feature);
         pathParams.add("deviceId");
         apiParams.put(PATH_PARAMS, pathParams);
-        queryParams.add(params);
+        // Si existe queryParam suministrado a la función, lo añadimos.
+        if(queryParam != null)
+          queryParams.add(queryParam);
         apiParams.put(QUERY_PARAMS, queryParams);
         apiParams.put(FORM_PARAMS, formParams);
-        apiParams.put("icon","fw-dial-up");
         metadataEntry.setId(featureCount);
         metadataEntry.setValue(apiParams);
         metadataEntries.add(metadataEntry);
-	featureCount++;
+	      featureCount++; //Aumentamos el contador de featureCount, para los Id
         newOperation.setMetadataEntries(metadataEntries);
 	return newOperation;
     }
     @Override
     public boolean addFeature(Feature feature) throws DeviceManagementException {
-	features.add(feature);
+	     features.add(feature);
         return true;
     }
 
@@ -98,22 +116,38 @@ public class DeviceTypeFeatureManager implements FeatureManager {
     public boolean addFeatures(List<Feature> features) throws DeviceManagementException {
         return false;
     }
-
+    //TODO: Make it work
     @Override
     public Feature getFeature(String name) throws DeviceManagementException {
-        return feature;
+      Feature tmpFeature = null;
+      //iteramos hasta encontrar el index del que debemos borrar
+      for (int i=0; i < features.size(); i++){
+        Feature row = (Feature) features.get(i);
+        if (row.getName().equals(name))
+          tmpFeature = row;
+      }
+        return tmpFeature;
     }
-
+    //Ahora no devuelve una feature, devuelve la lista de features existente
     @Override
     public List<Feature> getFeatures() throws DeviceManagementException {
 //        List<Feature> features = new ArrayList<>();
 //        features.add(feature);
         return features;
     }
-
+    //TODO: ¿Funciona?
     @Override
     public boolean removeFeature(String name) throws DeviceManagementException {
-        return false;
+      boolean removeStatus = false;
+      for (int i=0; i < features.size(); i++){
+        Feature row = (Feature) features.get(i);
+        if (row.getName().equals(name))
+        {
+          features.remove(i);
+          removeStatus = true;
+        }
+      }
+        return removeStatus;
     }
 
     @Override

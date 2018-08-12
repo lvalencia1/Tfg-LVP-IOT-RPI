@@ -41,7 +41,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
+import javax.ws.rs.FormParam;
 
 /**
  * This is the API which is used to control and manage device type functionality.
@@ -79,12 +79,12 @@ public interface DeviceTypeService {
      * @param deviceId unique identifier for given device type instance
      * @param state    change status of sensor: on/off
      */
-    @Path("device/{deviceId}/change-status")
+    @Path("device/{deviceId}/change-time")
     @POST
     @ApiOperation(
             consumes = MediaType.APPLICATION_JSON,
             httpMethod = "POST",
-            value = "Switch Status",
+            value = "Cambia el tiempo del sensor",
             notes = "",
             response = Response.class,
             tags = DeviceTypeConstants.DEVICE_TYPE ,
@@ -94,15 +94,15 @@ public interface DeviceTypeService {
                     })
             }
     )
-    Response changeStatus(@PathParam("deviceId") String deviceId,
-                          @QueryParam("status") String state,
+    Response changeTime(@PathParam("deviceId") String deviceId,
+                          @QueryParam("tiempo") int state,
                           @Context HttpServletResponse response);
     @Path("device/{deviceId}/change-leds")
     @POST
     @ApiOperation(
             consumes = MediaType.APPLICATION_JSON,
             httpMethod = "POST",
-            value = "Switch leds",
+            value = "Enciende/Apaga la matriz de leds",
             notes = "",
             response = Response.class,
             tags = DeviceTypeConstants.DEVICE_TYPE ,
@@ -113,8 +113,26 @@ public interface DeviceTypeService {
             }
     )
     Response changeLeds(@PathParam("deviceId") String deviceId,
-                          @QueryParam("value") String state,
+                          @QueryParam("estado") String state,
                           @Context HttpServletResponse response);
+
+    @POST
+    @Path("device/{deviceId}/send-command")
+    @ApiOperation(
+    consumes = MediaType.APPLICATION_JSON,
+    httpMethod = "POST",
+    value = "Manda una orden a la Raspberry ",
+    notes = "",
+    response = Response.class,
+    tags = DeviceTypeConstants.DEVICE_TYPE,
+    extensions = {
+      @Extension(properties = {
+                 @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+               })
+             }
+             )
+    Response sendCommand(@PathParam("deviceId") String deviceId,  @FormParam("orden") String state,
+    @QueryParam("parametros") String parameters, @Context HttpServletResponse response);
 
     /**
      * Retrieve Sensor data for the given time period.

@@ -52,8 +52,10 @@ import org.wso2.carbon.device.mgt.common.group.mgt.DeviceGroupConstants;
 import org.wso2.carbon.device.mgt.common.operation.mgt.Operation;
 import org.wso2.carbon.device.mgt.common.operation.mgt.OperationManagementException;
 import org.wso2.carbon.device.mgt.core.operation.mgt.CommandOperation;
+import org.wso2.carbon.device.mgt.core.operation.mgt.ConfigOperation;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -85,7 +87,7 @@ import java.util.Properties;
 *import javax.json.JsonWriter;
 */
 /*
- * For Json parsing 
+ * For Json parsing
  */
 import com.google.gson.*;
 /**
@@ -119,51 +121,50 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 
     /**
      * @param deviceId unique identifier for given device type instance
-     * @param state    change status of sensor: on/off
+     * @param time    new value for the device to send sensor records
      */
-    @Path("device/{deviceId}/change-status")
+    @Path("device/{deviceId}/change-time")
     @POST
-    public Response changeStatus(@PathParam("deviceId") String deviceId,
-                                 @QueryParam("state") String state,
+    public Response changeTime(@PathParam("deviceId") String deviceId,
+                                 @QueryParam("tiempo") int time,
                                  @Context HttpServletResponse response) {//throws Exception {
         try {
-		//Vemos si está autorizado el dispositivo
+		        //Vemos si está autorizado el dispositivo
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
                     DeviceTypeConstants.DEVICE_TYPE))) {
                 return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
             }
-	    //Pasamos a mayusculas lo introducido en la casilla
-            String sensorState = state.toUpperCase();
-	    //Vemos el contenido de la respuesta
-            if (!sensorState.equals(DeviceTypeConstants.STATE_ON) && !sensorState.equals(
-                    DeviceTypeConstants.STATE_OFF)) {
-                log.error("The requested state change should be either - 'ON' or 'OFF'");
-                return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-            }
+	           //Vemos si el string introducido por el usuario está vacío o no.
+             if( time < 0 || time == 0 ) {
+               log.error("The requested time value for the sensor retrieving must be >0");
+               return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
+             }
+            //Configuremos la operación para mandarla
             Map<String, String> dynamicProperties = new HashMap<>();
             String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
                     + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
             dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
-	    //Almacenamos la operación para mandarla a 
+	          //Almacenamos la operación para mandarla a
             Operation commandOp = new CommandOperation();
-            commandOp.setCode("change-status");
+            commandOp.setCode("change-time");
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
-            commandOp.setPayLoad(state);
-	    //Método propio que almacena los comandos
-	try {
-		JsonUtils.saveOperation("change-status",deviceId,state);
-	}catch(Exception e) {
-		    System.out.println("ERROR" + e.toString());
-	}
+            commandOp.setPayLoad(Integer.toString(time));
+	          //Método propio que almacena los comandos
+            try {
+              JsonUtils.saveOperation("Cambiar Tiempo del Sensor",deviceId,"Tiempo introducido:" + Integer.toString(time));
+            }catch(Exception e) {
+              System.out.println("ERROR" + e.toString());
+            }
+            //Configuramos MQTT
             Properties props = new Properties();
             props.setProperty("mqtt.adapter.topic", publishTopic);
             commandOp.setProperties(props);
 
             List<DeviceIdentifier> deviceIdentifiers = new ArrayList<>();
             deviceIdentifiers.add(new DeviceIdentifier(deviceId, DeviceTypeConstants.DEVICE_TYPE));
-	    //Aqui metemos la operación a la lista de operaciones para ser usadas, a través de git hub podemos
-	    //ver las distintas clases involucradas en https://github.com/wso2/carbon-device-mgt/
+	          //Aqui metemos la operación a la lista de operaciones para ser usadas, a través de git hub podemos
+	          //ver las distintas clases involucradas en https://github.com/wso2/carbon-device-mgt/
             APIUtil.getDeviceManagementService().addOperation(DeviceTypeConstants.DEVICE_TYPE, commandOp,
                     deviceIdentifiers);
             return Response.ok().build();
@@ -171,11 +172,11 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             log.error(e.getErrorMessage(), e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         } catch (OperationManagementException e) {
-            String msg = "Error occurred while executing command operation upon ringing the buzzer";
+            String msg = "Error occurred while executing command operation upon changing the sensor time";
             log.error(msg, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         } catch (InvalidDeviceException e) {
-            String msg = "Error occurred while executing command operation to send keywords";
+            String msg = "Error occurred while executing command operation upon changing the sensor time";
             log.error(msg, e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -188,7 +189,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     @Path("device/{deviceId}/change-leds")
     @POST
     public Response changeLeds(@PathParam("deviceId") String deviceId,
-                                 @QueryParam("value") String state,
+                                 @QueryParam("estado") String state,
                                  @Context HttpServletResponse response) {//throws Exception {
         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
@@ -210,11 +211,11 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
             commandOp.setPayLoad(state);
-	try {
-		JsonUtils.saveOperation("change-leds",deviceId,"");
-	}catch(Exception e) {
-		    System.out.println("ERROR" + e.toString());
-	}
+	          try {
+              JsonUtils.saveOperation("Matriz Leds on/off",deviceId,"Valor introducido:"+state);
+	          }catch(Exception e) {
+              System.out.println("ERROR" + e.toString());
+            }
             Properties props = new Properties();
             props.setProperty("mqtt.adapter.topic", publishTopic);
             commandOp.setProperties(props);
@@ -238,6 +239,130 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         }
     }
 
+    @POST
+    @Path("device/{deviceId}/send-command")
+    public Response sendCommand(@PathParam("deviceId") String deviceId,  @FormParam("orden") String command,
+    @QueryParam("parametros") String parameters, @Context HttpServletResponse response) {
+      String[] stringList = parameters.split("\\s+");
+      int stringCount = stringList.length;
+          log.error("STRING COUNT: "+Integer.toString(stringCount));
+      //Vemos si la variable está vacía o no, no debería estar vacía.
+      if (command == null || command.isEmpty()) {
+		    log.error("The \"orden\" field is not defined for operations");
+		    return Response.status(Response.Status.BAD_REQUEST).build();
+	    }
+      //Veamos que el campo parametros sea válido segun que orden se mande
+      switch(command){
+        case "reboot":
+        // Vemos que no se haya metido mas de un número y además que sea un numero y no una cadena
+        if ( stringCount > 1){
+          log.error("The parameter field, if used, should contain only one value if the command is to reboot");
+          return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        else if ( stringCount == 1) {
+          boolean isValidInteger = false;
+          try{
+            int time = Integer.parseInt(parameters);
+            isValidInteger = true;
+            if( !isValidInteger || time < 0 )
+            {
+              log.error("The parameter field, if used, should contain only an integer higher than 0, if the command is to reboot");
+              return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+          }
+          catch (NumberFormatException ex)
+          {  ex.printStackTrace();
+            log.error("The parameter field is not a number, when trying to execute the reboot operation");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+          }
+        }
+          break;
+        case "shutdown":
+          // Vemos que no se haya metido mas de un número y además que sea un numero y no una cadena
+          if ( stringCount > 1){
+            log.error("The parameter field, if used, should contain only one value if the command is to shutdown");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+          }
+          else if ( stringCount == 1) {
+            boolean isValidInteger = false;
+          //Vamos a comprobar si hemos metido un numero o no TODO: Falta ver que solo si se mete
+            try{
+              int time = Integer.parseInt(parameters);
+              isValidInteger = true;
+              if( !isValidInteger || time < 0 )
+              {
+                log.error("The parameter field, if used, should contain only an integer higher than 0, if the command is to shutdown");
+                return Response.status(Response.Status.BAD_REQUEST).build();
+              }
+            }
+            catch (NumberFormatException ex)
+            {  ex.printStackTrace();
+              log.error("The parameter field is not a number, when trying to execute the shutdown operation");
+              return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+          }
+          break;
+        case "bash":
+          if( parameters == null || stringCount < 1 || parameters.isEmpty()){
+            log.error("The parameter field should contain at least the bash command");
+    		    return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+          break;
+        default:
+          log.error("The requested command doesn't have a valid format");
+		      return Response.status(Response.Status.BAD_REQUEST).build();
+      }
+      /*
+	    if (!switchToState.equals(DeviceTypeConstants.STATE_ON) && !switchToState.equals(
+				    DeviceTypeConstants.STATE_OFF)) {
+		    log.error("The requested state change shoud be either - 'ON' or 'OFF'");
+		    return Response.status(Response.Status.BAD_REQUEST).build();
+      }*/
+	    try {
+		    if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(
+					    new DeviceIdentifier(deviceId, DeviceTypeConstants.DEVICE_TYPE),
+					    DeviceGroupConstants.Permissions.DEFAULT_OPERATOR_PERMISSIONS)) {
+			    return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
+					    }
+		    String resource = command;
+		    String actualMessage = resource + ":" + parameters;
+		    String publishTopic = APIUtil.getTenantDomainOftheUser() + "/"
+			    + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId;
+
+		    ConfigOperation commandOp = new ConfigOperation();
+		    commandOp.setCode("send-command");
+		    commandOp.setEnabled(true);
+		    commandOp.setPayLoad(actualMessage);
+
+        try {
+          JsonUtils.saveOperation("Mandar Orden",deviceId,"Comando:"+command+"\t Parametros:"+parameters);
+        }catch(Exception e) {
+          System.out.println("ERROR" + e.toString());
+        }
+
+		    Properties props = new Properties();
+            		props.setProperty("mqtt.adapter.topic", publishTopic);
+		    commandOp.setProperties(props);
+		    List<DeviceIdentifier> deviceIdentifiers = new ArrayList<>();
+		    deviceIdentifiers.add(new DeviceIdentifier(deviceId,DeviceTypeConstants.DEVICE_TYPE));
+		    APIUtil.getDeviceManagementService().addOperation(DeviceTypeConstants.DEVICE_TYPE, commandOp,
+				    deviceIdentifiers);
+		    return Response.ok().build();
+	    }  catch (InvalidDeviceException e) {
+		    String msg = "Error occurred while executing command operation to send keywords";
+		    log.error(msg, e);
+		    return Response.status(Response.Status.BAD_REQUEST).build();
+	    } catch (DeviceAccessAuthorizationException e) {
+		    log.error(e.getErrorMessage(), e);
+		    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	    } catch (OperationManagementException e) {
+		    String msg = "Error occurred while executing command operation upon ringing the buzzer";
+		    log.error(msg, e);
+		    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	    }
+    }
+
+
     /**
      * Retrieve Sensor data for the given time period
      *
@@ -250,7 +375,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     @GET
     @Consumes("application/json")
     @Produces("application/json")
-	
+
     //Sospecho que es invocado cuando lo envía el agente
     public Response getSensorStats(@PathParam("deviceId") String deviceId, @QueryParam("from") long from,
                                    @QueryParam("to") long to, @QueryParam("sensorType") String sensorType) {
