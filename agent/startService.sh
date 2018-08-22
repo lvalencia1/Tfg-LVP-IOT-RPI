@@ -16,6 +16,8 @@
 #* specific language governing permissions and limitations
 #* under the License.
 #**/
+#TODO: Añadir log, que el tiempo sea por defecto y se pueda modificar (para
+#      organizar un crontab y que se autoejecute al iniciar el equipo)
 #"""
 
 #!/bin/bash
@@ -34,20 +36,23 @@ for f in ./deviceConfig.properties; do
     ## If not, f here will be exactly the pattern above
     ## and the exists test will evaluate to false.
     if [ -e "$f" ]; then
-    	echo "Configuration file found......"
+    	echo "Configuration field found $f......"
     else
+      exit;
     	echo "'deviceConfig.properties' file does not exist in current path. \nExiting installation...";
-    	exit;
     fi
-    ## This is all we needed to know, so we can break after the first iteration
+    ## We can exit the loop, there is a file and it is not empty.
     break
 done
 
-#install mqtt dependency
-git clone https://github.com/eclipse/paho.mqtt.python.git
-cd ./paho.mqtt.python
-sudo python setup.py install
-
+## We are going to check if the paho mqtt python dir exists.
+PAHO_DIR="./paho.mqtt.python"
+if [ ! -d $PAHO_DIR ]; then
+  #install mqtt dependency if the paho directory does not exists.
+  git clone https://github.com/eclipse/paho.mqtt.python.git
+  cd ./paho.mqtt.python
+  sudo python setup.py install
+fi
 cd $currentDir
 
 #while true; do
@@ -62,6 +67,7 @@ fi
 #done
 cp deviceConfig.properties ./src
 chmod +x ./src/agent.py
+#We are setting the value for the sensor value pushes as an argument
 ./src/agent.py -i $input
 
 if [ $? -ne 0 ]; then
