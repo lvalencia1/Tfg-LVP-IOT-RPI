@@ -149,7 +149,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setCode("change-time");
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
-            commandOp.setPayLoad(Integer.toString(time));
+            commandOp.setPayLoad("timeRequest:"+Integer.toString(time));
 	          //Método propio que almacena los comandos
             try {
               JsonUtils.saveOperation("Cambiar Tiempo del Sensor",deviceId,"Tiempo introducido:" + Integer.toString(time));
@@ -210,7 +210,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setCode("change-leds");
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
-            commandOp.setPayLoad(state);
+            commandOp.setPayLoad("ledsRequest:"+state);
 	          try {
               JsonUtils.saveOperation("Matriz Leds on/off",deviceId,"Valor introducido:"+state);
 	          }catch(Exception e) {
@@ -324,13 +324,17 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 					    DeviceGroupConstants.Permissions.DEFAULT_OPERATOR_PERMISSIONS)) {
 			    return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
 					    }
-		    String resource = command;
-		    String actualMessage = resource + ":" + parameters;
-		    String publishTopic = APIUtil.getTenantDomainOftheUser() + "/"
-			    + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId;
+
+          Map<String, String> dynamicProperties = new HashMap<>();
+		      String resource = command;
+		      String actualMessage = resource + ":" + parameters;
+          String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
+                  + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+          dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 
 		    ConfigOperation commandOp = new ConfigOperation();
 		    commandOp.setCode("send-command");
+        commandOp.setType(Operation.Type.COMMAND);
 		    commandOp.setEnabled(true);
 		    commandOp.setPayLoad(actualMessage);
 
