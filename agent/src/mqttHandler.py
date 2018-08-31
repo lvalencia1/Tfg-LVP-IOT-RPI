@@ -92,7 +92,6 @@ def main():
     mqttClient.username_pw_set(iotUtils.AUTH_TOKEN, password="")
     mqttClient.on_connect = on_connect
     mqttClient.on_message = on_message
-
     while True:
         try:
             mqttClient.connect(MQTT_IP, MQTT_PORT, 60)

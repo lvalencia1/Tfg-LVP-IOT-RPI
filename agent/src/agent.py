@@ -175,6 +175,8 @@ def main():
     ListenMQTTThread()
     while True:
         try:
+            iotUtils.PUSH_INTERVAL = iotUtils.getPushValue()
+            PUSH_INTERVAL = iotUtils.PUSH_INTERVAL
             currentTime = calendar.timegm(time.gmtime())
             sensorValue = getSensorValue()
             PUSH_DATA_TO_STREAM_1 = iotUtils.SENSOR_STATS_SENSOR1.format(currentTime, sensorValue)
@@ -184,7 +186,7 @@ def main():
             print '~~~~~~~~~~~~~~~~~~~~~~~~ Publishing Device-Data ~~~~~~~~~~~~~~~~~~~~~~~~~'
             print ('PUBLISHED DATA STREAM 1: ' + PUSH_DATA_TO_STREAM_1)
             print ('PUBLISHED DATA STREAM 2: ' + PUSH_DATA_TO_STREAM_2)
-
+            print ('TIME TO SLEEP: ' + str(PUSH_INTERVAL))
             time.sleep(PUSH_INTERVAL)
         except (KeyboardInterrupt, Exception) as e:
             print "agentStats: Exception in AgentThread (either KeyboardInterrupt or Other)"

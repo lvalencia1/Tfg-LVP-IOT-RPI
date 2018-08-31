@@ -55,20 +55,24 @@ if [ ! -d $PAHO_DIR ]; then
 fi
 cd $currentDir
 
+# Refresh the Auth Token
+REFRESH_TOKEN=`cat ./deviceConfig.properties | grep refresh| awk -F "=" '{print $2}'`
+curl -k -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN&scope=device_type_tempsensor device_1hbm2l0d5u790" -H "Authorization: Basic Zk9zbmdXdHBnZXVOVWhpRjUzb29FNzJKM2FnYTpCY0pWOGMwSTkzZ1BmSTFQdE1Wd3F0a3FOc0Vh" -H "Content-Type: application/x-www-form-urlencoded" https://localhost:9443/oauth2/token
+
 #while true; do
-read -p "Whats the time-interval (in seconds) between successive Data-Pushes to the WSO2-DC (ex: '60' indicates 1 minute) > " input
-if [ $input -eq $input 2>/dev/null ]
-then
-   echo "Setting data-push interval to $input seconds."
-else
-   echo "Input needs to be an integer indicating the number seconds between successive data-pushes. 15 will be taken as default value"
-   $input=15
-fi
+#read -p "Whats the time-interval (in seconds) between successive Data-Pushes to the WSO2-DC (ex: '60' indicates 1 minute) > " input
+#if [ $input -eq $input 2>/dev/null ]
+#then
+#   echo "Setting data-push interval to $input seconds."
+#else
+#   echo "Input needs to be an integer indicating the number seconds between successive data-pushes. 15 will be taken as default value"
+#   $input=15
+#fi
 #done
 cp deviceConfig.properties ./src
 chmod +x ./src/agent.py
 #We are setting the value for the sensor value pushes as an argument
-./src/agent.py -i $input
+./src/agent.py #-i $input
 
 if [ $? -ne 0 ]; then
 	echo "Could not start the service..."

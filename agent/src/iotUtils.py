@@ -39,6 +39,7 @@ DEVICE_TYPE = configParser.get('Device-Configurations', 'device-type')
 SERVER_NAME = configParser.get('Device-Configurations', 'server-name')
 MQTT_EP = configParser.get('Device-Configurations', 'mqtt-ep')
 AUTH_TOKEN = configParser.get('Device-Configurations', 'auth-token')
+PUSH_INTERVAL = float(configParser.get('Device-Configurations','push-interval'))
 CONTROLLER_CONTEXT = configParser.get('Device-Configurations', 'controller-context')
 DEVICE_INFO = '{"owner":"' + DEVICE_OWNER + '","deviceId":"' + DEVICE_ID + '",'
 HTTPS_EP = configParser.get('Device-Configurations', 'https-ep')
@@ -61,6 +62,21 @@ def isEmpty(string):
     # string is None OR string is empty or blank
     return True
 
+
+def getPushValue():
+    configParserAux = ConfigParser.RawConfigParser()
+    configFilePathAux = os.path.join(os.path.dirname(__file__), './deviceConfig.properties')
+    configParserAux.read(configFilePathAux)
+    PUSH_INTERVAL = float(configParser.get('Device-Configurations','push-interval'))
+    print("GET PUSH VALUE: "+ str(PUSH_INTERVAL))
+    return PUSH_INTERVAL
+
+
+def setPushValue ( value ):
+    cfgfile = open(os.path.join(os.path.dirname(__file__), './deviceConfig.properties'),'w')
+    configParser.set('Device-Configurations','push-interval',str(value))
+    configParser.write(cfgfile)
+    return True
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       This method generate a random sensor value between 15 and 40
