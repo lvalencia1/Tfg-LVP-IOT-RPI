@@ -24,6 +24,7 @@ import paho.mqtt.client as mqtt
 import time
 import logging
 import iotUtils
+import os
 
 global mqttClient
 mqttClient = mqtt.Client(client_id='tempsensor_client')
@@ -47,22 +48,31 @@ def on_connect(mqttClient, userdata, flags, rc):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def on_message(mqttClient, userdata, msg):
     print("MQTT_LISTENER: " + msg.topic + " " + str(msg.payload))
+    #Let's split the message content for further operations
     method,parameter=str(msg.payload).split(":",1);
 
+    #What kind of message is it and doing what it should
     if method == "ledsRequest" :
         print("Received a request to turn ON/OFF the led matrix")
+        #Matrix operations
     elif  method == 'timeRequest':
         print("Received a request to change the sensor push time")
         iotUtils.PUSH_INTERVAL = iotUtils.setPushValue(parameter)
+
     elif  method == "reboot" :
         print("Received a request to reboot the device")
+        os.system("sleep "+parameter)
+        os.system("reboot")
 
     elif  method == "shutdown" :
         print("Received a request to shutdown the device")
+        os.system("sleep "+parameter)
+        os.system("shutdown now")
 
     elif  method == "bash":
         print("Received a bash command")
-
+        os.system(parameter)
+        #TODO: Filter which commands?
     else:
         print("Unknown message received")
 
