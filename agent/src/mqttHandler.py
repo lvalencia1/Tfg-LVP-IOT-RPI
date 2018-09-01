@@ -50,22 +50,22 @@ def on_message(mqttClient, userdata, msg):
     method,parameter=str(msg.payload).split(":",1);
 
     if method == "ledsRequest" :
-        logging.info("[INFO] Received a request to turn ON/OFF the led matrix")
+        logging.info("Received a request to turn ON/OFF the led matrix")
 
     elif  method == "timeRequest":
-        logging.info("[INFO] Received a request to change the sensor push time")
+        logging.info("Received a request to change the sensor push time")
 
     elif  method == "reboot" :
-        logging.info("[INFO] Received a request to reboot the device")
+        logging.info("Received a request to reboot the device")
 
     elif  method == "shutdown" :
-        logging.info("[INFO] Received a request to shutdown the device")
+        logging.info("Received a request to shutdown the device")
 
     elif  method == "bash":
-        logging.info("[INFO] Received a bash command")
+        logging.info("Received a bash command")
 
     else:
-        logging.warning("[WARN] Unknown message received")
+        logging.warning("Unknown message received")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
