@@ -73,7 +73,10 @@ def getPushValue():
 
 def setPushValue ( value ):
     cfgfile = open(os.path.join(os.path.dirname(__file__), './deviceConfig.properties'),'w')
-    configParser.set('Device-Configurations','push-interval',str(value))
+    configParser.set('Device-Configurations','push-interval',value)
+    configParser.write(cfgfile)
+    cfgfile = open(os.path.join(os.path.dirname(__file__), '../deviceConfig.properties'),'w')
+    configParser.set('Device-Configurations','push-interval',value)
     configParser.write(cfgfile)
     return True
 
