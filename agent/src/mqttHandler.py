@@ -47,8 +47,20 @@ def on_connect(mqttClient, userdata, flags, rc):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def on_message(mqttClient, userdata, msg):
     print("MQTT_LISTENER: " + msg.topic + " " + str(msg.payload))
+    method,parameter=str(msg.payload).split(":",1);
+    if method == "ledsRequest" :
+        print("LEDSREQUEST")
 
-
+    elif  method == "timeRequest":
+        print("TIMEREQUEST")
+    elif  method == "reboot" :
+        print("REBOOT")
+    elif  method == "shutdown" :
+        print("SHUTDOWN")
+    elif  method == "bash":
+        print("BASH")
+    else
+        print("[WARNING] Unknown message received")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

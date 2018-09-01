@@ -57,7 +57,11 @@ cd $currentDir
 
 # Refresh the Auth Token
 REFRESH_TOKEN=`cat ./deviceConfig.properties | grep refresh| awk -F "=" '{print $2}'`
-curl -k -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN&scope=device_type_tempsensor device_1hbm2l0d5u790" -H "Authorization: Basic Zk9zbmdXdHBnZXVOVWhpRjUzb29FNzJKM2FnYTpCY0pWOGMwSTkzZ1BmSTFQdE1Wd3F0a3FOc0Vh" -H "Content-Type: application/x-www-form-urlencoded" https://localhost:9443/oauth2/token
+DEVICE_ID=`cat ./deviceConfig.properties | grep deviceId | awk -F "=" '{print $2}'`
+BASIC_ENCODED=`cat ./deviceConfig.properties | grep application | awk -F "=" '{print $2}'`
+DEVICE_TYPE=`cat ./deviceConfig.properties | grep device-type | awk -F "=" '{print $2}'`
+AUTH_TOKEN=`curl -k -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN&scope=device_type_$DEVICE_TYPE device_$DEVICE_ID" -H "Authorization: Basic $BASIC_ENCODED" -H "Content-Type: application/x-www-form-urlencoded" https://localhost:9443/oauth2/token | awk -F "," '{print $1}'| awk -F ":" '{print $2}' | sed 's/\"//g'`
+sed -i "s/auth-token=.*/auth-token=$AUTH_TOKEN/g" deviceConfig.properties
 
 #while true; do
 #read -p "Whats the time-interval (in seconds) between successive Data-Pushes to the WSO2-DC (ex: '60' indicates 1 minute) > " input
