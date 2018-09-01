@@ -36,10 +36,14 @@ for f in ./deviceConfig.properties; do
     ## If not, f here will be exactly the pattern above
     ## and the exists test will evaluate to false.
     if [ -e "$f" ]; then
-    	echo "[INFO] Configuration field found $f"
+      CURRENT_DAY=`date +"%Y-%m-%d"`
+      CURRENT_TIME=`date +"%H:%M:%S"`
+    	echo "$CURRENT_DAY $CURRENT_TIME,000 INFO     Configuration field found $f" >> $LOG_FILE
     else
+      CURRENT_DAY=`date +"%Y-%m-%d"`
+      CURRENT_TIME=`date +"%H:%M:%S"`
+      echo "$CURRENT_DAY $CURRENT_TIME,000 ERROR     'deviceConfig.properties' file does not exist in current path. Exiting installation" >> $LOG_FILE;
       exit;
-    	echo "[ERROR] 'deviceConfig.properties' file does not exist in current path. Exiting installation" >> $LOG_FILE;
     fi
     ## We can exit the loop, there is a file and it is not empty.
     break
@@ -48,7 +52,9 @@ done
 ## We are going to check if the paho mqtt python dir exists.
 PAHO_DIR="./paho.mqtt.python"
 if [ ! -d $PAHO_DIR ]; then
-  echo "[INFO] Cloning into directory the MQTT paho git project" >> $LOG_FILE
+  CURRENT_DAY=`date +"%Y-%m-%d"`
+  CURRENT_TIME=`date +"%H:%M:%S"`
+  echo "$CURRENT_DAY $CURRENT_TIME,000 INFO     Cloning into directory the MQTT paho git project" >> $LOG_FILE
   #install mqtt dependency if the paho directory does not exists.
   git clone https://github.com/eclipse/paho.mqtt.python.git
   cd ./paho.mqtt.python
@@ -57,12 +63,14 @@ fi
 cd $currentDir
 
 # Refresh the Auth Token
-echo "[INFO] Refreshing the authorization token" >> $LOG_FILE
+CURRENT_DAY=`date +"%Y-%m-%d"`
+CURRENT_TIME=`date +"%H:%M:%S"`
+echo "$CURRENT_DAY $CURRENT_TIME,000 INFO     Refreshing the authorization token" >> $LOG_FILE
 REFRESH_TOKEN=`cat ./deviceConfig.properties | grep refresh| awk -F "=" '{print $2}'`
 DEVICE_ID=`cat ./deviceConfig.properties | grep deviceId | awk -F "=" '{print $2}'`
 BASIC_ENCODED=`cat ./deviceConfig.properties | grep application | awk -F "=" '{print $2}'`
 DEVICE_TYPE=`cat ./deviceConfig.properties | grep device-type | awk -F "=" '{print $2}'`
-AUTH_TOKEN=`curl -k -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN&scope=device_type_$DEVICE_TYPE device_$DEVICE_ID" -H "Authorization: Basic $BASIC_ENCODED" -H "Content-Type: application/x-www-form-urlencoded" https://localhost:9443/oauth2/token | awk -F "," '{print $1}'| awk -F ":" '{print $2}' | sed 's/\"//g'`
+AUTH_TOKEN=`curl --silent -k -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN&scope=device_type_$DEVICE_TYPE device_$DEVICE_ID" -H "Authorization: Basic $BASIC_ENCODED" -H "Content-Type: application/x-www-form-urlencoded" https://localhost:9443/oauth2/token | awk -F "," '{print $1}'| awk -F ":" '{print $2}' | sed 's/\"//g'`
 sed -i "s/auth-token=.*/auth-token=$AUTH_TOKEN/g" deviceConfig.properties
 
 #while true; do
@@ -81,7 +89,9 @@ chmod +x ./src/agent.py
 ./src/agent.py  --log $LOG_FILE
 
 if [ $? -ne 0 ]; then
-	echo "[ERROR] Could not start the service" >> $LOG_FILE
+  CURRENT_DAY=`date +"%Y-%m-%d"`
+  CURRENT_TIME=`date +"%H:%M:%S"`
+	echo "$CURRENT_DAY $CURRENT_TIME,000 ERROR     Could not start the service" >> $LOG_FILE
 	exit;
 fi
 

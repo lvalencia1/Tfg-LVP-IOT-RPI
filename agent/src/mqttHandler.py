@@ -54,7 +54,7 @@ def on_message(mqttClient, userdata, msg):
 
     elif  method == "timeRequest":
         logging.info("[INFO] Received a request to change the sensor push time")
-        
+
     elif  method == "reboot" :
         logging.info("[INFO] Received a request to reboot the device")
 
@@ -64,7 +64,7 @@ def on_message(mqttClient, userdata, msg):
     elif  method == "bash":
         logging.info("[INFO] Received a bash command")
 
-    else
+    else:
         logging.warning("[WARN] Unknown message received")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
