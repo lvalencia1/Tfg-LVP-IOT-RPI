@@ -55,7 +55,7 @@ PUSH_INTERVAL = 2  # time interval between successive data pushes in seconds
 #       Logger defaults
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LOG_FILENAME = "agent.log"
-logging_enabled = False
+logging_enabled = True
 LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -186,7 +186,7 @@ def main():
             print '~~~~~~~~~~~~~~~~~~~~~~~~ Publishing Device-Data ~~~~~~~~~~~~~~~~~~~~~~~~~'
             print ('PUBLISHED DATA STREAM 1: ' + PUSH_DATA_TO_STREAM_1)
             print ('PUBLISHED DATA STREAM 2: ' + PUSH_DATA_TO_STREAM_2)
-            print ('TIME TO SLEEP: ' + str(PUSH_INTERVAL))
+            print '~~~~~~~~~~~~~~~~~~~~~~~~ End of Publishing Data ~~~~~~~~~~~~~~~~~~~~~~~~~'
             time.sleep(PUSH_INTERVAL)
         except (KeyboardInterrupt, Exception) as e:
             print "agentStats: Exception in AgentThread (either KeyboardInterrupt or Other)"

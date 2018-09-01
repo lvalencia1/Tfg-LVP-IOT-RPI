@@ -68,7 +68,6 @@ def getPushValue():
     configFilePathAux = os.path.join(os.path.dirname(__file__), './deviceConfig.properties')
     configParserAux.read(configFilePathAux)
     PUSH_INTERVAL = float(configParser.get('Device-Configurations','push-interval'))
-    print("GET PUSH VALUE: "+ str(PUSH_INTERVAL))
     return PUSH_INTERVAL
 
 

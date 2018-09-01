@@ -30,16 +30,16 @@ echo "|                ....initializing startup-script	              "
 echo "----------------------------------------------------------------"
 
 currentDir=$PWD
-
+LOG_FILE="agent.log"
 for f in ./deviceConfig.properties; do
     ## Check if the glob gets expanded to existing files.
     ## If not, f here will be exactly the pattern above
     ## and the exists test will evaluate to false.
     if [ -e "$f" ]; then
-    	echo "Configuration field found $f......"
+    	echo "[INFO] Configuration field found $f"
     else
       exit;
-    	echo "'deviceConfig.properties' file does not exist in current path. \nExiting installation...";
+    	echo "[ERROR] 'deviceConfig.properties' file does not exist in current path. Exiting installation" >> $LOG_FILE;
     fi
     ## We can exit the loop, there is a file and it is not empty.
     break
@@ -48,6 +48,7 @@ done
 ## We are going to check if the paho mqtt python dir exists.
 PAHO_DIR="./paho.mqtt.python"
 if [ ! -d $PAHO_DIR ]; then
+  echo "[INFO] Cloning into directory the MQTT paho git project" >> $LOG_FILE
   #install mqtt dependency if the paho directory does not exists.
   git clone https://github.com/eclipse/paho.mqtt.python.git
   cd ./paho.mqtt.python
@@ -56,6 +57,7 @@ fi
 cd $currentDir
 
 # Refresh the Auth Token
+echo "[INFO] Refreshing the authorization token" >> $LOG_FILE
 REFRESH_TOKEN=`cat ./deviceConfig.properties | grep refresh| awk -F "=" '{print $2}'`
 DEVICE_ID=`cat ./deviceConfig.properties | grep deviceId | awk -F "=" '{print $2}'`
 BASIC_ENCODED=`cat ./deviceConfig.properties | grep application | awk -F "=" '{print $2}'`
@@ -76,10 +78,10 @@ sed -i "s/auth-token=.*/auth-token=$AUTH_TOKEN/g" deviceConfig.properties
 cp deviceConfig.properties ./src
 chmod +x ./src/agent.py
 #We are setting the value for the sensor value pushes as an argument
-./src/agent.py #-i $input
+./src/agent.py  --log $LOG_FILE
 
 if [ $? -ne 0 ]; then
-	echo "Could not start the service..."
+	echo "[ERROR] Could not start the service" >> $LOG_FILE
 	exit;
 fi
 

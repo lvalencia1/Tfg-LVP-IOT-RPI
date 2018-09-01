@@ -22,7 +22,7 @@
 
 import paho.mqtt.client as mqtt
 import time
-
+import logging
 import iotUtils
 
 global mqttClient
@@ -48,19 +48,25 @@ def on_connect(mqttClient, userdata, flags, rc):
 def on_message(mqttClient, userdata, msg):
     print("MQTT_LISTENER: " + msg.topic + " " + str(msg.payload))
     method,parameter=str(msg.payload).split(":",1);
+
     if method == "ledsRequest" :
-        print("LEDSREQUEST")
+        logging.info("[INFO] Received a request to turn ON/OFF the led matrix")
 
     elif  method == "timeRequest":
-        print("TIMEREQUEST")
+        logging.info("[INFO] Received a request to change the sensor push time")
+        
     elif  method == "reboot" :
-        print("REBOOT")
+        logging.info("[INFO] Received a request to reboot the device")
+
     elif  method == "shutdown" :
-        print("SHUTDOWN")
+        logging.info("[INFO] Received a request to shutdown the device")
+
     elif  method == "bash":
-        print("BASH")
+        logging.info("[INFO] Received a bash command")
+
     else
-        print("[WARNING] Unknown message received")
+        logging.warning("[WARN] Unknown message received")
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,6 +89,8 @@ def sendSensorValue(stream1PlayLoad, stream2PlayLoad):
 #			This method is invoked from Agent.py on a new thread
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def main():
+    logging.basicConfig(filename="../agent.log",level=logging.INFO)
+
     MQTT_ENDPOINT = iotUtils.MQTT_EP.split(":")
     MQTT_IP = MQTT_ENDPOINT[1].replace('//', '')
     MQTT_PORT = int(MQTT_ENDPOINT[2])
