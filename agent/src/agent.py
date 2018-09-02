@@ -158,8 +158,8 @@ def sigterm_handler(_signo, _stack_frame):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       generate random sensor value
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def getSensorValue():
-    return iotUtils.generateRandomSensorValues()
+#def getSensorValue():
+#    return iotUtils.generateRandomSensorValues()
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,9 +178,9 @@ def main():
             iotUtils.PUSH_INTERVAL = iotUtils.getPushValue()
             PUSH_INTERVAL = iotUtils.PUSH_INTERVAL
             currentTime = calendar.timegm(time.gmtime())
-            sensorValue = getSensorValue()
+            sensorValue = iotUtils.getSensorValue()
             PUSH_DATA_TO_STREAM_1 = iotUtils.SENSOR_STATS_SENSOR1.format(currentTime, sensorValue)
-            sensorValue = getSensorValue()
+            #sensorValue = getSensorValue()
             #PUSH_DATA_TO_STREAM_2 = iotUtils.SENSOR_STATS_SENSOR2.format(currentTime, sensorValue)
             #mqttHandler.sendSensorValue(PUSH_DATA_TO_STREAM_1, PUSH_DATA_TO_STREAM_2)
             mqttHandler.sendSensorValue(PUSH_DATA_TO_STREAM_1)

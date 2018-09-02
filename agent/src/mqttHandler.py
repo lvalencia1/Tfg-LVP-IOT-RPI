@@ -99,8 +99,6 @@ def sendSensorValue(stream1PlayLoad):
 #			This method is invoked from Agent.py on a new thread
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def main():
-    logging.basicConfig(filename="../agent.log",level=logging.INFO)
-
     MQTT_ENDPOINT = iotUtils.MQTT_EP.split(":")
     MQTT_IP = MQTT_ENDPOINT[1].replace('//', '')
     MQTT_PORT = int(MQTT_ENDPOINT[2])

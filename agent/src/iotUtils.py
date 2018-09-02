@@ -81,6 +81,11 @@ def setPushValue ( value ):
     configParser.write(cfgfile)
     return True
 
+def getSensorValue ():
+    sensor = W1ThermSensor()
+    temperature = sensor.get_temperature()
+    return temperature
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       This method generate a random sensor value between 15 and 40
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
