@@ -54,6 +54,7 @@ def on_message(mqttClient, userdata, msg):
     #What kind of message is it and doing what it should
     if method == "ledsRequest" :
         print("Received a request to turn ON/OFF the led matrix")
+        iotUtils.LEDS_STATE = iotUtils.setLedsValue(parameter)
         #Matrix operations
     elif  method == 'timeRequest':
         print("Received a request to change the sensor push time")

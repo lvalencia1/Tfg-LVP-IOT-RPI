@@ -28,6 +28,7 @@ import ssl
 import sys
 import threading
 import time
+import max7219.led as led
 from functools import wraps
 
 import iotUtils
@@ -173,12 +174,18 @@ signal.signal(signal.SIGTERM, sigterm_handler)
 def main():
     configureLogger("agent")
     ListenMQTTThread()
+    device = led.matrix()
     while True:
         try:
             iotUtils.PUSH_INTERVAL = iotUtils.getPushValue()
             PUSH_INTERVAL = iotUtils.PUSH_INTERVAL
+            iotUtils.LEDS_STATE = iotUtils.getLedsValue().upper()
+            LEDS_STATE = iotUtils.LEDS_STATE
+
             currentTime = calendar.timegm(time.gmtime())
             sensorValue = iotUtils.getSensorValue()
+            if( LEDS_STATE == "ON" ):
+                device.show_message(str(sensorValue))
             PUSH_DATA_TO_STREAM_1 = iotUtils.SENSOR_STATS_SENSOR1.format(currentTime, sensorValue)
             #sensorValue = getSensorValue()
             #PUSH_DATA_TO_STREAM_2 = iotUtils.SENSOR_STATS_SENSOR2.format(currentTime, sensorValue)
