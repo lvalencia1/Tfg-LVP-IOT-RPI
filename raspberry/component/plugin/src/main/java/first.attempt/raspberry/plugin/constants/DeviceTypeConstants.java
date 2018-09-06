@@ -34,11 +34,9 @@ public class DeviceTypeConstants {
 
     //sensor events summerized table name
     public static final String SENSOR_TYPE1_EVENT_TABLE = "ORG_WSO2_IOT_DEVICES_temperature";
-    public static final String SENSOR_TYPE2_EVENT_TABLE = "ORG_WSO2_IOT_DEVICES_humidity";
     public static final String DATA_SOURCE_NAME = "jdbc/tempsensorDM_DB";
     public final static String DEVICE_TYPE_PROVIDER_DOMAIN = "carbon.super";
     public final static String SENSOR_TYPE1 = "temperature";
-    public final static String SENSOR_TYPE2 = "humidity";
 
     //mqtt tranport related constants
     public static final String MQTT_ADAPTER_NAME = "temperature_mqtt";
@@ -66,9 +64,6 @@ public class DeviceTypeConstants {
 
     public final static String SENSOR_TYPE1_STREAM_DEFINITION = "org.wso2.iot.devices.temperature";
     public final static String SENSOR_TYPE1_STREAM_DEFINITION_VERSION = "1.0.0";
-
-    public final static String SENSOR_TYPE2_STREAM_DEFINITION = "org.wso2.iot.devices.humidity";
-    public final static String SENSOR_TYPE2_STREAM_DEFINITION_VERSION = "1.0.0";
 
     public static final String MQTT_CONFIG_LOCATION = CarbonUtils.getEtcCarbonConfigDirPath() + File.separator
             + "mqtt.properties";

@@ -18,9 +18,7 @@
 
 var palette = new Rickshaw.Color.Palette({scheme: "classic9"});
 var sensorType1 = "temperature";
-var sensorType2 = "humidity";
 var sensorType1Graph;
-var sensorType2Graph;
 
 function drawGraph_tempsensor(from, to)
 {
@@ -32,19 +30,11 @@ function drawGraph_tempsensor(from, to)
     $("#sensorType1xAxis").html("");
     $("#sensorType1Slider").html("");
 
-    $("#sensorType2yAxis").html("");
-    $("#smoother").html("");
-    $("#sensorType2Legend").html("");
-    $("#chartSensorType2").html("");
-    $("#sensorType2xAxis").html("");
-    $("#sensorType2Slider").html("");
-
     var devices = $("#details").data("devices");
     var tzOffset = new Date().getTimezoneOffset() * 60;
     var chartWrapperElmId = "#chartDivSensorType1";
     var graphWidth = $(chartWrapperElmId).width() - 50;
     var graphConfigSensorType1 = getGraphConfig("chartSensorType1");
-    var graphConfigSensorType2 = getGraphConfig("chartSensorType2");
 
     function getGraphConfig(placeHolder) {
         return {
@@ -74,15 +64,6 @@ function drawGraph_tempsensor(from, to)
                     'name': devices[i].name
                 });
 
-            graphConfigSensorType2['series'].push(
-                {
-                    'color': palette.color(),
-                    'data': [{
-                        x: parseInt(new Date().getTime() / 1000),
-                        y: 0
-                    }],
-                    'name': devices[i].name
-                });
         }
     } else {
         graphConfigSensorType1['series'].push(
@@ -94,23 +75,11 @@ function drawGraph_tempsensor(from, to)
                 }],
                 'name': sensorType1
             });
-        graphConfigSensorType2['series'].push(
-            {
-                'color': palette.color(),
-                'data': [{
-                    x: parseInt(new Date().getTime() / 1000),
-                    y: 0
-                }],
-                'name': sensorType2
-            });
     }
 
     sensorType1Graph = new Rickshaw.Graph(graphConfigSensorType1);
-    sensorType2Graph = new Rickshaw.Graph(graphConfigSensorType2);
     drawGraph(sensorType1Graph, "sensorType1yAxis", "sensorType1Slider", "sensorType1Legend", sensorType1
         , graphConfigSensorType1, "chartSensorType1");
-    drawGraph(sensorType2Graph, "sensorType2yAxis", "sensorType2Slider", "sensorType2Legend", sensorType2
-        , graphConfigSensorType2, "chartSensorType2");
 
     function drawGraph(graph, yAxis, slider, legend, sensorType, graphConfig, chart) {
         console.log("1");

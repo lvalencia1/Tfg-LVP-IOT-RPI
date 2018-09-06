@@ -21,7 +21,6 @@
     <property name="target-dir" value="target/carbonapps"/>
     <property name="src-dir" value="src/main/resources/carbonapps"/>
     <property name="sensorType1_dir" value="temperature"/>
-    <property name="sensorType2_dir" value="humidity"/>
     <property name="sensorType3_dir" value="current"/>
     <target name="clean">
         <delete dir="${target-dir}"/>
@@ -30,9 +29,6 @@
         <mkdir dir="${target-dir}"/>
         <zip destfile="${target-dir}/${sensorType1_dir}.car">
             <zipfileset dir="${src-dir}/${sensorType1_dir}"/>
-        </zip>
-        <zip destfile="${target-dir}/${sensorType2_dir}.car">
-            <zipfileset dir="${src-dir}/${sensorType2_dir}"/>
         </zip>
         <zip destfile="${target-dir}/${sensorType3_dir}.car">
             <zipfileset dir="${src-dir}/${sensorType3_dir}"/>

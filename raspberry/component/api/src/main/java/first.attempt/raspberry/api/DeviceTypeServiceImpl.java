@@ -390,10 +390,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         String sensorTableName = null;
         if (sensorType.equals(DeviceTypeConstants.SENSOR_TYPE1)) {
             sensorTableName = DeviceTypeConstants.SENSOR_TYPE1_EVENT_TABLE;
-        } else if (sensorType.equals(DeviceTypeConstants.SENSOR_TYPE2)) {
-            sensorTableName = DeviceTypeConstants.SENSOR_TYPE2_EVENT_TABLE;
-        }
-        try {
+        }         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
                     DeviceTypeConstants.DEVICE_TYPE))) {
                 return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
