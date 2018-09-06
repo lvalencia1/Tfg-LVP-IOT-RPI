@@ -39,11 +39,9 @@ function onRequest(context) {
 //		response.addCookie(websocketToken);
 //	}
 //    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.temperature/1.0.0?deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
-//	var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.humidity/1.0.0?deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
 //		return {
 //		"device": device,
 //		"websocketEndpointForStream1": websocketEndpointForStream1,
-//		"websocketEndpointForStream2": websocketEndpointForStream2
 //	};
 
 	var user = session.get(constants.USER_SESSION_KEY);	
@@ -60,15 +58,13 @@ function onRequest(context) {
 		    token = tokenPair.accessToken;
 	   }
 		    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.temperature/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
-		    var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.humidity/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
 	    } else {
 		    var tokenPair = jwtClient.getAccessToken(resp[0], resp[1], context.user.username + "@" + user.domain, "default", {});
 		    if (tokenPair) {
 			    token = tokenPair.accessToken;		
 		    }
 		    var websocketEndpointForStream1 = websocketEndpoint + "/secured-websocket/t/" + user.domain + "/org.wso2.iot.devices.temperature/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
-		    var websocketEndpointForStream2 = websocketEndpoint + "/secured-websocket/t/" + user.domain + "/org.wso2.iot.devices.humidity/1.0.0?" + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
 	    }
 	}
-	return {"device": device, "websocketEndpointForStream1": websocketEndpointForStream1, "websocketEndpointForStream2" : websocketEndpointForStream2 };
+	return {"device": device, "websocketEndpointForStream1": websocketEndpointForStream1};
 }

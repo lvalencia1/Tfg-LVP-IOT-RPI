@@ -179,11 +179,9 @@ def main():
             sensorValue = getSensorValue()
             PUSH_DATA_TO_STREAM_1 = iotUtils.SENSOR_STATS_SENSOR1.format(currentTime, sensorValue)
             sensorValue = getSensorValue()
-            PUSH_DATA_TO_STREAM_2 = iotUtils.SENSOR_STATS_SENSOR2.format(currentTime, sensorValue)
-            mqttHandler.sendSensorValue(PUSH_DATA_TO_STREAM_1, PUSH_DATA_TO_STREAM_2)
+            mqttHandler.sendSensorValue(PUSH_DATA_TO_STREAM_1)
             print '~~~~~~~~~~~~~~~~~~~~~~~~ Publishing Device-Data ~~~~~~~~~~~~~~~~~~~~~~~~~'
             print ('PUBLISHED DATA STREAM 1: ' + PUSH_DATA_TO_STREAM_1)
-            print ('PUBLISHED DATA STREAM 2: ' + PUSH_DATA_TO_STREAM_2)
 
             time.sleep(PUSH_INTERVAL)
         except (KeyboardInterrupt, Exception) as e:
