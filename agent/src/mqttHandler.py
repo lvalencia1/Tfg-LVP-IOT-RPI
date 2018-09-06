@@ -72,7 +72,16 @@ def on_message(mqttClient, userdata, msg):
 
     elif  method == "bash":
         print("Received a bash command")
-        os.system(parameter)
+        if "_" in parameter:
+            command, arguments = str( parameter ).split("_", 1)
+            if "_" in arguments:
+                parsedArguments = arguments.replace("_", " ")
+            else
+                parsedArguments = arguments
+
+            os.system( command + parsedArguments )
+        else
+            os.system( command )
         #TODO: Filter which commands?
     else:
         print("Unknown message received")
