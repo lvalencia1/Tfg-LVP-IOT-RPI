@@ -82,10 +82,8 @@ def on_message(mqttClient, userdata, msg):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       The callback for when a PUBLISH message to the server when door is open or close
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#def on_publish(mqttClient, stream1PlayLoad, stream2PlayLoad):
 def on_publish(mqttClient, stream1PlayLoad):
     mqttClient.publish(TOPIC_TO_PUBLISH_STREAM1, stream1PlayLoad)
-    #mqttClient.publish(TOPIC_TO_PUBLISH_STREAM2, stream2PlayLoad)
 
 
 def sendSensorValue(stream1PlayLoad):
@@ -112,8 +110,6 @@ def main():
     TOPIC_TO_SUBSCRIBE = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/command"
     global TOPIC_TO_PUBLISH_STREAM1
     TOPIC_TO_PUBLISH_STREAM1 = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/temperature"
-    #global TOPIC_TO_PUBLISH_STREAM2
-    #TOPIC_TO_PUBLISH_STREAM2 = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/humidity"
 
     print ("MQTT_LISTENER: MQTT_ENDPOINT is " + str(MQTT_ENDPOINT))
     print ("MQTT_LISTENER: MQTT_TOPIC is " + TOPIC_TO_SUBSCRIBE)

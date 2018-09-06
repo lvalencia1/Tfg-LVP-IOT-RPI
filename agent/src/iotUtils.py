@@ -48,8 +48,6 @@ HTTPS_EP = configParser.get('Device-Configurations', 'https-ep')
 DEVICE_DATA = '"sensorValue":"{sensorValue}"'
 SENSOR_STATS_SENSOR1 = '{{"event":{{"metaData":{{"owner":"' + DEVICE_OWNER + '","deviceType":"' + DEVICE_TYPE \
                        + '","deviceId":"' + DEVICE_ID + '","time":{}}},"payloadData":{{"temperature":{:.2f}}}}}}}'
-#SENSOR_STATS_SENSOR2 = '{{"event":{{"metaData":{{"owner":"' + DEVICE_OWNER + '","deviceType":"' + DEVICE_TYPE \
-#                       + '","deviceId":"' + DEVICE_ID + '","time":{}}},"payloadData":{{"humidity":{:.2f}}}}}}}'
 
 
 
