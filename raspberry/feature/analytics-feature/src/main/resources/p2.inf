@@ -5,5 +5,4 @@ org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../featur
 
 instructions.unconfigure = \
 org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../analytics/repository/deployment/server/carbonapps/temperature.car);\
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../analytics/repository/deployment/server/carbonapps/humidity.car);\
 org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../analytics/repository/deployment/server/carbonapps/current.car);\
