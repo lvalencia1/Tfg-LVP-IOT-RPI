@@ -23,6 +23,7 @@
 import ConfigParser
 import os
 import random
+from w1thermsensor import W1ThermSensor
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       Device specific info when pushing data to server
@@ -39,12 +40,15 @@ DEVICE_TYPE = configParser.get('Device-Configurations', 'device-type')
 SERVER_NAME = configParser.get('Device-Configurations', 'server-name')
 MQTT_EP = configParser.get('Device-Configurations', 'mqtt-ep')
 AUTH_TOKEN = configParser.get('Device-Configurations', 'auth-token')
+PUSH_INTERVAL = float(configParser.get('Device-Configurations','push-interval'))
+LEDS_STATE = configParser.get('Device-Configurations','leds-state')
 CONTROLLER_CONTEXT = configParser.get('Device-Configurations', 'controller-context')
 DEVICE_INFO = '{"owner":"' + DEVICE_OWNER + '","deviceId":"' + DEVICE_ID + '",'
 HTTPS_EP = configParser.get('Device-Configurations', 'https-ep')
 DEVICE_DATA = '"sensorValue":"{sensorValue}"'
 SENSOR_STATS_SENSOR1 = '{{"event":{{"metaData":{{"owner":"' + DEVICE_OWNER + '","deviceType":"' + DEVICE_TYPE \
                        + '","deviceId":"' + DEVICE_ID + '","time":{}}},"payloadData":{{"temperature":{:.2f}}}}}}}'
+
 
 
 global IS_REGISTERED
@@ -58,6 +62,48 @@ def isEmpty(string):
     # string is None OR string is empty or blank
     return True
 
+
+def getPushValue():
+    configParserAux = ConfigParser.RawConfigParser()
+    configFilePathAux = os.path.join(os.path.dirname(__file__), './deviceConfig.properties')
+    configParserAux.read(configFilePathAux)
+    PUSH_INTERVAL = float(configParser.get('Device-Configurations','push-interval'))
+    return PUSH_INTERVAL
+
+
+def setPushValue ( value ):
+    cfgfile = open(os.path.join(os.path.dirname(__file__), './deviceConfig.properties'),'w')
+    configParser.set('Device-Configurations','push-interval',value)
+    configParser.write(cfgfile)
+    cfgfile = open(os.path.join(os.path.dirname(__file__), '../deviceConfig.properties'),'w')
+    configParser.set('Device-Configurations','push-interval',value)
+    configParser.write(cfgfile)
+    return True
+
+
+def getLedsValue():
+    configParserAux = ConfigParser.RawConfigParser()
+    configFilePathAux = os.path.join(os.path.dirname(__file__), './deviceConfig.properties')
+    configParserAux.read(configFilePathAux)
+    LEDS_STATE = configParser.get('Device-Configurations','leds-state')
+    return LEDS_STATE
+
+
+
+def setLedsValue ( value ):
+    cfgfile = open(os.path.join(os.path.dirname(__file__), './deviceConfig.properties'),'w')
+    configParser.set('Device-Configurations','leds-state',value)
+    configParser.write(cfgfile)
+    cfgfile = open(os.path.join(os.path.dirname(__file__), '../deviceConfig.properties'),'w')
+    configParser.set('Device-Configurations','leds-state',value)
+    configParser.write(cfgfile)
+    return True
+
+
+def getSensorValue ():
+    sensor = W1ThermSensor()
+    temperature = sensor.get_temperature()
+    return temperature
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       This method generate a random sensor value between 15 and 40
