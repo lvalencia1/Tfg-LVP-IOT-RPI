@@ -22,8 +22,9 @@
 
 import paho.mqtt.client as mqtt
 import time
-
+import logging
 import iotUtils
+import os
 
 global mqttClient
 mqttClient = mqtt.Client(client_id='tempsensor_client')
@@ -47,21 +48,56 @@ def on_connect(mqttClient, userdata, flags, rc):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def on_message(mqttClient, userdata, msg):
     print("MQTT_LISTENER: " + msg.topic + " " + str(msg.payload))
+    #Let's split the message content for further operations
+    method,parameter=str(msg.payload).split(":",1);
 
+    #What kind of message is it and doing what it should
+    if method == "ledsRequest" :
+        print("Received a request to turn ON/OFF the led matrix")
+        iotUtils.LEDS_STATE = iotUtils.setLedsValue(parameter)
+        #Matrix operations
+    elif  method == 'timeRequest':
+        print("Received a request to change the sensor push time")
+        iotUtils.PUSH_INTERVAL = iotUtils.setPushValue(parameter)
+
+    elif  method == "reboot" :
+        print("Received a request to reboot the device")
+        os.system("sleep "+parameter)
+        os.system("reboot")
+
+    elif  method == "shutdown" :
+        print("Received a request to shutdown the device")
+        os.system("sleep "+parameter)
+        os.system("shutdown now")
+
+    elif  method == "bash":
+        print("Received a bash command")
+        if "_" in parameter:
+            command, arguments = str( parameter ).split("_", 1)
+            if "_" in arguments:
+                parsedArguments = arguments.replace("_", " ")
+            else:
+                parsedArguments = arguments
+
+            os.system( command + " " + parsedArguments )
+        else:
+            os.system( command )
+        #TODO: Filter which commands?
+    else:
+        print("Unknown message received")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       The callback for when a PUBLISH message to the server when door is open or close
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def on_publish(mqttClient, stream1PlayLoad, stream2PlayLoad):
+def on_publish(mqttClient, stream1PlayLoad):
     mqttClient.publish(TOPIC_TO_PUBLISH_STREAM1, stream1PlayLoad)
-    mqttClient.publish(TOPIC_TO_PUBLISH_STREAM2, stream2PlayLoad)
 
 
-def sendSensorValue(stream1PlayLoad, stream2PlayLoad):
+def sendSensorValue(stream1PlayLoad):
     global mqttClient
-    on_publish(mqttClient, stream1PlayLoad, stream2PlayLoad)
+    on_publish(mqttClient, stream1PlayLoad)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,8 +119,6 @@ def main():
     TOPIC_TO_SUBSCRIBE = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/command"
     global TOPIC_TO_PUBLISH_STREAM1
     TOPIC_TO_PUBLISH_STREAM1 = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/temperature"
-    global TOPIC_TO_PUBLISH_STREAM2
-    TOPIC_TO_PUBLISH_STREAM2 = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/humidity"
 
     print ("MQTT_LISTENER: MQTT_ENDPOINT is " + str(MQTT_ENDPOINT))
     print ("MQTT_LISTENER: MQTT_TOPIC is " + TOPIC_TO_SUBSCRIBE)
@@ -92,7 +126,6 @@ def main():
     mqttClient.username_pw_set(iotUtils.AUTH_TOKEN, password="")
     mqttClient.on_connect = on_connect
     mqttClient.on_message = on_message
-
     while True:
         try:
             mqttClient.connect(MQTT_IP, MQTT_PORT, 60)

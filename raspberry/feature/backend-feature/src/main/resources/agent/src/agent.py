@@ -28,6 +28,7 @@ import ssl
 import sys
 import threading
 import time
+import max7219.led as led
 from functools import wraps
 
 import iotUtils
@@ -55,7 +56,7 @@ PUSH_INTERVAL = 2  # time interval between successive data pushes in seconds
 #       Logger defaults
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LOG_FILENAME = "agent.log"
-logging_enabled = False
+logging_enabled = True
 LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,8 +159,8 @@ def sigterm_handler(_signo, _stack_frame):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       generate random sensor value
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def getSensorValue():
-    return iotUtils.generateRandomSensorValues()
+#def getSensorValue():
+#    return iotUtils.generateRandomSensorValues()
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -173,18 +174,23 @@ signal.signal(signal.SIGTERM, sigterm_handler)
 def main():
     configureLogger("agent")
     ListenMQTTThread()
+    device = led.matrix()
     while True:
         try:
+            iotUtils.PUSH_INTERVAL = iotUtils.getPushValue()
+            PUSH_INTERVAL = iotUtils.PUSH_INTERVAL
+            iotUtils.LEDS_STATE = iotUtils.getLedsValue().upper()
+            LEDS_STATE = iotUtils.LEDS_STATE
+
             currentTime = calendar.timegm(time.gmtime())
-            sensorValue = getSensorValue()
+            sensorValue = iotUtils.getSensorValue()
+            if( LEDS_STATE == "ON" ):
+                device.show_message(str(sensorValue))
             PUSH_DATA_TO_STREAM_1 = iotUtils.SENSOR_STATS_SENSOR1.format(currentTime, sensorValue)
-            sensorValue = getSensorValue()
-            PUSH_DATA_TO_STREAM_2 = iotUtils.SENSOR_STATS_SENSOR2.format(currentTime, sensorValue)
-            mqttHandler.sendSensorValue(PUSH_DATA_TO_STREAM_1, PUSH_DATA_TO_STREAM_2)
+            mqttHandler.sendSensorValue(PUSH_DATA_TO_STREAM_1)
             print '~~~~~~~~~~~~~~~~~~~~~~~~ Publishing Device-Data ~~~~~~~~~~~~~~~~~~~~~~~~~'
             print ('PUBLISHED DATA STREAM 1: ' + PUSH_DATA_TO_STREAM_1)
-            print ('PUBLISHED DATA STREAM 2: ' + PUSH_DATA_TO_STREAM_2)
-
+            print '~~~~~~~~~~~~~~~~~~~~~~~~ End of Publishing Data ~~~~~~~~~~~~~~~~~~~~~~~~~'
             time.sleep(PUSH_INTERVAL)
         except (KeyboardInterrupt, Exception) as e:
             print "agentStats: Exception in AgentThread (either KeyboardInterrupt or Other)"
