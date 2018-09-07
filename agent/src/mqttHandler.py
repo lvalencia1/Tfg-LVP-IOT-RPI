@@ -76,11 +76,11 @@ def on_message(mqttClient, userdata, msg):
             command, arguments = str( parameter ).split("_", 1)
             if "_" in arguments:
                 parsedArguments = arguments.replace("_", " ")
-            else
+            else:
                 parsedArguments = arguments
 
-            os.system( command + parsedArguments )
-        else
+            os.system( command + " " + parsedArguments )
+        else:
             os.system( command )
         #TODO: Filter which commands?
     else:
