@@ -12,25 +12,35 @@
 </div>
 
 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 padding-top">
-    <h3 class="uppercase">What it Does</h3>
+    <h3 class="uppercase">Descripción</h3>
     <hr>
-    <p class="grey margin-top">Connect a tempsensor to WSO2 IoT Server and manage it.</p>
-    <p>Add brief description what this device type does</p>
-    <h3 class="uppercase">What You Need</h3>
-    <p>Add hardware requirement which will be required to make this device type </p>
+    <p class="grey margin-top">Conecta una Raspberry Pi con un sensor de temperatura DS18B20 y una matriz de leds (MAX7219) al servidor de WSO2 IoT.</p>
+    <p>Mediante este dispositivo, podemos realizar tareas de control y gestión de sensores de temperatura y mostrar los valores en una matriz Led.</p>
+    <p>Gracias al módulo de datos, podemos visualizar los valores de temperatura mediante el servidor WSO2 de IoT. </p>
+    <br>
+    <hr>
+    <br>
+    <h3 class="uppercase">¿Qué necesitas?</h3>
+    <hr>
+    <p>Para poder usar un dispositivo Raspberry Pi como agente necesitamos lo siguiente: </p>
+    <ul>Una Raspberry Pi model B/2/3 con conexión</ul>
+    <ul>Sensor de temperatura DS18B20</ul>
+    <ul>Matriz Led con un driver MAX7219</ul>
+    <ul>Cableado para interconectar los pines de la Raspberry Pi con los periféricos</ul>
+    <ul>Una resistencia de Pull-Up de 4,7Kohm (Dependiendo del model de sensor DS18B20)</ul>
     <br>
     <hr>
     <br>
     <a href="/api-store/apis/info?name={{@uriParams.deviceType}}&version=1.0.0&provider=admin"
        class="btn-operations"
-       target="_blank"><i class="fw fw-api add-margin-1x"></i> View API</i>
+       target="_blank"><i class="fw fw-api add-margin-1x"></i> Ver la API</i>
     </a>
     <a href="#" class="download-link btn-operations">
-        <i class="fw fw-download add-margin-1x"></i>Download Agent
+        <i class="fw fw-download add-margin-1x"></i>Descargar Agente
     </a>
     <div id="download-device-modal-content" class="hide">
         <div class="modal-content">
-            <h3 align="center">Name your device and download the agent from following link.</h3>
+            <h3 align="center">Nombra tu dispositivo y descarga el zip que contiene al agente.</h3>
             <br/>
             <div class="row">
                 <div class="col-md-7  center-container col-lg-5 col-md-6 col-centered">
@@ -54,10 +64,10 @@
                             </div>
                         </div>
                         <div class="buttons" style="padding-bottom: 5px;padding-top: 5px" align="center">
-                            <a class="btn btn-operations" onclick="downloadAgent()">Download Now</a>
+                            <a class="btn btn-operations" onclick="downloadAgent()">Descargar Ahora</a>
 
                             <a href="#" id="download-device-download-link"
-                               class="btn btn-operations"> Copy Link
+                               class="btn btn-operations"> Copiar Link de Descarga
                             </a>
 
                         </div>
@@ -70,7 +80,7 @@
         <div class="modal-content">
             <div class="row">
                 <div class="col-md-7 col-centered center-container">
-                    <h3>Device Agent will downloading shortly.</h3>
+                    <h3>La descarga comenzará a continuación.</h3>
                 </div>
             </div>
         </div>
@@ -79,7 +89,7 @@
         <div class="modal-content">
             <div class="row">
                 <div class="col-md-7 col-centered center-container">
-                    <h3>Exception at backend. Try Later.</h3>
+                    <h3>Excepción en BackEnd. Inténtalo más tarde.</h3>
                     <div class="buttons">
                         <a href="#" id="device-400-link" class="btn-operations">
                             OK
@@ -93,13 +103,13 @@
         <div class="modal-content">
             <div class="row">
                 <div class="col-md-7 col-centered center-container">
-                    <h3>You have to log in first.</h3><br/>
+                    <h3>Tienes que estar registrado primero.</h3><br/>
                     <div class="buttons">
                         <a href="#" id="device-401-link" class="blue-button">
-                            Goto Login Page
+                            Ir a la págica de LogIn
                         </a>&nbsp;&nbsp;
                         <a href="#" onclick="hidePopup();" class="btn-operations">
-                            Cancel
+                            Cancelar
                         </a>
                     </div>
                 </div>
@@ -110,7 +120,7 @@
         <div class="modal-content">
             <div class="row">
                 <div class="col-md-7 col-centered center-container">
-                    <h3>Action not permitted.</h3><br/>
+                    <h3>Acción no permitida.</h3><br/>
 
                     <div class="buttons">
                         <a href="#" id="device-403-link" class="btn-operations">
@@ -125,7 +135,7 @@
         <div class="modal-content">
             <div class="row">
                 <div class="col-md-7 col-centered center-container">
-                    <h3>Device Sketch does not exist.</h3><br/>
+                    <h3>El esquema del dispositivo no existe.</h3><br/>
                     <div class="buttons">
                         <a href="#" id="device-409-link" class="btn-operations">
                             OK
@@ -152,46 +162,58 @@
     <br/><br/>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-double grey-bg">
-    <h3 class="uppercase">Prepare</h3>
+    <h3 class="uppercase">Configuración</h3>
     <hr>
     <ul class="list-unstyled">
-        <li class="padding-top-double"><span class="circle">01</span>&nbsp;&nbsp;&nbsp;Add how you
-                                                                     are goining to
-                                                                     prepare your device
+        <li class="padding-top-double"><span class="circle">01</span>&nbsp;&nbsp;&nbsp;Conexión del sensor: Dependiendo del modelo del sensor necesitará la resistencia o no. El diagrama para el cableado del modelo acuatico es igual al modelo normal.
+        </li>
+        <li class="padding-top-double"><span class="circle">02</span>&nbsp;&nbsp;&nbsp;Conexión de la matriz de leds:
+        <ul>El pin 1 (VCC) de la matriz va conectado al pin 2 (5v).</ul>
+        <ul>El pin 2 (GND) de la matriz va conectado al pin 6 (GND).</ul>
+        <ul>El pin 3 (DIN) de la matriz va conectado al pin 19 (MOSI).</ul>
+        <ul>El pin 4 (CS) de la matriz va conectado al pin 24 (SPI).</ul>
+        <ul>El pin 5 (CLK) de la matriz va conectado al pin 23 (CLK).</ul>
+        </li>
+        <li class="padding-top-double"><span class="circle">03</span>&nbsp;&nbsp;&nbsp; Necesitarás una conexión a internet en la Raspberry Pi para poder pasarle por scp el fichero del agente y conectarla con el servidor.
         </li>
     </ul>
     <br>
     <br>
 </div>
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 padding-double">
-    <h3 class="uppercase">Schematic Diagram</h3>
+    <h3 class="uppercase">Diagrama esquemático</h3>
     <hr>
-    <p class="grey margin-top">Click on the image to zoom</p>
     <center>
-        <a href="{{@unit.publicUri}}/images/schematicsGuide.png" target="_blank">
-            <img src="{{@unit.publicUri}}/images/schematicsGuide.png" class="img-responsive">
+      <h4>Sensor de temperatura</h4>
+        <a href="{{@unit.publicUri}}/images/DS18B20.jpg" target="_blank">
+            <img src="{{@unit.publicUri}}/images/DS18B20.jpg" class="img-responsive">
+        </a>
+        <h4>Matriz de leds</h4>
+        <a href="{{@unit.publicUri}}/images/MAX7219.jpg" target="_blank">
+            <img src="{{@unit.publicUri}}/images/MAX7219.jpg" class="img-responsive">
         </a>
     </center>
     <br/>
 </div>
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 padding-double">
-    <h3 class="uppercase">Try Out</h3>
+    <h3 class="uppercase">Primera ejecución</h3>
     <hr>
     <ul class="list-unstyled">
         <li class="padding-top-double">
             <span class="circle">01</span>
-            &nbsp;&nbsp;&nbsp;You can view all your connected devices at
-            <a href="{{@app.context}}/devices">[Device Management]</a> page.
+            &nbsp;&nbsp;&nbsp;Dale permisos de ejecución al script startService.sh contenido en el fichero descargado.
         </li>
         <li class="padding-top-double">
             <span class="circle">02</span>
-            &nbsp;&nbsp;&nbsp;Select one of connected devices and check for available control
-            operations and monitor Real-Time data.
+            &nbsp;&nbsp;&nbsp;Ejecuta el script startService.sh con permisos de super usuario.
         </li>
         <li class="padding-top-double">
             <span class="circle">03</span>
-            &nbsp;&nbsp;&nbsp;You can also view analytics of the data published to IoT-Server by
-            navigating to Device Analytics page.
+            &nbsp;&nbsp;&nbsp;El script se encargará de configurar el fichero crontab para ser ejecutado cada vez que se encienda el dispositivo.
+        </li>
+        <li class="padding-top-double">
+            <span class="circle">04</span>
+            &nbsp;&nbsp;&nbsp;Una vez lanzado el script de inicio, guarda toda la información relacionada con la ejecución en un fichero de log.
         </li>
     </ul>
     <br/>
