@@ -195,6 +195,7 @@ def main():
         except (KeyboardInterrupt, Exception) as e:
             print "agentStats: Exception in AgentThread (either KeyboardInterrupt or Other)"
             print ("agentStats: " + str(e))
+            os.system("sudo /etc/init.d/agentd.sh stop")
             print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
             sys.exit(0)
             pass
