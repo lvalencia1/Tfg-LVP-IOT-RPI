@@ -12,22 +12,30 @@
 
 # Start the service agent
 start() {
-        cd PATH_DIR
-        sleep 60 && sudo PATH_DIR/agentScript.sh &
         ### Create the lock file ###
-        touch /var/lock/subsys/agentScript
-        echo
+        if [ -e /var/lock/subsys/agentScript ]; then
+          echo "[ERROR] The agent is already initialized"
+        else
+          cd PATH_DIR
+          sleep 60 && sudo PATH_DIR/agentScript.sh &
+          touch /var/lock/subsys/agentScript
+        fi
+
+
 }
 
-# Restart the service FOO
+# Stop the service
 stop() {
-        PROCESS_PID=`ps aux | grep agentScript.sh | head -n 1 | awk '{print $2}'`
-        PYTHON_PID=`ps aux | grep agent.py | head -n 1 | awk '{print $2}'`
-        sudo kill $PROCESS_PID 2&>/dev/null
-        sudo kill $PYTHON_PID 2&>/dev/null
-        ### Now, delete the lock file ###
-        rm -f /var/lock/subsys/agentScript
-        echo
+        if [ -e /var/lock/subsys/agentScript ]; then
+          PROCESS_PID=`ps aux | grep agentScript.sh | head -n 1 | awk '{print $2}'`
+          PYTHON_PID=`ps aux | grep agent.py | head -n 1 | awk '{print $2}'`
+          sudo kill $PROCESS_PID 2&>/dev/null
+          sudo kill $PYTHON_PID 2&>/dev/null
+          ### Now, delete the lock file ###
+          rm -f /var/lock/subsys/agentScript
+        else
+          echo "[ERROR] The agent is not initialized"
+        fi
 }
 
 ### main logic ###
