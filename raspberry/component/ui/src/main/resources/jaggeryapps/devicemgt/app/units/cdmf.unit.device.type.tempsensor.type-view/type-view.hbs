@@ -201,19 +201,21 @@
     <ul class="list-unstyled">
         <li class="padding-top-double">
             <span class="circle">01</span>
-            &nbsp;&nbsp;&nbsp;Dale permisos de ejecución al script startService.sh contenido en el fichero descargado.
+            &nbsp;&nbsp;&nbsp;Dale permisos de ejecución a todos los scripts .sh extraidos del fichero descargado.
         </li>
         <li class="padding-top-double">
             <span class="circle">02</span>
-            &nbsp;&nbsp;&nbsp;Ejecuta el script startService.sh con permisos de super usuario.
+            &nbsp;&nbsp;&nbsp;Ejecuta el script configure.sh con permisos de super usuario.
         </li>
         <li class="padding-top-double">
             <span class="circle">03</span>
-            &nbsp;&nbsp;&nbsp;El script se encargará de configurar el fichero crontab para ser ejecutado cada vez que se encienda el dispositivo.
+            &nbsp;&nbsp;&nbsp;Se encargará de configurar configurar el script de servicio agentd.sh para ser
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ejecutado cada vez que se encienda el dispositivo.
         </li>
         <li class="padding-top-double">
             <span class="circle">04</span>
-            &nbsp;&nbsp;&nbsp;Una vez lanzado el script de inicio, guarda toda la información relacionada con la ejecución en un fichero de log.
+            &nbsp;&nbsp;&nbsp;Apartir de este paso, ya se ejecutará automaticamente o manualmente desde
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/etc/init.d/agent.d start o stop para pararlo
         </li>
     </ul>
     <br/>
