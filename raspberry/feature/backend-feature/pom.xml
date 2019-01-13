@@ -21,24 +21,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>raspberry-feature</artifactId>
-        <groupId>first.attempt</groupId>
+        <groupId>sensorboard</groupId>
         <version>3.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>first.attempt.raspberry.backend.feature</artifactId>
+    <artifactId>sensorboard.raspberry.backend.feature</artifactId>
     <packaging>pom</packaging>
 
 
     <dependencies>
         <dependency>
-            <groupId>first.attempt</groupId>
-            <artifactId>first.attempt.raspberry.plugin</artifactId>
+            <groupId>sensorboard</groupId>
+            <artifactId>sensorboard.raspberry.plugin</artifactId>
             <version>3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>first.attempt</groupId>
-            <artifactId>first.attempt.raspberry.api</artifactId>
+            <groupId>sensorboard</groupId>
+            <artifactId>sensorboard.raspberry.api</artifactId>
             <version>3.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>
@@ -89,8 +89,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>first.attempt</groupId>
-                                    <artifactId>first.attempt.raspberry.api</artifactId>
+                                    <groupId>sensorboard</groupId>
+                                    <artifactId>sensorboard.raspberry.api</artifactId>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>
@@ -149,7 +149,7 @@
                             <goal>p2-feature-gen</goal>
                         </goals>
                         <configuration>
-                            <id>first.attempt.raspberry.backend</id>
+                            <id>sensorboard.raspberry.backend</id>
                             <propertiesFile>../../../features/etc/feature.properties
                             </propertiesFile>
                             <adviceFile>
@@ -162,7 +162,7 @@
                             </adviceFile>
                             <bundles>
                                 <bundleDef>
-                                    first.attempt:first.attempt.raspberry.plugin:3.0-SNAPSHOT
+                                    sensorboard:sensorboard.raspberry.plugin:3.0-SNAPSHOT
                                 </bundleDef>
                             </bundles>
                             <importFeatures>

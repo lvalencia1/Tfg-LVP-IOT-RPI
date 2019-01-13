@@ -1,6 +1,6 @@
 instructions.configure = \
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/);\
-org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/first.attempt.raspberry.ui_${feature.version}/jaggeryapps/,target:${installFolder}/../../../repository/deployment/server/jaggeryapps/,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/sensorboard.raspberry.ui_${feature.version}/jaggeryapps/,target:${installFolder}/../../../repository/deployment/server/jaggeryapps/,overwrite:true);\
 
 
 instructions.unconfigure = \

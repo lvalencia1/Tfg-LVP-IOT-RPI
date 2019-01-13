@@ -1,6 +1,6 @@
 instructions.configure = \
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../analytics/repository/deployment/server/carbonapps/);\
-org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/first.attempt.raspberry.analytics_${feature.version}/carbonapps/,target:${installFolder}/../../analytics/repository/deployment/server/carbonapps/,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/sensorboard.raspberry.analytics_${feature.version}/carbonapps/,target:${installFolder}/../../analytics/repository/deployment/server/carbonapps/,overwrite:true);\
 
 
 instructions.unconfigure = \

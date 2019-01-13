@@ -26,7 +26,7 @@
     <jaxrs:server id="tempsensor" address="/">
         <jaxrs:serviceBeans>
             <bean id="DeviceTypeService"
-                  class="first.attempt.raspberry.api.DeviceTypeServiceImpl">
+                  class="sensorboard.raspberry.api.DeviceTypeServiceImpl">
             </bean>
         </jaxrs:serviceBeans>
         <jaxrs:providers>

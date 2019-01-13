@@ -24,7 +24,7 @@
         <artifactId>wso2</artifactId>
         <version>1</version>
     </parent>
-    <groupId>first.attempt</groupId>
+    <groupId>sensorboard</groupId>
     <artifactId>raspberry</artifactId>
     <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -124,7 +124,7 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>first.attempt</groupId>
+                <groupId>sensorboard</groupId>
                 <artifactId>${project-base-package}.plugin</artifactId>
                 <version>3.0-SNAPSHOT</version>
                 <scope>provided</scope>
