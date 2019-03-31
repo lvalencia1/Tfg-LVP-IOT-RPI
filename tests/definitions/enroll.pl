@@ -19,7 +19,7 @@ sub upload_agent
 {
 
   my $json = {
-    LOCAL => "scp ./download* pi\@$AGENT_IP:agent.zip >/dev/null 2>&1"
+    LOCAL => "scp ./download* root\@$AGENT_IP:agent.zip >/dev/null 2>&1"
   };
   return $json;
 }
@@ -28,7 +28,7 @@ sub unzip_agent
 {
 
   my $json = {
-    LOCAL => "ssh pi\@$AGENT_IP 'cd agent; rm -rf ./* > /dev/null 2>&1; unzip ../agent.zip > /dev/null 2>&1'"
+    LOCAL => "ssh root\@$AGENT_IP 'cd agent; rm -rf ./* > /dev/null 2>&1; unzip ../agent.zip > /dev/null 2>&1'"
   };
   return $json;
 }

@@ -24,11 +24,14 @@ sub enroll_device
   $err += &launch_test( $test_def );
 
   #Iniciar
-  my $device_ID = `ssh pi\@$AGENT_IP cat agent/deviceConfig.properties | grep deviceId | sed 's/deviceId=//g'`;
+  system "ssh root\@$AGENT_IP 'chmod +x agent/*.sh'";
+  my $device_ID = `ssh root\@$AGENT_IP cat agent/deviceConfig.properties | grep deviceId | sed 's/deviceId=//g'`;
+  chomp $device_ID;
+
   $config->{ RPI }->{ deviceId } = $device_ID;
-  use Data::Dumper;
-  print Dumper $config;
-  $config->write("../config/config.inis");
+  $config->write("../config/config.ini");
+
+  system "ssh root\@$AGENT_IP 'cd agent; ./agentScript.sh'";
 
   #GET de los dispositivos
 

@@ -41,39 +41,33 @@ sub launch_test
   #Obtain the Access Token for the whole process
   my $access_token = &generate_token();
   my $uri = {
-    'change_leds' => "/tempsensor/1.0.0/device/$body->{ID}/change-leds/\?estado=$body->{ARGS}->{estado}",
-    'change_time' => "/tempsensor/1.0.0/device/$body->{ID}/change-leds/\?estado=$body->{ARGS}->{tiempo}",
+    'change_leds' => "/tempsensor/1.0.0/device/$body->{ID}/change-leds\?estado=$body->{ARGS}->{estado}",
+    'change_time' => "/tempsensor/1.0.0/device/$body->{ID}/change-time\?estado=$body->{ARGS}->{tiempo}",
     # 'send-command' => "/device/$body->{ID}/change-leds/\?estado=$body->{ARGS}->{estado}",
     'enroll'      => "/tempsensor/1.0.0/device/download\?deviceName=$body->{NAME}\&sketchType=tempsensor",
     'list'        => "/api/device-mgt/v1.0/devices/1.0.0",
   };
-  print "Access token: $access_token\n";
+
   my $response;
   #Launch the operation;
   if ( $body->{ METHOD } eq "POST")
   {
     # $response = $ua->post ( "http://$IP:8280$uri->{ $body->{ OPERATION } }", "Accept" => "application/json", "authorization" => " Bearer $access_token" )
-    my $cmd = "curl --silent -k -X POST -H \'Authorization: Bearer $access_token\' \'https://$IP:8243$uri->{ $body->{ OPERATION } }\'";
-    print "CMD: $cmd----\n";
-    $response = `curl --silent -k -X POST -H \'Authorization: Bearer $access_token\' \'https://$IP:8243$uri->{ $body->{ OPERATION } }\'`;
+    $response = system "curl --silent -k -X POST -H \'Authorization: Bearer $access_token\' \'https://$IP:8243$uri->{ $body->{ OPERATION } }\'";
     chomp $response;
   }
   elsif ( $body->{ METHOD } eq "GET")
   {
     $response = system "curl --silent -k -X GET -H \'Authorization: Bearer $access_token\' \'https://$IP:8243$uri->{ $body->{ OPERATION } }\' -LO" if ( $body->{ OPERATION} eq "enroll");
-    $response = `curl --silent -k -X GET -H \'Authorization: Bearer $access_token\' \'https://$IP:8243$uri->{ $body->{ OPERATION } }\'` if ( $body->{ OPERATION} ne "enroll");
+    $response = system "curl --silent -k -X GET -H \'Authorization: Bearer $access_token\' \'https://$IP:8243$uri->{ $body->{ OPERATION } }\'" if ( $body->{ OPERATION} ne "enroll");
     chomp $response;
   }
 
   # print Dumper $response;
   if ( exists $body->{ METHOD } )
   {
-    $errmsg = &test_resolution( $response, $body->{ expect_err } ) if ( $body->{ OPERATION } ne "enroll" );
-    if( $body->{ OPERATION } eq "enroll" )
-    {
-      $errmsg = $response;
-      ok ( $response == 0 );
-    }
+    $errmsg = $response;
+    ok ( $response == 0 );
   }
 
   if ( exists $body->{ LOCAL } )
