@@ -42,7 +42,7 @@ sub launch_test
   my $access_token = &generate_token();
   my $uri = {
     'change_leds' => "/tempsensor/1.0.0/device/$body->{ID}/change-leds\?estado=$body->{ARGS}->{estado}",
-    'change_time' => "/tempsensor/1.0.0/device/$body->{ID}/change-time\?estado=$body->{ARGS}->{tiempo}",
+    'change_time' => "/tempsensor/1.0.0/device/$body->{ID}/change-time\?tiempo=$body->{ARGS}->{tiempo}",
     # 'send-command' => "/device/$body->{ID}/change-leds/\?estado=$body->{ARGS}->{estado}",
     'enroll'      => "/tempsensor/1.0.0/device/download\?deviceName=$body->{NAME}\&sketchType=tempsensor",
     'list'        => "/api/device-mgt/v1.0/devices/1.0.0",
