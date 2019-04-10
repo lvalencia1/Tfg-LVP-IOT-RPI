@@ -33,7 +33,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Database handler which is specified for tempsensor type
+ * Database handler which is specified for myRaspberry type
  */
 public class DeviceTypeDAO {
 

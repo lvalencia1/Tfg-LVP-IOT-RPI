@@ -91,7 +91,7 @@ public class DeviceTypeFeatureManager implements FeatureManager {
         newOperation.setName(name);
         newOperation.setDescription(description);
         apiParams.put(METHOD, "POST");
-        apiParams.put(URI, "/tempsensor/device/{deviceId}/" + feature);
+        apiParams.put(URI, "/myRaspberry/device/{deviceId}/" + feature);
         pathParams.add("deviceId");
         apiParams.put(PATH_PARAMS, pathParams);
         // Si existe queryParam suministrado a la función, lo añadimos.

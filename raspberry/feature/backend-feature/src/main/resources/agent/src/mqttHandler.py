@@ -27,7 +27,7 @@ import iotUtils
 import os
 
 global mqttClient
-mqttClient = mqtt.Client(client_id='tempsensor_client')
+mqttClient = mqtt.Client(client_id='myRaspberry_client')
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

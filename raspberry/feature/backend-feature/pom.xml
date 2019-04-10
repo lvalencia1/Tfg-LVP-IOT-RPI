@@ -96,7 +96,7 @@
                                     <outputDirectory>
                                         ${project.build.directory}/maven-shared-archive-resources/webapps/
                                     </outputDirectory>
-                                    <destFileName>tempsensor.war</destFileName>
+                                    <destFileName>myRaspberry.war</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -110,7 +110,7 @@
                 <executions>
                     <execution>
                         <!-- Creating Connected Cup Plugin Management schema -->
-                        <id>create-tempsensor-plugin-mgt-schema</id>
+                        <id>create-myRaspberry-plugin-mgt-schema</id>
                         <phase>package</phase>
                         <goals>
                             <goal>run</goal>
@@ -122,7 +122,7 @@
                                 <property name="userid" value="wso2carbon"/>
                                 <property name="password" value="wso2carbon"/>
                                 <property name="dbURL"
-                                          value="jdbc:h2:file:${basedir}/${db.dir}/tempsensorDM_DB;DB_CLOSE_ON_EXIT=FALSE"/>
+                                          value="jdbc:h2:file:${basedir}/${db.dir}/myRaspberryDM_DB;DB_CLOSE_ON_EXIT=FALSE"/>
                                 <mkdir dir="${basedir}/${db.dir}"/>
                                 <sql driver="org.h2.Driver" url="${dbURL}" userid="${userid}"
                                      password="${password}"

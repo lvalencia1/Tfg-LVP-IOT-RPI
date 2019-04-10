@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Contains utility methods used by tempsensor plugin.
+ * Contains utility methods used by myRaspberry plugin.
  */
 public class DeviceTypeUtils {
 

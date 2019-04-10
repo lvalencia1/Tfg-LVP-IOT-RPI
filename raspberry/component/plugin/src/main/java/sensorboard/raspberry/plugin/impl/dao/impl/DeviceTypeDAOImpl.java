@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implements IotDeviceDAO for tempsensor Devices.
+ * Implements IotDeviceDAO for myRaspberry Devices.
  */
 public class DeviceTypeDAOImpl {
 
@@ -52,8 +52,8 @@ public class DeviceTypeDAOImpl {
         try {
             conn = DeviceTypeDAO.getConnection();
             String selectDBQuery =
-                    "SELECT tempsensor_DEVICE_ID, DEVICE_NAME" +
-                            " FROM tempsensor_DEVICE WHERE tempsensor_DEVICE_ID = ?";
+                    "SELECT myRaspberry_DEVICE_ID, DEVICE_NAME" +
+                            " FROM myRaspberry_DEVICE WHERE myRaspberry_DEVICE_ID = ?";
             stmt = conn.prepareStatement(selectDBQuery);
             stmt.setString(1, deviceId);
             resultSet = stmt.executeQuery();
@@ -63,12 +63,12 @@ public class DeviceTypeDAOImpl {
                 iotDevice.setName(resultSet.getString(
                         DeviceTypeConstants.DEVICE_PLUGIN_DEVICE_NAME));
                 if (log.isDebugEnabled()) {
-                    log.debug("tempsensor device " + deviceId + " data has been fetched from " +
-                            "tempsensor database.");
+                    log.debug("myRaspberry device " + deviceId + " data has been fetched from " +
+                            "myRaspberry database.");
                 }
             }
         } catch (SQLException e) {
-            String msg = "Error occurred while fetching tempsensor device : '" + deviceId + "'";
+            String msg = "Error occurred while fetching myRaspberry device : '" + deviceId + "'";
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
@@ -85,7 +85,7 @@ public class DeviceTypeDAOImpl {
         try {
             conn = DeviceTypeDAO.getConnection();
             String createDBQuery =
-                    "INSERT INTO tempsensor_DEVICE(tempsensor_DEVICE_ID, DEVICE_NAME) VALUES (?, ?)";
+                    "INSERT INTO myRaspberry_DEVICE(myRaspberry_DEVICE_ID, DEVICE_NAME) VALUES (?, ?)";
             stmt = conn.prepareStatement(createDBQuery);
             stmt.setString(1, device.getDeviceIdentifier());
             stmt.setString(2, device.getName());
@@ -93,13 +93,13 @@ public class DeviceTypeDAOImpl {
             if (rows > 0) {
                 status = true;
                 if (log.isDebugEnabled()) {
-                    log.debug("tempsensor device " + device.getDeviceIdentifier() + " data has been" +
-                            " added to the tempsensor database.");
+                    log.debug("myRaspberry device " + device.getDeviceIdentifier() + " data has been" +
+                            " added to the myRaspberry database.");
                 }
             }
         } catch (SQLException e) {
-            String msg = "Error occurred while adding the tempsensor device '" +
-                    device.getDeviceIdentifier() + "' to the tempsensor db.";
+            String msg = "Error occurred while adding the myRaspberry device '" +
+                    device.getDeviceIdentifier() + "' to the myRaspberry db.";
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
@@ -115,7 +115,7 @@ public class DeviceTypeDAOImpl {
         try {
             conn = DeviceTypeDAO.getConnection();
             String updateDBQuery =
-                    "UPDATE tempsensor_DEVICE SET  DEVICE_NAME = ? WHERE tempsensor_DEVICE_ID = ?";
+                    "UPDATE myRaspberry_DEVICE SET  DEVICE_NAME = ? WHERE myRaspberry_DEVICE_ID = ?";
             stmt = conn.prepareStatement(updateDBQuery);
             if (device.getProperties() == null) {
                 device.setProperties(new ArrayList<Device.Property>());
@@ -126,12 +126,12 @@ public class DeviceTypeDAOImpl {
             if (rows > 0) {
                 status = true;
                 if (log.isDebugEnabled()) {
-                    log.debug("tempsensor device " + device.getDeviceIdentifier() + " data has been" +
+                    log.debug("myRaspberry device " + device.getDeviceIdentifier() + " data has been" +
                             " modified.");
                 }
             }
         } catch (SQLException e) {
-            String msg = "Error occurred while modifying the tempsensor device '" +
+            String msg = "Error occurred while modifying the myRaspberry device '" +
                     device.getDeviceIdentifier() + "' data.";
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
@@ -148,19 +148,19 @@ public class DeviceTypeDAOImpl {
         try {
             conn = DeviceTypeDAO.getConnection();
             String deleteDBQuery =
-                    "DELETE FROM tempsensor_DEVICE WHERE tempsensor_DEVICE_ID = ?";
+                    "DELETE FROM myRaspberry_DEVICE WHERE myRaspberry_DEVICE_ID = ?";
             stmt = conn.prepareStatement(deleteDBQuery);
             stmt.setString(1, deviceId);
             int rows = stmt.executeUpdate();
             if (rows > 0) {
                 status = true;
                 if (log.isDebugEnabled()) {
-                    log.debug("tempsensor device " + deviceId + " data has deleted" +
-                            " from the tempsensor database.");
+                    log.debug("myRaspberry device " + deviceId + " data has deleted" +
+                            " from the myRaspberry database.");
                 }
             }
         } catch (SQLException e) {
-            String msg = "Error occurred while deleting tempsensor device " + deviceId;
+            String msg = "Error occurred while deleting myRaspberry device " + deviceId;
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
@@ -178,8 +178,8 @@ public class DeviceTypeDAOImpl {
         try {
             conn = DeviceTypeDAO.getConnection();
             String selectDBQuery =
-                    "SELECT tempsensor_DEVICE_ID, DEVICE_NAME " +
-                            "FROM tempsensor_DEVICE";
+                    "SELECT myRaspberry_DEVICE_ID, DEVICE_NAME " +
+                            "FROM myRaspberry_DEVICE";
             stmt = conn.prepareStatement(selectDBQuery);
             resultSet = stmt.executeQuery();
             while (resultSet.next()) {
@@ -190,11 +190,11 @@ public class DeviceTypeDAOImpl {
                 device.setProperties(propertyList);
             }
             if (log.isDebugEnabled()) {
-                log.debug("All tempsensor device details have fetched from tempsensor database.");
+                log.debug("All myRaspberry device details have fetched from myRaspberry database.");
             }
             return iotDevices;
         } catch (SQLException e) {
-            String msg = "Error occurred while fetching all tempsensor device data'";
+            String msg = "Error occurred while fetching all myRaspberry device data'";
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {

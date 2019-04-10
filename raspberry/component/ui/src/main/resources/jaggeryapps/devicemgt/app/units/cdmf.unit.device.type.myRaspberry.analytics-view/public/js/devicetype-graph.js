@@ -20,7 +20,7 @@ var palette = new Rickshaw.Color.Palette({scheme: "classic9"});
 var sensorType1 = "temperature";
 var sensorType1Graph;
 
-function drawGraph_tempsensor(from, to)
+function drawGraph_myRaspberry(from, to)
 {
 
     $("#sensorType1yAxis").html("");

@@ -4,7 +4,7 @@ org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../featur
 
 
 instructions.unconfigure = \
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.tempsensor.device-view);\
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.tempsensor.type-view);\
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.tempsensor.realtime.analytics-view);\
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.tempsensor.analytics-view);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.myRaspberry.device-view);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.myRaspberry.type-view);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.myRaspberry.realtime.analytics-view);\
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../../../repository/deployment/server/jaggeryapps/devicemgt/app/units/cdmf.unit.device.type.myRaspberry.analytics-view);\

@@ -17,12 +17,12 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<DeviceTypeConfiguration name="tempsensor">
+<DeviceTypeConfiguration name="myRaspberry">
     <Features>
         <Feature code="time">
             <Name>Cambiar Tiempo del Sensor</Name>
             <Description>Cambia el tiempo de muestreo del sensor de temperatura</Description>
-            <Operation context="/tempsensor/device/{deviceId}/change-time" method="POST">
+            <Operation context="/myRaspberry/device/{deviceId}/change-time" method="POST">
                 <QueryParameters>
                     <Parameter>state</Parameter>
                 </QueryParameters>
@@ -31,7 +31,7 @@
         <Feature code="leds">
             <Name>Matriz leds: on/off</Name>
             <Description>Enciende/Apaga la matriz de leds, acepta solo las opciones on y off</Description>
-            <Operation context="/tempsensor/device/{deviceId}/change-leds" method="POST">
+            <Operation context="/myRaspberry/device/{deviceId}/change-leds" method="POST">
                 <QueryParameters>
                     <Parameter>value</Parameter>
                 </QueryParameters>
@@ -40,7 +40,7 @@
         <Feature code="cmd">
 		<Name>Mandar Orden</Name>
 		<Description>Manda una orden de las listadas a la raspberry</Description>
-		<Operation context="/tempsensor/device/{deviceId}/send-command" method="POST">
+		<Operation context="/myRaspberry/device/{deviceId}/send-command" method="POST">
 		</Operation>
 	</Feature>
     </Features>

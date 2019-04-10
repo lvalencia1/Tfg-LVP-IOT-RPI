@@ -1,0 +1,5 @@
+[NOMBRES]
+./tempsensor.log
+./feature/backend-feature/src/main/resources/devicetypes/tempsensor.xml
+./feature/backend-feature/src/main/resources/datasources/tempsensor-datasources.xml
+./feature/analytics-feature/src/main/resources/datasources/tempsensor-datasources.xml

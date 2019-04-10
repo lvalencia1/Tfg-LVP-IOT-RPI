@@ -29,58 +29,58 @@
     <!-- Device related APIs -->
     <Permission>
         <name>Get device</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/*</url>
         <method>GET</method>
-        <scope>tempsensor_user</scope>
+        <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>
         <name>Remove device</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/*</url>
         <method>DELETE</method>
-        <scope>tempsensor_user</scope>
+        <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>
         <name>Download device</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/download</url>
         <method>GET</method>
-        <scope>tempsensor_user</scope>
+        <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>
         <name>Update device</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/*</url>
         <method>POST</method>
-        <scope>tempsensor_user</scope>
+        <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>
         <name>Get Devices</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device</url>
         <method>GET</method>
-        <scope>tempsensor_user</scope>
+        <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>
         <name>Register Device</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/register</url>
         <method>POST</method>
-        <scope>tempsensor_device</scope>
+        <scope>myRaspberry_device</scope>
     </Permission>
     <Permission>
         <name>Control Sensor</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/*/change-status</url>
         <method>POST</method>
-        <scope>tempsensor_user</scope>
+        <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>
         <name>Get Stats</name>
-        <path>/device-mgt/tempsensor/user</path>
+        <path>/device-mgt/myRaspberry/user</path>
         <url>/device/stats/*</url>
         <method>GET</method>
-        <scope>tempsensor_device</scope>
+        <scope>myRaspberry_device</scope>
     </Permission>
 </PermissionConfiguration>

@@ -26,15 +26,15 @@ import java.io.File;
  * stream definition and device specific dome constants
  */
 public class DeviceTypeConstants {
-    public final static String DEVICE_TYPE = "tempsensor";
+    public final static String DEVICE_TYPE = "myRaspberry";
     public final static String DEVICE_PLUGIN_DEVICE_NAME = "DEVICE_NAME";
-    public final static String DEVICE_PLUGIN_DEVICE_ID = "tempsensor_DEVICE_ID";
+    public final static String DEVICE_PLUGIN_DEVICE_ID = "myRaspberry_DEVICE_ID";
     public final static String STATE_ON = "ON";
     public final static String STATE_OFF = "OFF";
 
     //sensor events summerized table name
     public static final String SENSOR_TYPE1_EVENT_TABLE = "ORG_WSO2_IOT_DEVICES_temperature";
-    public static final String DATA_SOURCE_NAME = "jdbc/tempsensorDM_DB";
+    public static final String DATA_SOURCE_NAME = "jdbc/myRaspberryDM_DB";
     public final static String DEVICE_TYPE_PROVIDER_DOMAIN = "carbon.super";
     public final static String SENSOR_TYPE1 = "temperature";
 
@@ -48,7 +48,7 @@ public class DeviceTypeConstants {
     public static final String DEFAULT_CARBON_LOCAL_IP_PROPERTY = "carbon.local.ip";
     public static final int CARBON_DEFAULT_PORT_OFFSET = 0;
     public static final int DEFAULT_MQTT_PORT = 1883;
-    public static final String SUBSCRIBED_TOPIC = "carbon.super/tempsensor/+/temperature";
+    public static final String SUBSCRIBED_TOPIC = "carbon.super/myRaspberry/+/temperature";
     public static final String CONTENT_TRANSFORMATION = "contentTransformer";
     public static final String CONTENT_VALIDATION = "contentValidator";
     public static final String RESOURCE = "resource";

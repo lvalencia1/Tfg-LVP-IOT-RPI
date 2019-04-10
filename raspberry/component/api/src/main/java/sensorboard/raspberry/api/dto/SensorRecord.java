@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
- * This stores sensor event data for tempsensor.
+ * This stores sensor event data for myRaspberry.
  */
 @XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown = true)

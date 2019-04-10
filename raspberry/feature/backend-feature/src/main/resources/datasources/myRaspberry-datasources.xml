@@ -23,14 +23,14 @@
     </providers>
     <datasources>
         <datasource>
-            <name>tempsensorDM_DB</name>
+            <name>myRaspberryDM_DB</name>
             <description>The datasource used for the this device type</description>
             <jndiConfig>
-                <name>jdbc/tempsensorDM_DB</name>
+                <name>jdbc/myRaspberryDM_DB</name>
             </jndiConfig>
             <definition type="RDBMS">
                 <configuration>
-                    <url>jdbc:h2:repository/database/tempsensorDM_DB;DB_CLOSE_ON_EXIT=FALSE
+                    <url>jdbc:h2:repository/database/myRaspberryDM_DB;DB_CLOSE_ON_EXIT=FALSE
                     </url>
                     <username>wso2carbon</username>
                     <password>wso2carbon</password>

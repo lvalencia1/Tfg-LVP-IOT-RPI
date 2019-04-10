@@ -1,10 +1,10 @@
 {
   "deviceType": {
-    "label": "tempsensor",
+    "label": "myRaspberry",
     "category": "iot",
-    "downloadAgentUri": "tempsensor/device/download",
+    "downloadAgentUri": "myRaspberry/device/download",
     "scopes": [
-      "perm:tempsensor:enroll"
+      "perm:myRaspberry:enroll"
     ],
        "features":{
 	       "change-time": {

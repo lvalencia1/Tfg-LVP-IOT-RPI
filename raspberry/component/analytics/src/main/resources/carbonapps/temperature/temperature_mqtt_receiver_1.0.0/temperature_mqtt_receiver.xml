@@ -20,7 +20,7 @@
 <eventReceiver name="temperature-mqtt" statistics="enable" trace="enable"
                xmlns="http://wso2.org/carbon/eventreceiver">
     <from eventAdapterType="oauth-mqtt">
-        <property name="topic">carbon.super/tempsensor/+/temperature</property>
+        <property name="topic">carbon.super/myRaspberry/+/temperature</property>
         <property name="username">admin</property>
         <property name="password">admin</property>
         <property name="contentValidator">
