@@ -41,10 +41,10 @@ sub launch_test
   #Obtain the Access Token for the whole process
   my $access_token = &generate_token();
   my $uri = {
-    'change_leds' => "/tempsensor/1.0.0/device/$body->{ID}/change-leds\?estado=$body->{ARGS}->{estado}",
-    'change_time' => "/tempsensor/1.0.0/device/$body->{ID}/change-time\?tiempo=$body->{ARGS}->{tiempo}",
+    'change_leds' => "/myRaspberry/1.0.0/device/$body->{ID}/change-leds\?estado=$body->{ARGS}->{estado}",
+    'change_time' => "/myRaspberry/1.0.0/device/$body->{ID}/change-time\?tiempo=$body->{ARGS}->{tiempo}",
     # 'send-command' => "/device/$body->{ID}/change-leds/\?estado=$body->{ARGS}->{estado}",
-    'enroll'      => "/tempsensor/1.0.0/device/download\?deviceName=$body->{NAME}\&sketchType=tempsensor",
+    'enroll'      => "/myRaspberry/1.0.0/device/download\?deviceName=$body->{NAME}\&sketchType=myRaspberry",
     'list'        => "/api/device-mgt/v1.0/devices/1.0.0",
   };
 
@@ -124,7 +124,7 @@ sub generate_token
   my $encoded = &encode( $USER, $PASS );
 
   #Get the client_id and client_secret
-  my $response = `curl --silent -k -X POST https://$IP:8243/api-application-registration/register -H 'authorization: Basic $encoded' -H 'content-type: application/json' -d '{ "applicationName":"tempsensor", "tags":["device_management"]}' 2>/dev/null`;
+  my $response = `curl --silent -k -X POST https://$IP:8243/api-application-registration/register -H 'authorization: Basic $encoded' -H 'content-type: application/json' -d '{ "applicationName":"myRaspberry", "tags":["device_management"]}' 2>/dev/null`;
   chomp $response;
 
   die "[ERROR] Curl failed obtaining the client secret" if ($?);
@@ -132,7 +132,7 @@ sub generate_token
 
   my $encodedClient = &encode( $clientSecret->{ client_id }, $clientSecret->{ client_secret } );
 
-  $response = `curl --silent -k -d "grant_type=password&username=$USER&password=$PASS&scope=perm:tempsensor:enroll perm:devices:view perm:devices:delete" -H "Authorization: Basic $encodedClient" -H "Content-Type: application/x-www-form-urlencoded" https://$IP:9443/oauth2/token 2>/dev/null`;
+  $response = `curl --silent -k -d "grant_type=password&username=$USER&password=$PASS&scope=perm:myRaspberry:enroll perm:devices:view perm:devices:delete" -H "Authorization: Basic $encodedClient" -H "Content-Type: application/x-www-form-urlencoded" https://$IP:9443/oauth2/token 2>/dev/null`;
   chomp $response;
   die "[ERROR] Curl failed obtaining the access token" if ($?);
 
@@ -153,5 +153,5 @@ sub encode
 }
 
 #TODO: Function to remote check something
-#curl 'https://localhost:9443/devicemgt/api/devices/sketch/download?deviceName=manolo&deviceType=tempsensor&sketchType=tempsensor' -H 'Host: localhost:9443' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3' --compressed -H 'Referer: https://localhost:9443/devicemgt/device/tempsensor/enroll' -H 'Cookie: JSESSIONID=6513E784771D5D2475A2442BB9C78CD5; JSESSIONID=A7D2B38F0C5340891146403DE73CE5FF; commonAuthId=7b6f4063-bf5e-4ffa-bd04-d6f5782ea967; samlssoTokenId=75bf7786-9e02-44ef-9583-4bd0ba89fefe; csrftoken=hqh2c979lgqneci98ac4sg9rgu; i18next=es-ES' -H 'Connection: keep-alive' -H 'Upgrade-Insecure-Requests: 1'
+#curl 'https://localhost:9443/devicemgt/api/devices/sketch/download?deviceName=manolo&deviceType=myRaspberry&sketchType=myRaspberry' -H 'Host: localhost:9443' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3' --compressed -H 'Referer: https://localhost:9443/devicemgt/device/myRaspberry/enroll' -H 'Cookie: JSESSIONID=6513E784771D5D2475A2442BB9C78CD5; JSESSIONID=A7D2B38F0C5340891146403DE73CE5FF; commonAuthId=7b6f4063-bf5e-4ffa-bd04-d6f5782ea967; samlssoTokenId=75bf7786-9e02-44ef-9583-4bd0ba89fefe; csrftoken=hqh2c979lgqneci98ac4sg9rgu; i18next=es-ES' -H 'Connection: keep-alive' -H 'Upgrade-Insecure-Requests: 1'
 1;
