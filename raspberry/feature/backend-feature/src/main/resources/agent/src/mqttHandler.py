@@ -116,7 +116,7 @@ def main():
     DEV_TYPE = iotUtils.DEVICE_TYPE
     TANENT_DOMAIN = iotUtils.SERVER_NAME
     global TOPIC_TO_SUBSCRIBE
-    TOPIC_TO_SUBSCRIBE = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/command"
+    TOPIC_TO_SUBSCRIBE = TANENT_DOMAIN + "/" + DEV_TYPE + "/command"
     global TOPIC_TO_PUBLISH_STREAM1
     TOPIC_TO_PUBLISH_STREAM1 = TANENT_DOMAIN + "/" + DEV_TYPE + "/" + DEV_ID + "/temperature"
 

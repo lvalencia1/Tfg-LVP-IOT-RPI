@@ -72,8 +72,15 @@
     <Permission>
         <name>Control Sensor</name>
         <path>/device-mgt/myRaspberry/user</path>
-        <url>/device/*/change-status</url>
-        <method>POST</method>
+        <url>/device/*/sensor</url>
+        <method>PUT</method>
+        <scope>myRaspberry_user</scope>
+    </Permission>
+    <Permission>
+        <name>Control Sensor</name>
+        <path>/device-mgt/myRaspberry/user</path>
+        <url>/device/*/leds</url>
+        <method>PUT</method>
         <scope>myRaspberry_user</scope>
     </Permission>
     <Permission>

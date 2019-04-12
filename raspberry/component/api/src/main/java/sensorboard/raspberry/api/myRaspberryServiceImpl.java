@@ -124,7 +124,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
      * @param time    new value for the device to send sensor records
      */
     @Path("device/{deviceId}/sensor")
-    @POST
+    @PUT
     public Response changeTime(@PathParam("deviceId") String deviceId,
                                  @QueryParam("tiempo") int time,
                                  @Context HttpServletResponse response) {//throws Exception {
@@ -142,7 +142,8 @@ public class myRaspberryServiceImpl implements myRaspberryService {
             //Configuremos la operación para mandarla
             Map<String, String> dynamicProperties = new HashMap<>();
             String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
-                    + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+                    //+ "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+                    + "/" + myRaspberryConstants.DEVICE_TYPE + "/command";
             dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 	          //Almacenamos la operación para mandarla a
             Operation commandOp = new CommandOperation();
@@ -187,7 +188,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
      * @param state    change status of sensor: on/off
      */
     @Path("device/{deviceId}/leds")
-    @POST
+    @PUT
     public Response changeLeds(@PathParam("deviceId") String deviceId,
                                  @QueryParam("estado") String state,
                                  @Context HttpServletResponse response) {//throws Exception {
@@ -204,7 +205,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
             }
             Map<String, String> dynamicProperties = new HashMap<>();
             String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
-                    + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+                    + "/" + myRaspberryConstants.DEVICE_TYPE + "/command";
             dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
             Operation commandOp = new CommandOperation();
             commandOp.setCode("leds");
@@ -329,7 +330,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
 		      String resource = command;
 		      String actualMessage = resource + ":" + parameters;
           String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
-                  + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+                  + "/" + myRaspberryConstants.DEVICE_TYPE + "/command";
           dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 
 		    ConfigOperation commandOp = new ConfigOperation();

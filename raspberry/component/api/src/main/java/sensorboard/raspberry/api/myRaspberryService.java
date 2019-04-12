@@ -116,6 +116,24 @@ public interface myRaspberryService {
                           @QueryParam("estado") String state,
                           @Context HttpServletResponse response);
 
+    @Path("device/register")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            consumes = MediaType.APPLICATION_JSON,
+            httpMethod = "PUT",
+            value = "Enciende/Apaga la matriz de leds",
+            notes = "",
+            response = Response.class,
+            tags = myRaspberryConstants.DEVICE_TYPE ,
+            extensions = {
+                    @Extension(properties = {
+                            @ExtensionProperty(name = SCOPE, value = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll")
+                    })
+            }
+    )
+    public Response registerDevice(final DeviceJSON agentInfo);
+    
     @POST
     @Path("device/{deviceId}/command")
     @ApiOperation(
