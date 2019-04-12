@@ -21,10 +21,10 @@ package sensorboard.raspberry.plugin.impl.dao.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
 import sensorboard.raspberry.plugin.exception.DeviceMgtPluginException;
-import sensorboard.raspberry.plugin.impl.dao.DeviceTypeDAO;
-import sensorboard.raspberry.plugin.impl.util.DeviceTypeUtils;
+import sensorboard.raspberry.plugin.impl.dao.myRaspberryDAO;
+import sensorboard.raspberry.plugin.impl.util.myRaspberryUtils;
 
 import org.wso2.carbon.device.mgt.common.Device;
 
@@ -40,9 +40,9 @@ import java.util.Map;
 /**
  * Implements IotDeviceDAO for myRaspberry Devices.
  */
-public class DeviceTypeDAOImpl {
+public class myRaspberryDAOImpl {
 
-    private static final Log log = LogFactory.getLog(DeviceTypeDAOImpl.class);
+    private static final Log log = LogFactory.getLog(myRaspberryDAOImpl.class);
 
     public Device getDevice(String deviceId) throws DeviceMgtPluginException {
         Connection conn = null;
@@ -50,7 +50,7 @@ public class DeviceTypeDAOImpl {
         Device iotDevice = null;
         ResultSet resultSet = null;
         try {
-            conn = DeviceTypeDAO.getConnection();
+            conn = myRaspberryDAO.getConnection();
             String selectDBQuery =
                     "SELECT myRaspberry_DEVICE_ID, DEVICE_NAME" +
                             " FROM myRaspberry_DEVICE WHERE myRaspberry_DEVICE_ID = ?";
@@ -61,7 +61,7 @@ public class DeviceTypeDAOImpl {
             if (resultSet.next()) {
                 iotDevice = new Device();
                 iotDevice.setName(resultSet.getString(
-                        DeviceTypeConstants.DEVICE_PLUGIN_DEVICE_NAME));
+                        myRaspberryConstants.DEVICE_PLUGIN_DEVICE_NAME));
                 if (log.isDebugEnabled()) {
                     log.debug("myRaspberry device " + deviceId + " data has been fetched from " +
                             "myRaspberry database.");
@@ -72,8 +72,8 @@ public class DeviceTypeDAOImpl {
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
-            DeviceTypeUtils.cleanupResources(stmt, resultSet);
-            DeviceTypeDAO.closeConnection();
+            myRaspberryUtils.cleanupResources(stmt, resultSet);
+            myRaspberryDAO.closeConnection();
         }
         return iotDevice;
     }
@@ -83,7 +83,7 @@ public class DeviceTypeDAOImpl {
         Connection conn;
         PreparedStatement stmt = null;
         try {
-            conn = DeviceTypeDAO.getConnection();
+            conn = myRaspberryDAO.getConnection();
             String createDBQuery =
                     "INSERT INTO myRaspberry_DEVICE(myRaspberry_DEVICE_ID, DEVICE_NAME) VALUES (?, ?)";
             stmt = conn.prepareStatement(createDBQuery);
@@ -103,7 +103,7 @@ public class DeviceTypeDAOImpl {
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
-            DeviceTypeUtils.cleanupResources(stmt, null);
+            myRaspberryUtils.cleanupResources(stmt, null);
         }
         return status;
     }
@@ -113,7 +113,7 @@ public class DeviceTypeDAOImpl {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = DeviceTypeDAO.getConnection();
+            conn = myRaspberryDAO.getConnection();
             String updateDBQuery =
                     "UPDATE myRaspberry_DEVICE SET  DEVICE_NAME = ? WHERE myRaspberry_DEVICE_ID = ?";
             stmt = conn.prepareStatement(updateDBQuery);
@@ -136,7 +136,7 @@ public class DeviceTypeDAOImpl {
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
-            DeviceTypeUtils.cleanupResources(stmt, null);
+            myRaspberryUtils.cleanupResources(stmt, null);
         }
         return status;
     }
@@ -146,7 +146,7 @@ public class DeviceTypeDAOImpl {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = DeviceTypeDAO.getConnection();
+            conn = myRaspberryDAO.getConnection();
             String deleteDBQuery =
                     "DELETE FROM myRaspberry_DEVICE WHERE myRaspberry_DEVICE_ID = ?";
             stmt = conn.prepareStatement(deleteDBQuery);
@@ -164,7 +164,7 @@ public class DeviceTypeDAOImpl {
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
-            DeviceTypeUtils.cleanupResources(stmt, null);
+            myRaspberryUtils.cleanupResources(stmt, null);
         }
         return status;
     }
@@ -176,7 +176,7 @@ public class DeviceTypeDAOImpl {
         Device device;
         List<Device> iotDevices = new ArrayList<>();
         try {
-            conn = DeviceTypeDAO.getConnection();
+            conn = myRaspberryDAO.getConnection();
             String selectDBQuery =
                     "SELECT myRaspberry_DEVICE_ID, DEVICE_NAME " +
                             "FROM myRaspberry_DEVICE";
@@ -184,8 +184,8 @@ public class DeviceTypeDAOImpl {
             resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 device = new Device();
-                device.setDeviceIdentifier(resultSet.getString(DeviceTypeConstants.DEVICE_PLUGIN_DEVICE_ID));
-                device.setName(resultSet.getString(DeviceTypeConstants.DEVICE_PLUGIN_DEVICE_NAME));
+                device.setDeviceIdentifier(resultSet.getString(myRaspberryConstants.DEVICE_PLUGIN_DEVICE_ID));
+                device.setName(resultSet.getString(myRaspberryConstants.DEVICE_PLUGIN_DEVICE_NAME));
                 List<Device.Property> propertyList = new ArrayList<>();
                 device.setProperties(propertyList);
             }
@@ -198,8 +198,8 @@ public class DeviceTypeDAOImpl {
             log.error(msg, e);
             throw new DeviceMgtPluginException(msg, e);
         } finally {
-            DeviceTypeUtils.cleanupResources(stmt, resultSet);
-            DeviceTypeDAO.closeConnection();
+            myRaspberryUtils.cleanupResources(stmt, resultSet);
+            myRaspberryDAO.closeConnection();
         }
     }
 }

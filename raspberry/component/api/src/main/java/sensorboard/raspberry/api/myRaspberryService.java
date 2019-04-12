@@ -27,7 +27,7 @@ import io.swagger.annotations.Tag;
 import org.wso2.carbon.apimgt.annotations.api.Scope;
 import org.wso2.carbon.apimgt.annotations.api.Scopes;
 
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
 import javax.ws.rs.Consumes;
@@ -52,13 +52,13 @@ import javax.ws.rs.FormParam;
                 title = "",
                 extensions = {
                         @Extension(properties = {
-                                @ExtensionProperty(name = "name", value = DeviceTypeConstants.DEVICE_TYPE),
-                                @ExtensionProperty(name = "context", value = "/"+DeviceTypeConstants.DEVICE_TYPE),
+                                @ExtensionProperty(name = "name", value = myRaspberryConstants.DEVICE_TYPE),
+                                @ExtensionProperty(name = "context", value = "/"+myRaspberryConstants.DEVICE_TYPE),
                         })
                 }
         ),
         tags = {
-                @Tag(name = DeviceTypeConstants.DEVICE_TYPE+",device_management", description = "")
+                @Tag(name = myRaspberryConstants.DEVICE_TYPE+",device_management", description = "")
         }
 )
 @Scopes(
@@ -66,13 +66,13 @@ import javax.ws.rs.FormParam;
                 @Scope(
                         name = "Enroll device",
                         description = "",
-                        key = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll",
-                        permissions = {"/device-mgt/devices/enroll/" + DeviceTypeConstants.DEVICE_TYPE }
+                        key = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll",
+                        permissions = {"/device-mgt/devices/enroll/" + myRaspberryConstants.DEVICE_TYPE }
                 )
         }
 )
 @SuppressWarnings("NonJaxWsWebServices")
-public interface DeviceTypeService {
+public interface myRaspberryService {
     String SCOPE = "scope";
 
     /**
@@ -87,10 +87,10 @@ public interface DeviceTypeService {
             value = "Cambia el tiempo del sensor",
             notes = "",
             response = Response.class,
-            tags = DeviceTypeConstants.DEVICE_TYPE ,
+            tags = myRaspberryConstants.DEVICE_TYPE ,
             extensions = {
                     @Extension(properties = {
-                            @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+                            @ExtensionProperty(name = SCOPE, value = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll")
                     })
             }
     )
@@ -105,10 +105,10 @@ public interface DeviceTypeService {
             value = "Enciende/Apaga la matriz de leds",
             notes = "",
             response = Response.class,
-            tags = DeviceTypeConstants.DEVICE_TYPE ,
+            tags = myRaspberryConstants.DEVICE_TYPE ,
             extensions = {
                     @Extension(properties = {
-                            @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+                            @ExtensionProperty(name = SCOPE, value = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll")
                     })
             }
     )
@@ -124,10 +124,10 @@ public interface DeviceTypeService {
     value = "Manda una orden a la Raspberry ",
     notes = "",
     response = Response.class,
-    tags = DeviceTypeConstants.DEVICE_TYPE,
+    tags = myRaspberryConstants.DEVICE_TYPE,
     extensions = {
       @Extension(properties = {
-                 @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+                 @ExtensionProperty(name = SCOPE, value = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll")
                })
              }
              )
@@ -152,10 +152,10 @@ public interface DeviceTypeService {
             value = "Sensor Stats",
             notes = "",
             response = Response.class,
-            tags = DeviceTypeConstants.DEVICE_TYPE,
+            tags = myRaspberryConstants.DEVICE_TYPE,
             extensions = {
                     @Extension(properties = {
-                            @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+                            @ExtensionProperty(name = SCOPE, value = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll")
                     })
             }
     )
@@ -178,10 +178,10 @@ public interface DeviceTypeService {
             value = "Download agent",
             notes = "",
             response = Response.class,
-            tags = DeviceTypeConstants.DEVICE_TYPE ,
+            tags = myRaspberryConstants.DEVICE_TYPE ,
             extensions = {
                     @Extension(properties = {
-                            @ExtensionProperty(name = SCOPE, value = "perm:" + DeviceTypeConstants.DEVICE_TYPE + ":enroll")
+                            @ExtensionProperty(name = SCOPE, value = "perm:" + myRaspberryConstants.DEVICE_TYPE + ":enroll")
                     })
             }
     )

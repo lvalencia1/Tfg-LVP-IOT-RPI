@@ -25,7 +25,7 @@ import java.io.File;
  * Device type specific constants which includes all transport protocols configurations,
  * stream definition and device specific dome constants
  */
-public class DeviceTypeConstants {
+public class myRaspberryConstants {
     public final static String DEVICE_TYPE = "myRaspberry";
     public final static String DEVICE_PLUGIN_DEVICE_NAME = "DEVICE_NAME";
     public final static String DEVICE_PLUGIN_DEVICE_ID = "myRaspberry_DEVICE_ID";

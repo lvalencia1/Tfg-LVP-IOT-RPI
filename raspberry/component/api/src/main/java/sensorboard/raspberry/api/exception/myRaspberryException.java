@@ -21,32 +21,32 @@ package sensorboard.raspberry.api.exception;
 /**
  * Device specific exception handler
  */
-public class DeviceTypeException extends Exception {
+public class myRaspberryException extends Exception {
 
     private static final long serialVersionUID = 2736466230451105441L;
 
     private String errorMessage;
 
-    public DeviceTypeException(String msg, DeviceTypeException nestedEx) {
+    public myRaspberryException(String msg, myRaspberryException nestedEx) {
         super(msg, nestedEx);
         setErrorMessage(msg);
     }
 
-    public DeviceTypeException(String message, Throwable cause) {
+    public myRaspberryException(String message, Throwable cause) {
         super(message, cause);
         setErrorMessage(message);
     }
 
-    public DeviceTypeException(String msg) {
+    public myRaspberryException(String msg) {
         super(msg);
         setErrorMessage(msg);
     }
 
-    public DeviceTypeException() {
+    public myRaspberryException() {
         super();
     }
 
-    public DeviceTypeException(Throwable cause) {
+    public myRaspberryException(Throwable cause) {
         super(cause);
     }
 

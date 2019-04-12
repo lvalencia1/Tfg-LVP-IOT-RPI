@@ -21,8 +21,8 @@ package sensorboard.raspberry.plugin.impl.dao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
-import sensorboard.raspberry.plugin.impl.dao.impl.DeviceTypeDAOImpl;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
+import sensorboard.raspberry.plugin.impl.dao.impl.myRaspberryDAOImpl;
 import sensorboard.raspberry.plugin.exception.DeviceMgtPluginException;
 
 import javax.naming.Context;
@@ -35,23 +35,23 @@ import java.sql.SQLException;
 /**
  * Database handler which is specified for myRaspberry type
  */
-public class DeviceTypeDAO {
+public class myRaspberryDAO {
 
-    private static final Log log = LogFactory.getLog(DeviceTypeDAO.class);
+    private static final Log log = LogFactory.getLog(myRaspberryDAO.class);
     static DataSource dataSource;           // package local variable
     private static ThreadLocal<Connection> currentConnection = new ThreadLocal<>();
 
-    public DeviceTypeDAO() {
-        initDeviceTypeDAO();
+    public myRaspberryDAO() {
+        initmyRaspberryDAO();
     }
 
-    public static void initDeviceTypeDAO() {
+    public static void initmyRaspberryDAO() {
         try {
             Context ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup(DeviceTypeConstants.DATA_SOURCE_NAME);
+            dataSource = (DataSource) ctx.lookup(myRaspberryConstants.DATA_SOURCE_NAME);
         } catch (NamingException e) {
             log.error("Error while looking up the data source: " +
-                    DeviceTypeConstants.DATA_SOURCE_NAME);
+                    myRaspberryConstants.DATA_SOURCE_NAME);
         }
     }
 
@@ -126,7 +126,7 @@ public class DeviceTypeDAO {
         }
     }
 
-    public DeviceTypeDAOImpl getDeviceTypeDAO() {
-        return new DeviceTypeDAOImpl();
+    public myRaspberryDAOImpl getmyRaspberryDAO() {
+        return new myRaspberryDAOImpl();
     }
 }

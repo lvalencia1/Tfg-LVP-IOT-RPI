@@ -19,8 +19,8 @@
 package sensorboard.raspberry.plugin.internal;
 
 import sensorboard.raspberry.plugin.exception.DeviceMgtPluginException;
-import sensorboard.raspberry.plugin.impl.util.DeviceTypeUtils;
-import sensorboard.raspberry.plugin.impl.DeviceTypeManagerService;
+import sensorboard.raspberry.plugin.impl.util.myRaspberryUtils;
+import sensorboard.raspberry.plugin.impl.myRaspberryManagerService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +44,7 @@ public class ServiceComponent {
             log.debug("Activating b Management Service Component");
         }
         try {
-            DeviceTypeManagerService deviceTypeManagerService = new DeviceTypeManagerService();
+            myRaspberryManagerService deviceTypeManagerService = new myRaspberryManagerService();
             BundleContext bundleContext = ctx.getBundleContext();
             serviceRegistration =
                     bundleContext.registerService(DeviceManagementService.class.getName(),
@@ -56,7 +56,7 @@ public class ServiceComponent {
                             "to begin");
                 }
                 try {
-                    DeviceTypeUtils.setupDeviceManagementSchema();
+                    myRaspberryUtils.setupDeviceManagementSchema();
                 } catch (DeviceMgtPluginException e) {
                     log.error("Exception occurred while initializing device management database schema", e);
                 }

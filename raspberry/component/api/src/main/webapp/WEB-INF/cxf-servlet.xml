@@ -25,8 +25,8 @@
          http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
     <jaxrs:server id="myRaspberry" address="/">
         <jaxrs:serviceBeans>
-            <bean id="DeviceTypeService"
-                  class="sensorboard.raspberry.api.DeviceTypeServiceImpl">
+            <bean id="myRaspberryService"
+                  class="sensorboard.raspberry.api.myRaspberryServiceImpl">
             </bean>
         </jaxrs:serviceBeans>
         <jaxrs:providers>

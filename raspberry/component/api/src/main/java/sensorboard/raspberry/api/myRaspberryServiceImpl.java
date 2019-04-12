@@ -25,7 +25,7 @@ import sensorboard.raspberry.api.util.ZipUtil;
 import sensorboard.raspberry.api.util.ZipArchive;
 import sensorboard.raspberry.api.util.deviceOperationJson;
 import sensorboard.raspberry.api.util.JsonUtils;
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -93,10 +93,10 @@ import com.google.gson.*;
 /**
  * This is the API which is used to control and manage device type functionality
  */
-public class DeviceTypeServiceImpl implements DeviceTypeService {
+public class myRaspberryServiceImpl implements myRaspberryService {
 
     private static final String KEY_TYPE = "PRODUCTION";
-    private static Log log = LogFactory.getLog(DeviceTypeService.class);
+    private static Log log = LogFactory.getLog(myRaspberryService.class);
     private static ApiApplicationKey apiApplicationKey;
 
     private static String shortUUID() {
@@ -131,7 +131,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         try {
 		        //Vemos si está autorizado el dispositivo
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
-                    DeviceTypeConstants.DEVICE_TYPE))) {
+                    myRaspberryConstants.DEVICE_TYPE))) {
                 return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
             }
 	           //Vemos si el string introducido por el usuario está vacío o no.
@@ -142,8 +142,8 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             //Configuremos la operación para mandarla
             Map<String, String> dynamicProperties = new HashMap<>();
             String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
-                    + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
-            dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
+                    + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+            dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 	          //Almacenamos la operación para mandarla a
             Operation commandOp = new CommandOperation();
             commandOp.setCode("change-time");
@@ -162,10 +162,10 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setProperties(props);
 
             List<DeviceIdentifier> deviceIdentifiers = new ArrayList<>();
-            deviceIdentifiers.add(new DeviceIdentifier(deviceId, DeviceTypeConstants.DEVICE_TYPE));
+            deviceIdentifiers.add(new DeviceIdentifier(deviceId, myRaspberryConstants.DEVICE_TYPE));
 	          //Aqui metemos la operación a la lista de operaciones para ser usadas, a través de git hub podemos
 	          //ver las distintas clases involucradas en https://github.com/wso2/carbon-device-mgt/
-            APIUtil.getDeviceManagementService().addOperation(DeviceTypeConstants.DEVICE_TYPE, commandOp,
+            APIUtil.getDeviceManagementService().addOperation(myRaspberryConstants.DEVICE_TYPE, commandOp,
                     deviceIdentifiers);
             return Response.ok().build();
         } catch (DeviceAccessAuthorizationException e) {
@@ -193,19 +193,19 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
                                  @Context HttpServletResponse response) {//throws Exception {
         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
-                    DeviceTypeConstants.DEVICE_TYPE))) {
+                    myRaspberryConstants.DEVICE_TYPE))) {
                 return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
             }
             String sensorState = state.toUpperCase();
-            if (!sensorState.equals(DeviceTypeConstants.STATE_ON) && !sensorState.equals(
-                    DeviceTypeConstants.STATE_OFF)) {
+            if (!sensorState.equals(myRaspberryConstants.STATE_ON) && !sensorState.equals(
+                    myRaspberryConstants.STATE_OFF)) {
                 log.error("The requested state change should be either - 'ON' or 'OFF'");
                 return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
             }
             Map<String, String> dynamicProperties = new HashMap<>();
             String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
-                    + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
-            dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
+                    + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+            dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
             Operation commandOp = new CommandOperation();
             commandOp.setCode("change-leds");
             commandOp.setType(Operation.Type.COMMAND);
@@ -221,8 +221,8 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             commandOp.setProperties(props);
 
             List<DeviceIdentifier> deviceIdentifiers = new ArrayList<>();
-            deviceIdentifiers.add(new DeviceIdentifier(deviceId, DeviceTypeConstants.DEVICE_TYPE));
-            APIUtil.getDeviceManagementService().addOperation(DeviceTypeConstants.DEVICE_TYPE, commandOp,
+            deviceIdentifiers.add(new DeviceIdentifier(deviceId, myRaspberryConstants.DEVICE_TYPE));
+            APIUtil.getDeviceManagementService().addOperation(myRaspberryConstants.DEVICE_TYPE, commandOp,
                     deviceIdentifiers);
             return Response.ok().build();
         } catch (DeviceAccessAuthorizationException e) {
@@ -313,14 +313,14 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 		      return Response.status(Response.Status.BAD_REQUEST).build();
       }
       /*
-	    if (!switchToState.equals(DeviceTypeConstants.STATE_ON) && !switchToState.equals(
-				    DeviceTypeConstants.STATE_OFF)) {
+	    if (!switchToState.equals(myRaspberryConstants.STATE_ON) && !switchToState.equals(
+				    myRaspberryConstants.STATE_OFF)) {
 		    log.error("The requested state change shoud be either - 'ON' or 'OFF'");
 		    return Response.status(Response.Status.BAD_REQUEST).build();
       }*/
 	    try {
 		    if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(
-					    new DeviceIdentifier(deviceId, DeviceTypeConstants.DEVICE_TYPE),
+					    new DeviceIdentifier(deviceId, myRaspberryConstants.DEVICE_TYPE),
 					    DeviceGroupConstants.Permissions.DEFAULT_OPERATOR_PERMISSIONS)) {
 			    return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
 					    }
@@ -329,8 +329,8 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 		      String resource = command;
 		      String actualMessage = resource + ":" + parameters;
           String publishTopic = APIUtil.getAuthenticatedUserTenantDomain()
-                  + "/" + DeviceTypeConstants.DEVICE_TYPE + "/" + deviceId + "/command";
-          dynamicProperties.put(DeviceTypeConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
+                  + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
+          dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 
 		    ConfigOperation commandOp = new ConfigOperation();
 		    commandOp.setCode("send-command");
@@ -348,8 +348,8 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             		props.setProperty("mqtt.adapter.topic", publishTopic);
 		    commandOp.setProperties(props);
 		    List<DeviceIdentifier> deviceIdentifiers = new ArrayList<>();
-		    deviceIdentifiers.add(new DeviceIdentifier(deviceId,DeviceTypeConstants.DEVICE_TYPE));
-		    APIUtil.getDeviceManagementService().addOperation(DeviceTypeConstants.DEVICE_TYPE, commandOp,
+		    deviceIdentifiers.add(new DeviceIdentifier(deviceId,myRaspberryConstants.DEVICE_TYPE));
+		    APIUtil.getDeviceManagementService().addOperation(myRaspberryConstants.DEVICE_TYPE, commandOp,
 				    deviceIdentifiers);
 		    return Response.ok().build();
 	    }  catch (InvalidDeviceException e) {
@@ -386,13 +386,13 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         String fromDate = String.valueOf(from);
         String toDate = String.valueOf(to);
         String query = "meta_deviceId:" + deviceId + " AND meta_deviceType:" +
-                DeviceTypeConstants.DEVICE_TYPE + " AND meta_time : [" + fromDate + " TO " + toDate + "]";
+                myRaspberryConstants.DEVICE_TYPE + " AND meta_time : [" + fromDate + " TO " + toDate + "]";
         String sensorTableName = null;
-        if (sensorType.equals(DeviceTypeConstants.SENSOR_TYPE1)) {
-            sensorTableName = DeviceTypeConstants.SENSOR_TYPE1_EVENT_TABLE;
+        if (sensorType.equals(myRaspberryConstants.SENSOR_TYPE1)) {
+            sensorTableName = myRaspberryConstants.SENSOR_TYPE1_EVENT_TABLE;
         }         try {
             if (!APIUtil.getDeviceAccessAuthorizationService().isUserAuthorized(new DeviceIdentifier(deviceId,
-                    DeviceTypeConstants.DEVICE_TYPE))) {
+                    myRaspberryConstants.DEVICE_TYPE))) {
                 return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
             }
             if (sensorTableName != null) {
@@ -465,7 +465,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         try {
             DeviceIdentifier deviceIdentifier = new DeviceIdentifier();
             deviceIdentifier.setId(deviceId);
-            deviceIdentifier.setType(DeviceTypeConstants.DEVICE_TYPE);
+            deviceIdentifier.setType(myRaspberryConstants.DEVICE_TYPE);
             if (APIUtil.getDeviceManagementService().isEnrolled(deviceIdentifier)) {
                 return false;
             }
@@ -477,7 +477,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             enrolmentInfo.setStatus(EnrolmentInfo.Status.ACTIVE);
             enrolmentInfo.setOwnership(EnrolmentInfo.OwnerShip.BYOD);
             device.setName(name);
-            device.setType(DeviceTypeConstants.DEVICE_TYPE);
+            device.setType(myRaspberryConstants.DEVICE_TYPE);
             enrolmentInfo.setOwner(APIUtil.getAuthenticatedUser());
             device.setEnrolmentInfo(enrolmentInfo);
             boolean added = APIUtil.getDeviceManagementService().enrollDevice(device);
@@ -498,13 +498,13 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
                     .getRealmConfiguration().getAdminUserName();
             applicationUsername = applicationUsername + "@" + APIUtil.getAuthenticatedUserTenantDomain();
             APIManagementProviderService apiManagementProviderService = APIUtil.getAPIManagementProviderService();
-            String[] tags = {DeviceTypeConstants.DEVICE_TYPE};
+            String[] tags = {myRaspberryConstants.DEVICE_TYPE};
             apiApplicationKey = apiManagementProviderService.generateAndRetrieveApplicationKeys(
-                    DeviceTypeConstants.DEVICE_TYPE, tags, KEY_TYPE, applicationUsername, true,
+                    myRaspberryConstants.DEVICE_TYPE, tags, KEY_TYPE, applicationUsername, true,
                     "3600");
         }
         JWTClient jwtClient = APIUtil.getJWTClientManagerService().getJWTClient();
-        String scopes = "device_type_" + DeviceTypeConstants.DEVICE_TYPE + " device_" + deviceId;
+        String scopes = "device_type_" + myRaspberryConstants.DEVICE_TYPE + " device_" + deviceId;
         AccessTokenInfo accessTokenInfo = jwtClient.getAccessToken(apiApplicationKey.getConsumerKey(),
                 apiApplicationKey.getConsumerSecret(), owner + "@" + APIUtil.getAuthenticatedUserTenantDomain(), scopes);
 

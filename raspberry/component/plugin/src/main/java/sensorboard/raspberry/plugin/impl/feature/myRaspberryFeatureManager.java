@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Device type specific feature management server
  */
-public class DeviceTypeFeatureManager implements FeatureManager {
+public class myRaspberryFeatureManager implements FeatureManager {
 
     private static final String METHOD = "method";
     private static final String URI = "uri";
@@ -43,7 +43,7 @@ public class DeviceTypeFeatureManager implements FeatureManager {
     //Lista de las features que va a tener
     private static List<Feature> features = new ArrayList<Feature>();
 
-    public DeviceTypeFeatureManager() {
+    public myRaspberryFeatureManager() {
         /*
         * Hemos modificado el constructor método para que solamente cree las
         * operaciones al llamar a la función que hemos creado para que lo

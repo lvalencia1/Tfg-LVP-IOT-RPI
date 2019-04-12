@@ -18,7 +18,7 @@
 
 package sensorboard.raspberry.plugin.impl.util;
 
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
 import sensorboard.raspberry.plugin.exception.DeviceMgtPluginException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,9 +48,9 @@ import java.util.Properties;
 /**
  * Contains utility methods used by myRaspberry plugin.
  */
-public class DeviceTypeUtils {
+public class myRaspberryUtils {
 
-    private static Log log = LogFactory.getLog(sensorboard.raspberry.plugin.impl.util.DeviceTypeUtils.class);
+    private static Log log = LogFactory.getLog(sensorboard.raspberry.plugin.impl.util.myRaspberryUtils.class);
 
     public static void cleanupResources(Connection conn, PreparedStatement stmt, ResultSet rs) {
         if (rs != null) {
@@ -83,13 +83,13 @@ public class DeviceTypeUtils {
     public static void setupDeviceManagementSchema() throws DeviceMgtPluginException {
         try {
             Context ctx = new InitialContext();
-            DataSource dataSource = (DataSource) ctx.lookup(DeviceTypeConstants.DATA_SOURCE_NAME);
+            DataSource dataSource = (DataSource) ctx.lookup(myRaspberryConstants.DATA_SOURCE_NAME);
             DeviceSchemaInitializer initializer =
                     new DeviceSchemaInitializer(dataSource);
             log.info("Initializing device management repository database schema");
             initializer.createRegistryDatabase();
         } catch (NamingException e) {
-            log.error("Error while looking up the data source: " + DeviceTypeConstants.DATA_SOURCE_NAME);
+            log.error("Error while looking up the data source: " + myRaspberryConstants.DATA_SOURCE_NAME);
         } catch (Exception e) {
             throw new DeviceMgtPluginException("Error occurred while initializing Iot Device " +
                     "Management database schema", e);
@@ -99,32 +99,32 @@ public class DeviceTypeUtils {
     public static String replaceMqttProperty(String urlWithPlaceholders) {
         String MQTT_BROKER_HOST = null;
         String MQTT_PORT = null;
-        if (!DeviceTypeConstants.MQTT_BROKER_HOST.startsWith("$")) {
-            MQTT_BROKER_HOST = "\\$".concat(DeviceTypeConstants.MQTT_BROKER_HOST);
+        if (!myRaspberryConstants.MQTT_BROKER_HOST.startsWith("$")) {
+            MQTT_BROKER_HOST = "\\$".concat(myRaspberryConstants.MQTT_BROKER_HOST);
         }
-        if (!DeviceTypeConstants.MQTT_PORT.startsWith("$")) {
-            MQTT_PORT = "\\$".concat(DeviceTypeConstants.MQTT_PORT);
+        if (!myRaspberryConstants.MQTT_PORT.startsWith("$")) {
+            MQTT_PORT = "\\$".concat(myRaspberryConstants.MQTT_PORT);
         }
         urlWithPlaceholders = Utils.replaceSystemProperty(urlWithPlaceholders);
         urlWithPlaceholders = urlWithPlaceholders.replaceAll(MQTT_PORT, "" +
-                (DeviceTypeConstants.DEFAULT_MQTT_PORT + getPortOffset()));
+                (myRaspberryConstants.DEFAULT_MQTT_PORT + getPortOffset()));
         urlWithPlaceholders = urlWithPlaceholders.replaceAll(MQTT_BROKER_HOST,
-                System.getProperty(DeviceTypeConstants.DEFAULT_CARBON_LOCAL_IP_PROPERTY, "localhost"));
+                System.getProperty(myRaspberryConstants.DEFAULT_CARBON_LOCAL_IP_PROPERTY, "localhost"));
         return urlWithPlaceholders;
     }
 
     private static int getPortOffset() {
         ServerConfiguration carbonConfig = ServerConfiguration.getInstance();
         String portOffset = System.getProperty("portOffset", carbonConfig.getFirstProperty(
-                DeviceTypeConstants.CARBON_CONFIG_PORT_OFFSET));
+                myRaspberryConstants.CARBON_CONFIG_PORT_OFFSET));
         try {
             if ((portOffset != null)) {
                 return Integer.parseInt(portOffset.trim());
             } else {
-                return DeviceTypeConstants.CARBON_DEFAULT_PORT_OFFSET;
+                return myRaspberryConstants.CARBON_DEFAULT_PORT_OFFSET;
             }
         } catch (NumberFormatException e) {
-            return DeviceTypeConstants.CARBON_DEFAULT_PORT_OFFSET;
+            return myRaspberryConstants.CARBON_DEFAULT_PORT_OFFSET;
         }
     }
 

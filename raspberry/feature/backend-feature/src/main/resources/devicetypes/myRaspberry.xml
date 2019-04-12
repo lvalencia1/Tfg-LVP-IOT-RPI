@@ -17,7 +17,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<DeviceTypeConfiguration name="myRaspberry">
+<myRaspberryConfiguration name="myRaspberry">
     <Features>
         <Feature code="time">
             <Name>Cambiar Tiempo del Sensor</Name>
@@ -59,4 +59,4 @@
         <Text>This is license text</Text>
     </License>
 
-</DeviceTypeConfiguration>
+</myRaspberryConfiguration>

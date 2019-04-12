@@ -18,7 +18,7 @@
 
 package sensorboard.raspberry.plugin.impl;
 
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
 import org.wso2.carbon.device.mgt.common.DeviceManagementException;
 import org.wso2.carbon.device.mgt.common.DeviceManager;
 import org.wso2.carbon.device.mgt.common.DeviceStatusTaskPluginConfig;
@@ -35,20 +35,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This represents the raspberry implementation of DeviceTypeManagerService
+ * This represents the raspberry implementation of myRaspberryManagerService
  */
-public class DeviceTypeManagerService implements DeviceManagementService {
+public class myRaspberryManagerService implements DeviceManagementService {
     private DeviceManager deviceManager;
     private OperationMonitoringTaskConfig operationMonitoringTaskConfig;
 
     @Override
     public String getType() {
-        return DeviceTypeConstants.DEVICE_TYPE;
+        return myRaspberryConstants.DEVICE_TYPE;
     }
 
     @Override
     public void init() throws DeviceManagementException {
-        this.deviceManager = new DeviceTypeManager();
+        this.deviceManager = new myRaspberryManager();
         this.operationMonitoringTaskConfig = new OperationMonitoringTaskConfig();
     }
 
@@ -64,7 +64,7 @@ public class DeviceTypeManagerService implements DeviceManagementService {
 
     @Override
     public ProvisioningConfig getProvisioningConfig() {
-        return new ProvisioningConfig(DeviceTypeConstants.DEVICE_TYPE_PROVIDER_DOMAIN, false);
+        return new ProvisioningConfig(myRaspberryConstants.DEVICE_TYPE_PROVIDER_DOMAIN, false);
     }
 
     @Override

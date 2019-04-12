@@ -20,9 +20,9 @@ package sensorboard.raspberry.plugin.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import sensorboard.raspberry.plugin.impl.dao.DeviceTypeDAO;
+import sensorboard.raspberry.plugin.impl.dao.myRaspberryDAO;
 import sensorboard.raspberry.plugin.exception.DeviceMgtPluginException;
-import sensorboard.raspberry.plugin.impl.feature.DeviceTypeFeatureManager;
+import sensorboard.raspberry.plugin.impl.feature.myRaspberryFeatureManager;
 import org.wso2.carbon.device.mgt.common.Device;
 import org.wso2.carbon.device.mgt.common.DeviceIdentifier;
 import org.wso2.carbon.device.mgt.common.DeviceManagementException;
@@ -40,11 +40,11 @@ import java.util.List;
 /**
  * This represents the raspberry implementation of DeviceManagerService.
  */
-public class DeviceTypeManager implements DeviceManager {
+public class myRaspberryManager implements DeviceManager {
 
-    private static final Log log = LogFactory.getLog(DeviceTypeManager.class);
-    private static final DeviceTypeDAO deviceTypeDAO = new DeviceTypeDAO();
-    private FeatureManager featureManager = new DeviceTypeFeatureManager();
+    private static final Log log = LogFactory.getLog(myRaspberryManager.class);
+    private static final myRaspberryDAO deviceTypeDAO = new myRaspberryDAO();
+    private FeatureManager featureManager = new myRaspberryFeatureManager();
 
     @Override
     public FeatureManager getFeatureManager() {
@@ -68,12 +68,12 @@ public class DeviceTypeManager implements DeviceManager {
             if (log.isDebugEnabled()) {
                 log.debug("Enrolling a new raspberry device : " + device.getDeviceIdentifier());
             }
-            DeviceTypeDAO.beginTransaction();
-            status = deviceTypeDAO.getDeviceTypeDAO().addDevice(device);
-            DeviceTypeDAO.commitTransaction();
+            myRaspberryDAO.beginTransaction();
+            status = deviceTypeDAO.getmyRaspberryDAO().addDevice(device);
+            myRaspberryDAO.commitTransaction();
         } catch (DeviceMgtPluginException e) {
             try {
-                DeviceTypeDAO.rollbackTransaction();
+                myRaspberryDAO.rollbackTransaction();
             } catch (DeviceMgtPluginException iotDAOEx) {
                 log.warn("Error occurred while roll back the device enrol transaction :" + device.toString(), iotDAOEx);
             }
@@ -91,12 +91,12 @@ public class DeviceTypeManager implements DeviceManager {
             if (log.isDebugEnabled()) {
                 log.debug("Modifying the raspberry device enrollment data");
             }
-            DeviceTypeDAO.beginTransaction();
-            status = deviceTypeDAO.getDeviceTypeDAO().updateDevice(device);
-            DeviceTypeDAO.commitTransaction();
+            myRaspberryDAO.beginTransaction();
+            status = deviceTypeDAO.getmyRaspberryDAO().updateDevice(device);
+            myRaspberryDAO.commitTransaction();
         } catch (DeviceMgtPluginException e) {
             try {
-                DeviceTypeDAO.rollbackTransaction();
+                myRaspberryDAO.rollbackTransaction();
             } catch (DeviceMgtPluginException iotDAOEx) {
                 String msg = "Error occurred while roll back the update device transaction :" + device.toString();
                 log.warn(msg, iotDAOEx);
@@ -116,12 +116,12 @@ public class DeviceTypeManager implements DeviceManager {
             if (log.isDebugEnabled()) {
                 log.debug("Dis-enrolling raspberry device : " + deviceId);
             }
-            DeviceTypeDAO.beginTransaction();
-            status = deviceTypeDAO.getDeviceTypeDAO().deleteDevice(deviceId.getId());
-            DeviceTypeDAO.commitTransaction();
+            myRaspberryDAO.beginTransaction();
+            status = deviceTypeDAO.getmyRaspberryDAO().deleteDevice(deviceId.getId());
+            myRaspberryDAO.commitTransaction();
         } catch (DeviceMgtPluginException e) {
             try {
-                DeviceTypeDAO.rollbackTransaction();
+                myRaspberryDAO.rollbackTransaction();
             } catch (DeviceMgtPluginException iotDAOEx) {
                 String msg = "Error occurred while roll back the device dis enrol transaction :" + deviceId.toString();
                 log.warn(msg, iotDAOEx);
@@ -141,7 +141,7 @@ public class DeviceTypeManager implements DeviceManager {
                 log.debug("Checking the enrollment of raspberry device : " + deviceId.getId());
             }
             Device iotDevice =
-                    deviceTypeDAO.getDeviceTypeDAO().getDevice(deviceId.getId());
+                    deviceTypeDAO.getmyRaspberryDAO().getDevice(deviceId.getId());
             if (iotDevice != null) {
                 isEnrolled = true;
             }
@@ -172,7 +172,7 @@ public class DeviceTypeManager implements DeviceManager {
             if (log.isDebugEnabled()) {
                 log.debug("Getting the details of raspberry device : " + deviceId.getId());
             }
-            device = deviceTypeDAO.getDeviceTypeDAO().getDevice(deviceId.getId());
+            device = deviceTypeDAO.getmyRaspberryDAO().getDevice(deviceId.getId());
         } catch (DeviceMgtPluginException e) {
             String msg = "Error while fetching the raspberry device : " + deviceId.getId();
             log.error(msg, e);
@@ -219,12 +219,12 @@ public class DeviceTypeManager implements DeviceManager {
             if (log.isDebugEnabled()) {
                 log.debug("updating the details of raspberry device : " + deviceIdentifier);
             }
-            DeviceTypeDAO.beginTransaction();
-            status = deviceTypeDAO.getDeviceTypeDAO().updateDevice(device);
-            DeviceTypeDAO.commitTransaction();
+            myRaspberryDAO.beginTransaction();
+            status = deviceTypeDAO.getmyRaspberryDAO().updateDevice(device);
+            myRaspberryDAO.commitTransaction();
         } catch (DeviceMgtPluginException e) {
             try {
-                DeviceTypeDAO.rollbackTransaction();
+                myRaspberryDAO.rollbackTransaction();
             } catch (DeviceMgtPluginException iotDAOEx) {
                 String msg = "Error occurred while roll back the update device info transaction :"
                         + device.toString();
@@ -245,7 +245,7 @@ public class DeviceTypeManager implements DeviceManager {
             if (log.isDebugEnabled()) {
                 log.debug("Fetching the details of all raspberry devices");
             }
-            devices = deviceTypeDAO.getDeviceTypeDAO().getAllDevices();
+            devices = deviceTypeDAO.getmyRaspberryDAO().getAllDevices();
         } catch (DeviceMgtPluginException e) {
             String msg = "Error while fetching all raspberry devices.";
             log.error(msg, e);

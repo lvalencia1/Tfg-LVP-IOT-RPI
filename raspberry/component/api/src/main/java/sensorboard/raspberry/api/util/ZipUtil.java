@@ -18,7 +18,7 @@
 
 package sensorboard.raspberry.api.util;
 
-import sensorboard.raspberry.plugin.constants.DeviceTypeConstants;
+import sensorboard.raspberry.plugin.constants.myRaspberryConstants;
 import org.wso2.carbon.apimgt.application.extension.constants.ApiApplicationConstants;
 import org.wso2.carbon.device.mgt.common.DeviceManagementException;
 import org.wso2.carbon.utils.CarbonUtils;
@@ -299,17 +299,17 @@ public class ZipUtil {
             String base64EncodedApplicationKey = getBase64EncodedAPIAppKey(apiApplicationKey).trim();
 
             Map<String, String> contextParams = new HashMap<>();
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_SERVER_NAME, APIUtil.getTenantDomainOftheUser());
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_DEVICE_OWNER, owner);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_DEVICE_ID, deviceId);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_DEVICE_NAME, deviceName);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_HTTPS_EP, httpsServerEP);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_HTTP_EP, httpServerEP);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_APIM_EP, httpsServerEP);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_MQTT_EP, mqttEndpoint);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_DEVICE_TOKEN, token);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_DEVICE_REFRESH_TOKEN, refreshToken);
-            contextParams.put(DeviceTypeConstants.ZIP_CONFIG_API_APPLICATION_KEY, base64EncodedApplicationKey);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_SERVER_NAME, APIUtil.getTenantDomainOftheUser());
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_DEVICE_OWNER, owner);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_DEVICE_ID, deviceId);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_DEVICE_NAME, deviceName);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_HTTPS_EP, httpsServerEP);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_HTTP_EP, httpServerEP);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_APIM_EP, httpsServerEP);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_MQTT_EP, mqttEndpoint);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_DEVICE_TOKEN, token);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_DEVICE_REFRESH_TOKEN, refreshToken);
+            contextParams.put(myRaspberryConstants.ZIP_CONFIG_API_APPLICATION_KEY, base64EncodedApplicationKey);
 
             ZipArchive zipFile;
             zipFile = getSketchArchive(archivesPath, templateSketchPath, contextParams, deviceName);
