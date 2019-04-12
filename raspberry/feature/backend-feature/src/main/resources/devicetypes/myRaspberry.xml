@@ -22,7 +22,7 @@
         <Feature code="time">
             <Name>Cambiar Tiempo del Sensor</Name>
             <Description>Cambia el tiempo de muestreo del sensor de temperatura</Description>
-            <Operation context="/myRaspberry/device/{deviceId}/change-time" method="POST">
+            <Operation context="/myRaspberry/device/{deviceId}/sensor" method="PUT">
                 <QueryParameters>
                     <Parameter>state</Parameter>
                 </QueryParameters>
@@ -31,7 +31,7 @@
         <Feature code="leds">
             <Name>Matriz leds: on/off</Name>
             <Description>Enciende/Apaga la matriz de leds, acepta solo las opciones on y off</Description>
-            <Operation context="/myRaspberry/device/{deviceId}/change-leds" method="POST">
+            <Operation context="/myRaspberry/device/{deviceId}/leds" method="PUT">
                 <QueryParameters>
                     <Parameter>value</Parameter>
                 </QueryParameters>
@@ -40,7 +40,7 @@
         <Feature code="cmd">
 		<Name>Mandar Orden</Name>
 		<Description>Manda una orden de las listadas a la raspberry</Description>
-		<Operation context="/myRaspberry/device/{deviceId}/send-command" method="POST">
+		<Operation context="/myRaspberry/device/{deviceId}/command" method="PUT">
 		</Operation>
 	</Feature>
     </Features>

@@ -7,13 +7,13 @@
       "perm:myRaspberry:enroll"
     ],
        "features":{
-	       "change-time": {
+	       "sensor": {
           "icon": "fw-settings"
 	       },
-	       "change-leds": {
+	       "leds": {
           "icon": "fw-settings"
 	       },
-	       "send-command": {
+	       "command": {
            "icon": "fw-message",
 		       "formParams": [
 			       {

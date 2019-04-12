@@ -51,21 +51,21 @@ public class myRaspberryFeatureManager implements FeatureManager {
         * operaciones deben estar definidas y configuradas (como los iconos) en
         * type-view/private/config.json
         */
-	Feature deviceFeature =	createFeature("change-time","tiempo",
+	Feature deviceFeature =	createFeature("sensor","tiempo",
   "Cambiar Tiempo del Sensor","Cambia el tiempo de muestreo del sensor de temperatura");
 	try {
 		addFeature(deviceFeature);
 	}catch (DeviceManagementException e) {
 		e.printStackTrace();
 	}
-	deviceFeature =	createFeature("change-leds","estado","Matriz leds: on/off",
+	deviceFeature =	createFeature("leds","estado","Matriz leds: on/off",
   "Enciende/Apaga la matriz de leds, acepta solo las opciones on y off");
 	try {
 		addFeature(deviceFeature);
 	}catch (DeviceManagementException e) {
 		e.printStackTrace();
 	}
-	deviceFeature =	createFeature("send-command","parametros","Mandar Orden",
+	deviceFeature =	createFeature("command","parametros","Mandar Orden",
   "Manda una orden de las listadas a la raspberry");
 	try {
 	//deviceFeature = getFeature("buzz");
@@ -90,7 +90,7 @@ public class myRaspberryFeatureManager implements FeatureManager {
 	newOperation.setCode(feature);
         newOperation.setName(name);
         newOperation.setDescription(description);
-        apiParams.put(METHOD, "POST");
+        apiParams.put(METHOD, "PUT");
         apiParams.put(URI, "/myRaspberry/device/{deviceId}/" + feature);
         pathParams.add("deviceId");
         apiParams.put(PATH_PARAMS, pathParams);

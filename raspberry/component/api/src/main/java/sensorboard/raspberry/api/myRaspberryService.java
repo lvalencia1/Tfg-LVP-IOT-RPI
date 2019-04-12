@@ -79,11 +79,11 @@ public interface myRaspberryService {
      * @param deviceId unique identifier for given device type instance
      * @param state    change status of sensor: on/off
      */
-    @Path("device/{deviceId}/change-time")
-    @POST
+    @Path("device/{deviceId}/sensor")
+    @PUT
     @ApiOperation(
             consumes = MediaType.APPLICATION_JSON,
-            httpMethod = "POST",
+            httpMethod = "PUT",
             value = "Cambia el tiempo del sensor",
             notes = "",
             response = Response.class,
@@ -97,11 +97,11 @@ public interface myRaspberryService {
     Response changeTime(@PathParam("deviceId") String deviceId,
                           @QueryParam("tiempo") int state,
                           @Context HttpServletResponse response);
-    @Path("device/{deviceId}/change-leds")
-    @POST
+    @Path("device/{deviceId}/leds")
+    @PUT
     @ApiOperation(
             consumes = MediaType.APPLICATION_JSON,
-            httpMethod = "POST",
+            httpMethod = "PUT",
             value = "Enciende/Apaga la matriz de leds",
             notes = "",
             response = Response.class,
@@ -117,10 +117,10 @@ public interface myRaspberryService {
                           @Context HttpServletResponse response);
 
     @POST
-    @Path("device/{deviceId}/send-command")
+    @Path("device/{deviceId}/command")
     @ApiOperation(
     consumes = MediaType.APPLICATION_JSON,
-    httpMethod = "POST",
+    httpMethod = "PUT",
     value = "Manda una orden a la Raspberry ",
     notes = "",
     response = Response.class,

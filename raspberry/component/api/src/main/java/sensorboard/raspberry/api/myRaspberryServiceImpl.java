@@ -123,7 +123,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
      * @param deviceId unique identifier for given device type instance
      * @param time    new value for the device to send sensor records
      */
-    @Path("device/{deviceId}/change-time")
+    @Path("device/{deviceId}/sensor")
     @POST
     public Response changeTime(@PathParam("deviceId") String deviceId,
                                  @QueryParam("tiempo") int time,
@@ -146,7 +146,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
             dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 	          //Almacenamos la operación para mandarla a
             Operation commandOp = new CommandOperation();
-            commandOp.setCode("change-time");
+            commandOp.setCode("sensor");
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
             commandOp.setPayLoad("timeRequest:"+Integer.toString(time));
@@ -186,7 +186,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
      * @param deviceId unique identifier for given device type instance
      * @param state    change status of sensor: on/off
      */
-    @Path("device/{deviceId}/change-leds")
+    @Path("device/{deviceId}/leds")
     @POST
     public Response changeLeds(@PathParam("deviceId") String deviceId,
                                  @QueryParam("estado") String state,
@@ -207,7 +207,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
                     + "/" + myRaspberryConstants.DEVICE_TYPE + "/" + deviceId + "/command";
             dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
             Operation commandOp = new CommandOperation();
-            commandOp.setCode("change-leds");
+            commandOp.setCode("leds");
             commandOp.setType(Operation.Type.COMMAND);
             commandOp.setEnabled(true);
             commandOp.setPayLoad("ledsRequest:"+state);
@@ -240,7 +240,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
     }
 
     @POST
-    @Path("device/{deviceId}/send-command")
+    @Path("device/{deviceId}/command")
     public Response sendCommand(@PathParam("deviceId") String deviceId,  @FormParam("orden") String command,
     @QueryParam("parametros") String parameters, @Context HttpServletResponse response) {
       String[] stringList = parameters.split("\\s+");
@@ -333,7 +333,7 @@ public class myRaspberryServiceImpl implements myRaspberryService {
           dynamicProperties.put(myRaspberryConstants.ADAPTER_TOPIC_PROPERTY, publishTopic);
 
 		    ConfigOperation commandOp = new ConfigOperation();
-		    commandOp.setCode("send-command");
+		    commandOp.setCode("command");
         commandOp.setType(Operation.Type.COMMAND);
 		    commandOp.setEnabled(true);
 		    commandOp.setPayLoad(actualMessage);
