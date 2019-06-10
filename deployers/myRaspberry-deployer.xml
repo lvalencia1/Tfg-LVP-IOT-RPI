@@ -16,7 +16,8 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>org.wso2</groupId>
@@ -24,24 +25,24 @@
         <version>1</version>
     </parent>
 
+    <modules>
+        <module>raspberry</module>
+    </modules>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.iot.devicemgt-plugins</groupId>
-    <artifactId>iot-devicetype-feature-installation</artifactId>
-    <version>3.3.0</version>
+    <artifactId>iot-devicetype-samples</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>Install Virtual Fire Alarm, Raspberry Pi, Arduino Device Types - IoT Core</name>
+    <name>Creating custom distribution</name>
     <url>http://wso2.org</url>
-
-    <modules>
-        <module>../wso2/analytics/samples/device-plugins</module>
-    </modules>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.wso2.maven</groupId>
                 <artifactId>carbon-p2-plugin</artifactId>
-                <version>1.5.3</version>
+                <version>1.5.4</version>
                 <executions>
                     <execution>
                         <id>2-p2-repo-generation</id>
@@ -55,28 +56,14 @@
                             <publishArtifacts>true</publishArtifacts>
                             <publishArtifactRepository>true</publishArtifactRepository>
                             <featureArtifacts>
-                                <!-- Ardino Device Type Features -->
                                 <featureArtifactDef>
-                                    org.wso2.carbon.devicemgt-plugins:org.wso2.carbon.device.mgt.iot.arduino.ui.feature:4.1.6
+                                    sensorboard:sensorboard.raspberry.ui.feature:3.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.devicemgt-plugins:org.wso2.carbon.device.mgt.iot.arduino.backend.feature:4.1.6
-                                </featureArtifactDef>
-
-                                <!-- Raspberry Device Type Features -->
-                                <featureArtifactDef>
-                                    org.wso2.carbon.devicemgt-plugins:org.wso2.carbon.device.mgt.iot.raspberrypi.ui.feature:4.1.6
+                                    sensorboard:sensorboard.raspberry.backend.feature:3.0-SNAPSHOT
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.devicemgt-plugins:org.wso2.carbon.device.mgt.iot.raspberrypi.backend.feature:4.1.6
-                                </featureArtifactDef>
-
-                                <!-- Virtual Fire Alarm Device Type Features -->
-                                <featureArtifactDef>
-                                    org.wso2.carbon.devicemgt-plugins:org.wso2.carbon.device.mgt.iot.virtualfirealarm.ui.feature:4.1.6
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.devicemgt-plugins:org.wso2.carbon.device.mgt.iot.virtualfirealarm.backend.feature:4.1.6
+                                    sensorboard:sensorboard.raspberry.analytics.feature:3.0-SNAPSHOT
                                 </featureArtifactDef>
                             </featureArtifacts>
                         </configuration>
@@ -94,35 +81,16 @@
                             <destination>${basedir}/../wso2/components</destination>
                             <deleteOldProfileFiles>false</deleteOldProfileFiles>
                             <features>
-                                <!-- Ardino Device Type Features -->
+                                <!-- Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.arduino.ui.feature.group</id>
-                                    <version>4.1.6</version>
+                                    <id>sensorboard.raspberry.ui.feature.group</id>
+                                    <version>3.0-SNAPSHOT</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.arduino.backend.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-
-                                <!-- Raspberry Device Type Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.raspberrypi.ui.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.raspberrypi.backend.feature.group</id>
-                                    <version>4.1.6</version>
+                                    <id>sensorboard.raspberry.backend.feature.group</id>
+                                    <version>3.0-SNAPSHOT</version>
                                 </feature>
 
-                                <!-- Virtual Fire Alarm Device Type Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.virtualfirealarm.ui.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.virtualfirealarm.backend.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -139,22 +107,10 @@
                             <destination>${basedir}/../wso2/components</destination>
                             <deleteOldProfileFiles>false</deleteOldProfileFiles>
                             <features>
-                                <!-- Ardino Device Type UI Features -->
+                                <!-- UI Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.arduino.ui.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-
-                                <!-- Raspberry Device Type UI Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.raspberrypi.ui.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-
-                                <!-- Virtual Fire Alarm Device Type UI Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.virtualfirealarm.ui.feature.group</id>
-                                    <version>4.1.6</version>
+                                    <id>sensorboard.raspberry.ui.feature.group</id>
+                                    <version>3.0-SNAPSHOT</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -172,25 +128,66 @@
                             <destination>${basedir}/../wso2/components</destination>
                             <deleteOldProfileFiles>false</deleteOldProfileFiles>
                             <features>
-                                <!-- Ardino Device Type BE Features -->
+                                <!-- BE Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.arduino.backend.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-
-                                <!-- Raspberry Device Type BE Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.raspberrypi.backend.feature.group</id>
-                                    <version>4.1.6</version>
-                                </feature>
-
-                                <!-- Virtual Fire Alarm Device Type BE Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.device.mgt.iot.virtualfirealarm.backend.feature.group</id>
-                                    <version>4.1.6</version>
+                                    <id>sensorboard.raspberry.backend.feature.group</id>
+                                    <version>3.0-SNAPSHOT</version>
                                 </feature>
                             </features>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <id>analytics-feature-install</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>p2-profile-gen</goal>
+                        </goals>
+                        <configuration>
+                            <profile>analytics-default</profile>
+                            <metadataRepository>file:${project.basedir}/target/p2-repo
+                            </metadataRepository>
+                            <artifactRepository>file:${project.basedir}/target/p2-repo
+                            </artifactRepository>
+                            <destination>${project.basedir}/../wso2/components</destination>
+                            <deleteOldProfileFiles>false</deleteOldProfileFiles>
+                            <features>
+                                <!-- Analytics Features -->
+                                <feature>
+                                    <id>sensorboard.raspberry.analytics.feature.group</id>
+                                    <version>3.0-SNAPSHOT</version>
+                                </feature>
+                            </features>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>default-feature-install</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <replace token="false" value="true"
+                                         dir="../wso2/components/default/configuration/org.eclipse.equinox.simpleconfigurator">
+                                    <include name="**/bundles.info"/>
+                                </replace>
+                                <replace token="false" value="true"
+                                         dir="../wso2/components/device-manager/configuration/org.eclipse.equinox.simpleconfigurator">
+                                    <include name="**/bundles.info"/>
+                                </replace>
+                                <replace token="false" value="true"
+                                         dir="../wso2/components/device-backend/configuration/org.eclipse.equinox.simpleconfigurator">
+                                    <include name="**/bundles.info"/>
+                                </replace>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -272,9 +269,8 @@
             </releases>
         </repository>
     </repositories>
-
     <properties>
-		<!--This gets picked from the build properties, Do not change it-->
-        <carbon.device.mgt.plugin.version>4.1.6</carbon.device.mgt.plugin.version>
+        <carbon.device.mgt.plugin.version>4.0.34</carbon.device.mgt.plugin.version>
+        <org.wso2.iot.version>1.0.0-SNAPSHOT</org.wso2.iot.version>
     </properties>
 </project>
