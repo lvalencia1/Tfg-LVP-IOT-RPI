@@ -400,7 +400,7 @@
         <!--XMPP/MQTT Version-->
         <smack.wso2.version>3.0.4.wso2v1</smack.wso2.version>
         <smackx.wso2.version>3.0.4.wso2v1</smackx.wso2.version>
-        <cxf.version>2.6.1</cxf.version>
+        <cxf.version>2.6.7</cxf.version>
         <jackson.version>1.9.0</jackson.version>
         <commons-httpclient.orbit.version>3.1.0.wso2v2</commons-httpclient.orbit.version>
         <commons-json.version>3.0.0.wso2v1</commons-json.version>
